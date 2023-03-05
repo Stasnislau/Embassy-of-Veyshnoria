@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "nodemon src/index.ts"
+    "start-dev": "concurrently \"killall \"  \" nodemon src/index.ts \" \" cd Client && npm start \""
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/node": "^18.14.0",
+    "concurrently": "^7.6.0",
     "esbuild": "^0.17.10",
     "esbuild-register": "^3.4.2",
     "prisma": "^4.10.1",
