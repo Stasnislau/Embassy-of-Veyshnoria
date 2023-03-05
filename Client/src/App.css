@@ -1,0 +1,11 @@
+.app {
+  background-color: rgb(251, 251, 251);
+  display: flex;
+  flex-direction: column;
+}
+.app-body {
+  flex: 1;
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+}

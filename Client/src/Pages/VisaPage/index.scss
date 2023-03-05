@@ -1,0 +1,75 @@
+.error-header {
+  color: red;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visa-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  .visa-page-line {
+    width: 100%;
+    background-color: #ccc;
+    margin-bottom: 20px;
+  }
+  .visa-container {
+    display: flex;
+    margin: 30px 0;
+    width: 50%;
+    height: 80%;
+    flex-direction: column;
+    align-items: left;
+    gap: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px 50px;
+    flex: 1;
+    .visa-page-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .visa-page-subtitle {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .visa-field {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .delete-button-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      .delete-button {
+        width: 100px;
+        height: 50px;
+        background-color: red;
+        color: white;
+        border-radius: 5px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        &:hover {
+          background-color: #b71c1c;
+          scale: 1.01;
+          transition: 0.2s;
+          box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+}

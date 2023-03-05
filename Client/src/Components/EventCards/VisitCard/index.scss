@@ -1,0 +1,41 @@
+.visit-card {
+  background-color: inherit;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  h1 {
+    margin: 0 0 10px 0;
+  }
+  .visit-card-body {
+    padding: 20px;
+    text-align: left;
+  }
+  .visit-card-date {
+    font-size: 16px;
+    margin-bottom: 10px;
+
+    p {
+      margin: 0;
+    }
+  }
+  .visit-card-location {
+    font-size: 16px;
+    margin-bottom: 10px;
+
+    p {
+      margin: 0;
+    }
+  }
+  .visit-card-description {
+    font-size: 16px;
+    height: 20px;
+    overflow: hidden;
+    p {
+      margin: 0;
+    }
+  }
+}

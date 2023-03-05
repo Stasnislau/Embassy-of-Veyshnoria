@@ -1,0 +1,82 @@
+.sureness-modal-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  .sureness-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    height: 40%;
+    background-color: #fff;
+    border-radius: 5px;
+    border: solid 1px red;
+    padding: 20px;
+    .sureness-modal-line{
+        display: flex;
+        width: 100%;
+        clear: black;
+    }
+    .sureness-modal-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: fit-content;
+    }
+    .sureness-modal-subtitle {
+        display: flex;
+        width: 100%;
+        height: fit-content;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .sureness-modal-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      width: 100%;
+      height: fit-content;
+      margin: 20px 20px;
+    }
+    .sureness-modal-button {
+      width: 100%;
+      height: 50px;
+      border-radius: 5px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .no-button {
+      background-color: #fff;
+      color: #3f51b5;
+      border: 1px solid #3f51b5;
+      margin-right: 10px;
+    }
+    .no-button:hover {
+      background-color: white;
+      border: 1px solid #3f51b5;
+      scale: 1.01;
+      transition: 0.2s;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+      margin-right: 10px;
+    }
+    .yes-button {
+        background-color: #ff3333;
+        color: #fff;
+        border: none;
+        margin-left: 10px;
+    }
+    .yes-button:hover {
+        background-color: #ff0000;
+        scale: 1.01;
+        transition: 0.2s;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        margin-left: 10px;
+    }
+  }
+}

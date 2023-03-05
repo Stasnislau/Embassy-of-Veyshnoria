@@ -1,0 +1,56 @@
+.pagination-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  gap: 5px;
+  font-size: 16px;
+  align-items: center;
+
+  .pagination-item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #20068a;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .pagination-item:hover {
+    background-color: #20068a;
+    color: #fff;
+    transition: 0.2s;
+  }
+  .active-pagination-item {
+    background-color: #20068a;
+    color: #fff;
+  }
+  .pagination-item-move {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #20068a;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #20068a;
+    color: #fff;
+  }
+  .pagination-item-move:hover {
+    background-color: #20068a;
+    color: #fff;
+    transition: 0.2s;
+  }
+  .pagination-item-corner {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    
+    width: 30px;
+    height: 30px;
+    
+  }
+}

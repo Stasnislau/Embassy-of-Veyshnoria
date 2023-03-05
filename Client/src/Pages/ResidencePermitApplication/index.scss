@@ -1,0 +1,121 @@
+.residence-permit-application {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    min-height: 90vh;
+    .residence-permit-application-container {
+      display: flex;
+      margin-top: 30px;
+      width: 50%;
+      height: fit-content;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+      form {
+        display: flex;
+        flex-direction: column;
+        width: 60%;
+        height: 100%;
+      }
+      .several-fields-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        gap: 20px;
+        flex-basis: 50%;
+        margin: 0;
+      }
+      .form-control {
+        padding: 5px 0;
+        min-height: 60px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      .inputs-container {
+        width: 100%;
+      }
+      .input-field {
+        width: 100%;
+        min-height: 30px;
+        border: 1px solid #ccc;
+        padding-left: 5px;
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+        
+      }
+      .input-selector{
+        min-height: 35px;
+        border: 1px solid #ccc;
+        padding-left: 5px;
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+      }
+      .buttons-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: space-between;
+        height: fit-content;
+        padding-bottom: 20px;
+      }
+      .submit-button {
+        width: 49%;
+        height: 50px;
+        background-color: #3f51b5;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      .submit-button:hover {
+        background-color: #303f9f;
+        scale: 1.01;
+        transition: 0.2s;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+      }
+      .cancel-button {
+        width: 49%;
+        height: 50px;
+        background-color: #fff;
+        color: #3f51b5;
+        border: 1px solid #3f51b5;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      .cancel-button:hover {
+        background-color: white;
+        border: 1px solid #3f51b5;
+        scale: 1.01;
+        transition: 0.2s;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+      }
+      .checkbox-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 10px 0;
+  
+        .checkbox-item {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+  

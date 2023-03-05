@@ -1,0 +1,41 @@
+.visa-card {
+  background-color: inherit;
+  border-radius: 10px;
+  width: 100%;
+  border: none;
+  height: 100%;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+  h1 {
+    margin: 0 0 10px 0;
+  }
+  .visa-card-body {
+    padding: 20px;
+    text-align: left;
+  }
+  .visa-card-date {
+    font-size: 16px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    p {
+      margin: 0;
+    }
+  }
+  .visa-card-status {
+    font-size: 16px;
+    margin-bottom: 10px;
+    p {
+      margin: 0;
+    }
+  }
+  .visa-card-description {
+    font-size: 16px;
+    height: 20px;
+    overflow: hidden;
+    p {
+      margin: 0;
+    }
+  }
+}

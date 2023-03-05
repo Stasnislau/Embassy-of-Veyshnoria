@@ -1,0 +1,69 @@
+.visa-menu-container {
+  height: 40px;
+  position: relative;
+  width: max-content;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-around;
+  .visa-menu-button-container {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    transition: all 0.3s linear;
+  }
+  .visa-menu-button {
+    background-color: inherit;
+    height: 80%;
+    display: flex;
+    align-items: center;
+  }
+  .arrow {
+    align-items: flex-end;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s linear;
+  }
+  .arrow-up {
+    scale: -1;
+  }
+  .visa-dropdown-menu {
+    top: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 200%;
+    min-height: 20vh;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+    .visa-dropdown-menu-item {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      border: none;
+      background-color: inherit;
+      color: #333;
+      font-size: 18px;
+      font-weight: 600;
+      flex: 1;
+      &:hover {
+        background-color: #d4f8ff;
+      }
+    }
+  }
+}

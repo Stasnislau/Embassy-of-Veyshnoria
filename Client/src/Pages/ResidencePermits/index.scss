@@ -1,0 +1,40 @@
+.residence-permits-page-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  min-height: 90vh;
+  .residence-permits-page-boxes-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 585px;
+    width: 80%;
+    margin-top: 30px;
+  }
+  .residence-permits-page-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 30px;
+  }
+  .residence-permits-page-box {
+    position: relative;
+    background-color: #fff;
+    width: 30%;
+    height: 250px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .residence-permits-page-box:hover {
+    background-color: #eee;
+    transition: 0.2s;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  }
+}

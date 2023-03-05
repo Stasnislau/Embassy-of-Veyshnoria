@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id                          Int                           @id @default(autoincrement())
+  name                        String
+  surname                     String
+  email                       String                        @unique
+  dateOfBirth                 String
+  birthPlace                  String
+  phoneNumber                 String
+  address                     String
+  city                        String
+  country                     String
+  zip                         String
+  passportNumber              String
+  passportExpirationDate      String
+  passportIssuingDate         String
+  passportIssuingCountry      String
+  residencePermitApplications residencePermitApplications[]
+  visaApplications            visaApplications[]
+  visits                      visits[]
+  credentials                 credentials?
+}
+
+model residencePermitApplications {
+  id                     Int    @id @default(autoincrement())
+  name                   String
+  surname                String
+  email                  String
+  phoneNumber            String
+  birthDate              String
+  birthPlace             String
+  address                String
+  city                   String
+  country                String
+  zip                    String
+  residencePermitType    String
+  passportNumber         String
+  passportIssuingCountry String
+  passportExpirationDate String
+  passportIssuingDate    String
+  comments               String
+  userId                 Int
+  user                   users  @relation(fields: [userId], references: [id])
+  status                 String
+}
+
+model visaApplications {
+  id                     Int    @id @default(autoincrement())
+  name                   String
+  surname                String
+  email                  String
+  birthDate              String
+  birthPlace             String
+  phoneNumber            String
+  address                String
+  city                   String
+  zip                    String
+  country                String
+  passportNumber         String
+  passportExpirationDate String
+  passportIssuingDate    String
+  passportIssuingCountry String
+  visaType               String
+  visaDuration           String
+  visaDate               String
+  comments               String
+  userId                 Int
+  user                   users  @relation(fields: [userId], references: [id])
+  status                 String
+}
+
+model visits {
+  id          Int    @id @default(autoincrement())
+  date        String
+  time        String
+  location    String
+  description String
+  userId      Int
+  user        users  @relation(fields: [userId], references: [id])
+}
+
+model credentials {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  user     users  @relation(fields: [email], references: [email])
+}
