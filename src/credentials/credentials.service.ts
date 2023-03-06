@@ -47,9 +47,9 @@ export const getCredentialsByEmail = async (
     throw new Error(`No such user`);
   }
   const credentials = {
-    email: user.credentials[0].email,
-    password: user.credentials[0].password,
-  };
+    email: user.credentials.email,
+    password: user.credentials.password,
+  } as CredentialsInterface;
   return credentials;
 };
 
