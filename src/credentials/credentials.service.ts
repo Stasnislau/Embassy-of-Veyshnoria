@@ -1,6 +1,8 @@
 import { CredentialsInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 
+const bcrypt = require("bcrypt");
+
 export const getCredentialsById = async (
   id: number
 ): Promise<CredentialsInterface> => {
@@ -23,7 +25,6 @@ export const getCredentialsById = async (
   if (!credentials) {
     throw new Error("Credentials not found");
   }
-
   return credentials;
 };
 
@@ -56,21 +57,43 @@ export const getCredentialsByEmail = async (
 export const createCredentials = async (
   credentials: CredentialsInterface
 ): Promise<CredentialsInterface> => {
-  const newCredentials = await embassyDB.credentials.create({
-    data: credentials,
-  });
-  return newCredentials;
+  const { email, password } = credentials;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newCredentials = await embassyDB.credentials.create({
+      data: {
+        email,
+        password: hashedPassword,
+      },
+    });
+    return newCredentials;
+  } catch (err: any) {
+    throw new Error(err);
+  }
 };
 
 export const updateCredentials = async (
   id: number,
   credentials: CredentialsInterface
 ): Promise<CredentialsInterface> => {
-  const updatedCredentials = await embassyDB.credentials.update({
-    where: {
-      id: Number(id),
-    },
-    data: credentials,
-  });
-  return updatedCredentials;
+  const { email, password } = credentials;
+  const oldCredentials = await getCredentialsById(id);
+  try {
+    if (bcrypt.compare(password, oldCredentials.password)) {
+      throw new Error("Password is the same as the old one");
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updatedCredentials = await embassyDB.credentials.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        email,
+        password: hashedPassword,
+      },
+    });
+    return updatedCredentials;
+  } catch (err: any) {
+    throw new Error(err);
+  }
 };

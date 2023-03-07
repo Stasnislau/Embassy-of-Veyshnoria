@@ -26,7 +26,6 @@ credentialsRouter.get(
 );
 
 credentialsRouter.post("/credentials", async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.userId);
   const Errors = validationResult(req);
   if (!Errors.isEmpty()) {
     return res.status(400).json({ errors: Errors.array() });
@@ -43,11 +42,11 @@ credentialsRouter.put(
   "/credentials/:id",
   async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { userId, ...rest } = req.body;
-    const credentials = await CredentialsService.updateCredentials(
-      Number(id),
-      rest
-    );
+    const { email, password } = req.body;
+    const credentials = await CredentialsService.updateCredentials(Number(id), {
+      email,
+      password,
+    });
     res.json(credentials);
   }
 );
