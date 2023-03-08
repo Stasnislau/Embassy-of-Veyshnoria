@@ -5,13 +5,13 @@ import express, { Request, Response } from "express";
 
 export const userRouter = express.Router();
 
-userRouter.get("/users/:id", async (req: Request, res: Response) => {
+userRouter.get("/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const user = await userService.getUserById(Number(id));
   res.json(user);
 });
 
-userRouter.post("/users", async (req: Request, res: Response) => {
+userRouter.post("/", async (req: Request, res: Response) => {
   const Errors = validationResult(req);
   if (!Errors.isEmpty()) {
     return res.status(400).json({ errors: Errors.array() });
@@ -24,7 +24,7 @@ userRouter.post("/users", async (req: Request, res: Response) => {
   }
 });
 
-userRouter.put("/users/:id", async (req: Request, res: Response) => {
+userRouter.put("/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
 
   const Errors = validationResult(req);

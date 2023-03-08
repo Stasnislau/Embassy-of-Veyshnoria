@@ -8,7 +8,7 @@ import { authenticateToken } from "./../../Authentication/authentication.middlew
 export const credentialsRouter = express.Router();
   
 credentialsRouter.get(
-  "/credentials/:id",
+  "/:id",
   authenticateToken,
   async (req: Request, res: Response) => {
     const id = req.params.id;
@@ -18,7 +18,7 @@ credentialsRouter.get(
 );
 
 credentialsRouter.get(
-  "/credentials/users/:userId",
+  "/users/:userId",
   authenticateToken,
   async (req: Request, res: Response) => {
     const userId = req.params.userId;
@@ -30,7 +30,7 @@ credentialsRouter.get(
 );
 
 credentialsRouter.post(
-  "/credentials",
+  "/",
   authenticateToken,
   async (req: Request, res: Response) => {
     const Errors = validationResult(req);
@@ -47,7 +47,7 @@ credentialsRouter.post(
 );
 
 credentialsRouter.put(
-  "/credentials/:id",
+  "/:id",
   authenticateToken,
   async (req: Request, res: Response) => {
     const { id } = req.params;

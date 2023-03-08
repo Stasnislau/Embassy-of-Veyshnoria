@@ -6,7 +6,7 @@ import express, { Request, Response } from "express";
 export const visaApplicationRouter = express.Router();
 
 visaApplicationRouter.get(
-  "/visa-applications/:id",
+  "/:id",
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const visaApplication = await visaApplicationService.getVisaApplicationById(
@@ -17,7 +17,7 @@ visaApplicationRouter.get(
 );
 
 visaApplicationRouter.post(
-  "/visa-applications",
+  "/",
   async (req: Request, res: Response) => {
     const userId = parseInt(req.params.userId);
     const Errors = validationResult(req);
@@ -35,7 +35,7 @@ visaApplicationRouter.post(
 );
 
 visaApplicationRouter.put(
-  "/visa-applications/:id",
+  "/:id",
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { userId, ...rest } = req.body;
