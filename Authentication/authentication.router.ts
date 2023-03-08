@@ -23,7 +23,7 @@ authenticationRouter.post("/login", async (req, res) => {
 
   const credentials = await embassyDB.credentials.findUnique({
     where: {
-      id: user.id,
+      email: email,
     },
     select: {
       email: true,
@@ -34,20 +34,17 @@ authenticationRouter.post("/login", async (req, res) => {
     res.status(404).send("User not found");
     return;
   }
-  const isPasswordCorrect = await bcrypt.compare(
-    password,
-    credentials.password
-  );
-  if (!isPasswordCorrect) {
-    console.log(
+  try {
+    const isPasswordCorrect = await bcrypt.compare(
       password,
-      " ||| ",
-      credentials.password,
-      " ||| ",
-      isPasswordCorrect
+      credentials.password
     );
-    res.status(401).send("Incorrect email or password");
-    return;
+    if (!isPasswordCorrect) {
+      res.status(401).send("Incorrect email or password");
+      return;
+    }
+  } catch (error) {
+    res.status(500).send();
   }
 
   const accessToken = jwt.sign(

@@ -1,8 +1,7 @@
 import * as dotenv from "dotenv";
 
 import { PrismaClient } from "@prisma/client";
-import { authenticateToken } from "../Authentification/authentification.service";
-import { authenticationRouter } from "../Authentification/authentification.router";
+import { authenticationRouter } from "../Authentication/authentication.router";
 import cors from "cors";
 import { credentialsRouter } from "./credentials/credentials.router";
 import express from "express";
