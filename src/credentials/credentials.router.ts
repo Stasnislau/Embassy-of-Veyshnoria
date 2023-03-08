@@ -3,6 +3,8 @@ import * as CredentialsService from "./credentials.service";
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
 
+import authentificateToken from "../authentification/authentification.service.ts";
+
 export const credentialsRouter = express.Router();
 
 credentialsRouter.get(
@@ -39,7 +41,7 @@ credentialsRouter.post("/credentials", async (req: Request, res: Response) => {
 });
 
 credentialsRouter.put(
-  "/credentials/:id",
+  "/credentials/:id", 
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { email, password } = req.body;
