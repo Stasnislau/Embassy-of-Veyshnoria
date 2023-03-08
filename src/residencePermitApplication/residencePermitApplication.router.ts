@@ -6,7 +6,7 @@ import express, { Request, Response } from "express";
 export const residencePermitApplicationRouter = express.Router();
 
 residencePermitApplicationRouter.get(
-  "/residence-applications/:id",
+  "/:id",
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const residencePermitApplication =
@@ -18,7 +18,7 @@ residencePermitApplicationRouter.get(
 );
 
 residencePermitApplicationRouter.get(
-  "/residence-applications/users/:userId",
+  "/:userId",
   async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const residencePermitApplications =
@@ -30,7 +30,7 @@ residencePermitApplicationRouter.get(
 );
 
 residencePermitApplicationRouter.post(
-  "/residence-applications",
+  "/",
   async (req: Request, res: Response) => {
     const userId = parseInt(req.params.userId);
     const Errors = validationResult(req);
@@ -51,7 +51,7 @@ residencePermitApplicationRouter.post(
 );
 
 residencePermitApplicationRouter.put(
-  "/residence-applications/:id",
+  "/:id",
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { userId, ...rest } = req.body;
