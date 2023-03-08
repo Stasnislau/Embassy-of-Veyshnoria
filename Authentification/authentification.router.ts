@@ -39,7 +39,13 @@ authenticationRouter.post("/login", async (req, res) => {
     credentials.password
   );
   if (!isPasswordCorrect) {
-    console.log(password, " ||| ", credentials.password);
+    console.log(
+      password,
+      " ||| ",
+      credentials.password,
+      " ||| ",
+      isPasswordCorrect
+    );
     res.status(401).send("Incorrect email or password");
     return;
   }
@@ -47,7 +53,7 @@ authenticationRouter.post("/login", async (req, res) => {
   const accessToken = jwt.sign(
     { userId: user.id },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: process.env.ACCESS_TOKEN_LIFE }
   );
   res.json({ accessToken });
 });
