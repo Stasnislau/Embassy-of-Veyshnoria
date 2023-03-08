@@ -8,6 +8,10 @@ import {
 
 import { embassyDB } from "../src/utils/db.server";
 
+const bcrypt = require("bcrypt");
+
+
+
 const getMockUsers = () => {
   const users = [
     {
@@ -166,9 +170,10 @@ async function seed() {
   await Promise.all(
     getMockCredentials().map(async (credential: CredentialsInterface) => {
       const { email, password } = credential;
+      const hashedPassword = await bcrypt.hash(password, 10);
       return embassyDB.credentials.create({
         data: {
-          password: password,
+          password: hashedPassword,
           user: {
             connect: {
               email: email,

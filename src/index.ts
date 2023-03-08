@@ -1,6 +1,8 @@
 import * as dotenv from "dotenv";
 
 import { PrismaClient } from "@prisma/client";
+import { authenticateToken } from "../Authentification/authentification.service";
+import { authenticationRouter } from "../Authentification/authentification.router";
 import cors from "cors";
 import { credentialsRouter } from "./credentials/credentials.router";
 import express from "express";
@@ -29,3 +31,4 @@ app.use("/visits", visitRouter);
 app.use("/visa-applications", visaApplicationRouter);
 app.use("/residence-applications", residencePermitApplicationRouter);
 app.use("/credentials", credentialsRouter);
+app.use("/login", authenticationRouter);
