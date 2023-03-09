@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 export const authenticationRouter = express.Router();
 
-authenticationRouter.post("/login", async (req, res) => {
+authenticationRouter.post("/", async (req, res) => {
   const { email, password } = req.body;
   const user = await embassyDB.users.findUnique({
     where: {
