@@ -13,6 +13,7 @@ authenticationRouter.post("/", async (req, res) => {
       email: email,
     },
     select: {
+      email: true,
       id: true,
     },
   });
@@ -47,10 +48,6 @@ authenticationRouter.post("/", async (req, res) => {
     res.status(500).send();
   }
 
-  const accessToken = jwt.sign(
-    { userId: user.id },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: process.env.ACCESS_TOKEN_LIFE }
-  );
+  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
   res.json({ accessToken });
 });

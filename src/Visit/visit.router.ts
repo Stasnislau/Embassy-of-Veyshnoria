@@ -13,16 +13,20 @@ visitRouter.get("/get-by-id/:id", async (req: Request, res: Response) => {
   res.json(visit);
 });
 
-visitRouter.get("/users", authenticateToken, async (req: any, res: Response) => {
-  const userId = req.user.id;
-  console.log("USER ID", req.user);
-  try {
-    const visits = await visitService.getVisitsByUserId(Number(userId));
-    res.json(visits);
-  } catch (error: any) {
-    res.status(400).send(error.message);
+visitRouter.get(
+  "/users",
+  authenticateToken,
+  async (req: any, res: Response) => {
+    const userId = req.user.id;
+    console.log("USER ID", req.user);
+    try {
+      const visits = await visitService.getVisitsByUserId(Number(userId));
+      res.json(visits);
+    } catch (error: any) {
+      res.status(400).send(error.message);
+    }
   }
-});
+);
 
 visitRouter.post("/", async (req: Request, res: Response) => {
   const Errors = validationResult(req);

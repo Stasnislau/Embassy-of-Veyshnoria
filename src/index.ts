@@ -25,10 +25,9 @@ app.listen(PORT, () => {
   console.log("Server is running on port 3001");
 });
 
-app.use(authenticateToken); 
+app.use("/login", authenticationRouter);
 app.use("/users", userRouter);
 app.use("/visits", visitRouter);
 app.use("/visa-applications", visaApplicationRouter);
 app.use("/residence-applications", residencePermitApplicationRouter);
-app.use("/login", authenticationRouter);
-
+app.use(authenticateToken);
