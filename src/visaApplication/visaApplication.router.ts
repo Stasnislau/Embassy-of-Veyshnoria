@@ -37,29 +37,35 @@ visaApplicationRouter.get(
   }
 );
 
-visaApplicationRouter.post("/", async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.userId);
-  const Errors = validationResult(req);
-  if (!Errors.isEmpty()) {
-    return res.status(400).json({ errors: Errors.array() });
+visaApplicationRouter.post(
+  "/",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const userId = parseInt(req.params.userId);
+    const Errors = validationResult(req);
+    if (!Errors.isEmpty()) {
+      return res.status(400).json({ errors: Errors.array() });
+    }
+    try {
+      const visaApplication =
+        await visaApplicationService.createVisaApplication(userId, req.body);
+      res.json(visaApplication);
+    } catch (error: any) {
+      res.status(400).send(error.message);
+    }
   }
-  try {
-    const visaApplication = await visaApplicationService.createVisaApplication(
-      userId,
-      req.body
+);
+
+visaApplicationRouter.put(
+  "/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { userId, ...rest } = req.body;
+    const visaApplication = await visaApplicationService.updateVisaApplication(
+      Number(id),
+      rest
     );
     res.json(visaApplication);
-  } catch (error: any) {
-    res.status(400).send(error.message);
   }
-});
-
-visaApplicationRouter.put("/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { userId, ...rest } = req.body;
-  const visaApplication = await visaApplicationService.updateVisaApplication(
-    Number(id),
-    rest
-  );
-  res.json(visaApplication);
-});
+);

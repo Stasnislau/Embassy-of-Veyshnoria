@@ -7,11 +7,15 @@ import { authenticateToken } from "../../Authentication/authentication.middlewar
 
 export const visitRouter = express.Router();
 
-visitRouter.get("/specific/:id", async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const visit = await visitService.getVisitById(Number(id));
-  res.json(visit);
-});
+visitRouter.get(
+  "/specific/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const visit = await visitService.getVisitById(Number(id));
+    res.json(visit);
+  }
+);
 
 visitRouter.get(
   "/users",
@@ -27,15 +31,19 @@ visitRouter.get(
   }
 );
 
-visitRouter.post("/", async (req: Request, res: Response) => {
-  const Errors = validationResult(req);
-  if (!Errors.isEmpty()) {
-    return res.status(400).json({ errors: Errors.array() });
+visitRouter.post(
+  "/",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const Errors = validationResult(req);
+    if (!Errors.isEmpty()) {
+      return res.status(400).json({ errors: Errors.array() });
+    }
+    try {
+      const visit = await visitService.createVisit(req.body);
+      res.json(visit);
+    } catch (error: any) {
+      res.status(400).send(error.message);
+    }
   }
-  try {
-    const visit = await visitService.createVisit(req.body);
-    res.json(visit);
-  } catch (error: any) {
-    res.status(400).send(error.message);
-  }
-});
+);

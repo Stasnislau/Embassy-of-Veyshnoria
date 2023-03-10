@@ -3,10 +3,13 @@ import * as ResidencePermitApplicationService from "./residencePermitApplication
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
 
+import { authenticateToken } from "../../Authentication/authentication.middleware";
+
 export const residencePermitApplicationRouter = express.Router();
 
 residencePermitApplicationRouter.get(
   "/specific/:id",
+  authenticateToken,
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const residencePermitApplication =
@@ -19,6 +22,7 @@ residencePermitApplicationRouter.get(
 
 residencePermitApplicationRouter.get(
   "/users/:userId",
+  authenticateToken,
   async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const residencePermitApplications =
@@ -31,6 +35,7 @@ residencePermitApplicationRouter.get(
 
 residencePermitApplicationRouter.post(
   "/",
+  authenticateToken,
   async (req: Request, res: Response) => {
     const userId = parseInt(req.params.userId);
     const Errors = validationResult(req);
@@ -52,6 +57,7 @@ residencePermitApplicationRouter.post(
 
 residencePermitApplicationRouter.put(
   "/:id",
+  authenticateToken,
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { userId, ...rest } = req.body;
