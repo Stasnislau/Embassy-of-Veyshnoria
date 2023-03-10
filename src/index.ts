@@ -26,8 +26,9 @@ app.listen(PORT, () => {
 });
 
 app.use("/login", authenticationRouter);
+app.use(authenticateToken);
 app.use("/users", userRouter);
 app.use("/visits", visitRouter);
 app.use("/visa-applications", visaApplicationRouter);
 app.use("/residence-applications", residencePermitApplicationRouter);
-app.use(authenticateToken);
+

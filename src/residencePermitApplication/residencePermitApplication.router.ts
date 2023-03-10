@@ -6,7 +6,7 @@ import express, { Request, Response } from "express";
 export const residencePermitApplicationRouter = express.Router();
 
 residencePermitApplicationRouter.get(
-  "/:id",
+  "/specific/:id",
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const residencePermitApplication =
@@ -18,7 +18,7 @@ residencePermitApplicationRouter.get(
 );
 
 residencePermitApplicationRouter.get(
-  "/:userId",
+  "/users/:userId",
   async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const residencePermitApplications =

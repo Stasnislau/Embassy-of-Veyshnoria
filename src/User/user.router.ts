@@ -5,7 +5,7 @@ import express, { Request, Response } from "express";
 
 export const userRouter = express.Router();
 
-userRouter.get("/:id", async (req: Request, res: Response) => {
+userRouter.get("/specific/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const user = await userService.getUserById(Number(id));
   res.json(user);

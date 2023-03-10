@@ -7,7 +7,7 @@ import { authenticateToken } from "../../Authentication/authentication.middlewar
 
 export const visitRouter = express.Router();
 
-visitRouter.get("/get-by-id/:id", async (req: Request, res: Response) => {
+visitRouter.get("/specific/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const visit = await visitService.getVisitById(Number(id));
   res.json(visit);
@@ -18,7 +18,6 @@ visitRouter.get(
   authenticateToken,
   async (req: any, res: Response) => {
     const userId = req.user.id;
-    console.log("USER ID", req.user);
     try {
       const visits = await visitService.getVisitsByUserId(Number(userId));
       res.json(visits);
