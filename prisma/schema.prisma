@@ -27,6 +27,7 @@ model users {
   visaApplications            visaApplications[]
   visits                      visits[]
   credentials                 credentials?
+  Token                       Token?
 }
 
 model residencePermitApplications {
@@ -92,4 +93,12 @@ model credentials {
   email    String @unique
   password String
   user     users  @relation(fields: [email], references: [email])
+}
+
+model Token {
+  id        Int    @id @default(autoincrement())
+  token     String @unique
+  createdAt String
+  userId    Int   @unique
+  user      users  @relation(fields: [userId], references: [id])
 }

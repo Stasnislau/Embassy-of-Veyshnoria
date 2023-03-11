@@ -1,4 +1,4 @@
-import * as visitService from "./visit.service";
+import * as visitService from "../Services/visit.service";
 
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";

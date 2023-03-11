@@ -1,9 +1,9 @@
-import * as ResidencePermitApplicationService from "./residencePermitApplication.service";
+import * as ResidencePermitApplicationService from "../Services/residencePermitApplication.service";
 
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
 
-import { authenticateToken } from "../../Authentication/authentication.middleware";
+import { authenticateToken } from "../Authentication/authentication.middleware";
 
 export const residencePermitApplicationRouter = express.Router();
 

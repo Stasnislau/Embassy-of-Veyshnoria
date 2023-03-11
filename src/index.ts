@@ -1,14 +1,16 @@
 import * as dotenv from "dotenv";
 
 import { PrismaClient } from "@prisma/client";
-import { authenticateToken } from "../Authentication/authentication.middleware";
-import { authenticationRouter } from "../Authentication/authentication.router";
+import { authenticateToken } from "../src/Authentication/authentication.middleware";
+import { authenticationRouter } from "../src/Authentication/authentication.router";
 import cors from "cors";
 import express from "express";
 import { residencePermitApplicationRouter } from "./ResidencePermitApplication/residencePermitApplication.router";
 import { userRouter } from "./User/user.router";
 import { visaApplicationRouter } from "./VisaApplication/visaApplication.router";
 import { visitRouter } from "./Visit/visit.router";
+
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 if (!process.env.PORT) {
@@ -19,6 +21,7 @@ const PORT: number = parseInt(process.env.PORT as string, 10);
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 const prisma = new PrismaClient();
 
 app.listen(PORT, () => {

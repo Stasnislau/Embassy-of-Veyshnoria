@@ -1,4 +1,4 @@
-import { embassyDB } from "../src/utils/db.server";
+import { embassyDB } from "../utils/db.server";
 import express from "express";
 
 const bcrypt = require("bcrypt");
@@ -47,7 +47,8 @@ authenticationRouter.post("/", async (req, res) => {
   } catch (error) {
     res.status(500).send();
   }
-
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  res.json({ accessToken });
+  
+  
+  
+  res.json({ accessToken, refreshToken });
 });

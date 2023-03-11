@@ -1,4 +1,4 @@
-import * as visaApplicationService from "./visaApplication.service";
+import * as visaApplicationService from "../Services/visaApplication.service";
 
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";

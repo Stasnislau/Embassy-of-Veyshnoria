@@ -32,6 +32,8 @@ export const getUserById = async (id: number): Promise<UserInterface> => {
   return user;
 };
 
+
+
 export const createUser = async (
   user: UserInterface
 ): Promise<UserInterface> => {
@@ -78,6 +80,17 @@ export const updateUser = async (
       passportExpirationDate: user.passportExpirationDate,
       passportIssuingDate: user.passportIssuingDate,
       passportIssuingCountry: user.passportIssuingCountry,
+    },
+  });
+};
+
+export const logoutUser = async (id: number): Promise<UserInterface> => {
+  return await embassyDB.users.update({
+    where: {
+      id: Number(id),
+    },
+    data: {
+      // accessToken: null,
     },
   });
 };

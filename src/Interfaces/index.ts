@@ -69,3 +69,9 @@ export interface CredentialsInterface {
   email: string;
   password: string;
 }
+
+export interface TokenInterface {
+  token: string;
+  userId: number;
+  createdAt: string;
+}
