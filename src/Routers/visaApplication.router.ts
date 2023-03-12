@@ -1,71 +1,30 @@
-import * as visaApplicationService from "../Services/visaApplication.service";
-
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
 
-import { authenticateToken } from "../../src/Authentication/authentication.middleware";
-
+const authMiddleware = require("../MiddleWares/auth-middleware");
+const visaApplicationService = require("../Services/visaApplication.service");
 export const visaApplicationRouter = express.Router();
 
 visaApplicationRouter.get(
   "/specific/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const visaApplication = await visaApplicationService.getVisaApplicationById(
-      Number(id)
-    );
-    res.json(visaApplication);
-  }
+  authMiddleware,
+  visaApplicationService.getVisaApplicationById()
 );
 
 visaApplicationRouter.get(
   "/users",
-  authenticateToken,
-  async (req: any, res: Response) => {
-    console.log(req.user);
-    const userId = req.user.id;
-    try {
-      const visaApplications =
-        await visaApplicationService.getVisaApplicationsByUserId(
-          Number(userId)
-        );
-      res.json(visaApplications);
-    } catch (error: any) {
-      res.status(400).send(error.message);
-    }
-  }
+  authMiddleware,
+  visaApplicationService.getVisaApplicationsByUserId()
 );
 
 visaApplicationRouter.post(
-  "/",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const userId = parseInt(req.params.userId);
-    const Errors = validationResult(req);
-    if (!Errors.isEmpty()) {
-      return res.status(400).json({ errors: Errors.array() });
-    }
-    try {
-      const visaApplication =
-        await visaApplicationService.createVisaApplication(userId, req.body);
-      res.json(visaApplication);
-    } catch (error: any) {
-      res.status(400).send(error.message);
-    }
-  }
+  "/create",
+  authMiddleware,
+  visaApplicationService.createVisaApplication()
 );
 
 visaApplicationRouter.put(
-  "/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { userId, ...rest } = req.body;
-    const visaApplication = await visaApplicationService.updateVisaApplication(
-      Number(id),
-      rest
-    );
-    res.json(visaApplication);
-  }
+  "/update/:id",
+  authMiddleware,
+  visaApplicationService.updateVisaApplication()
 );

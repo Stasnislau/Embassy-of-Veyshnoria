@@ -1,61 +1,101 @@
 import { VisitInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 
-export const getVisitById = async (id: number): Promise<VisitInterface> => {
-  const visit = await embassyDB.visits.findUnique({
-    where: {
-      id: Number(id),
-    },
-    select: {
-      date: true,
-      time: true,
-      location: true,
-      description: true,
-      userId: true,
-    },
-  });
+const ApiError = require("../exceptions/api-error");
+class VisitService {
+  getVisitById = async (id: number): Promise<VisitInterface> => {
+    const visit = await embassyDB.visits.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        date: true,
+        time: true,
+        location: true,
+        description: true,
+        userId: true,
+      },
+    });
 
-  if (!visit) {
-    throw new Error("Visit not found");
-  }
+    if (!visit) {
+      throw ApiError.badRequest("Visit not found");
+    }
 
-  return visit;
-};
+    return visit;
+  };
 
-export const getVisitsByUserId = async (
-    userId: number
-    ): Promise<VisitInterface[]> => {
+  getVisitsByUserId = async (userId: number): Promise<VisitInterface[]> => {
     const visits = await embassyDB.visits.findMany({
-        where: {
-            userId: Number(userId),
-        },
-        select: {
-            date: true,
-            time: true,
-            location: true,
-            description: true,
-            userId: true,
-        },
+      where: {
+        userId: Number(userId),
+      },
+      select: {
+        date: true,
+        time: true,
+        location: true,
+        description: true,
+        userId: true,
+      },
     });
 
     if (!visits) {
-        throw new Error("Visits not found");
+      throw ApiError.badRequest("Visits not found");
     }
     return visits;
-};
+  };
 
-export const createVisit = async (
-  visit: VisitInterface
-): Promise<VisitInterface> => {
-  return await embassyDB.visits.create({
-    data: {
-      date: visit.date,
-      time: visit.time,
-      location: visit.location,
-      description: visit.description,
-      userId: visit.userId,
-    },
-  });
-};
+  createVisit = async (visit: VisitInterface): Promise<VisitInterface> => {
+    const updatedVisit = await embassyDB.visits.create({
+      data: {
+        date: visit.date,
+        time: visit.time,
+        location: visit.location,
+        description: visit.description,
+        userId: visit.userId,
+      },
+    });
+    if (!updatedVisit) {
+      throw ApiError.badRequest("Visit not created");
+    }
 
+    return updatedVisit;
+  };
 
+  updateVisit = async (
+    visit: VisitInterface,
+    id: number
+  ): Promise<VisitInterface> => {
+    const updatedVisit = await embassyDB.visits.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        date: visit.date,
+        time: visit.time,
+        location: visit.location,
+        description: visit.description,
+        userId: visit.userId,
+      },
+    });
+    if (!updatedVisit) {
+      throw ApiError.badRequest("Visit not updated");
+    }
+
+    return updatedVisit;
+  };
+
+  deleteVisit = async (id: number): Promise<VisitInterface> => {
+    const deletedVisit = await embassyDB.visits.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    if (!deletedVisit) {
+      throw ApiError.badRequest("Visit not deleted");
+    }
+
+    return deletedVisit;
+  };
+}
+
+module.exports = new VisitService();

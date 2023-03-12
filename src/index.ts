@@ -6,7 +6,7 @@ import express from "express";
 
 const errorMiddleware = require("../src/middleWares/error-middleware.ts");
 
-const router = require("../src/Routers/index.ts");
+const userRouter = require("../src/Routers/user.router.ts");
 
 const cookieParser = require("cookie-parser");
 
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const prisma = new PrismaClient();
-app.use("/api", router);
+app.use("/users", userRouter);
 app.use(errorMiddleware);
 
 

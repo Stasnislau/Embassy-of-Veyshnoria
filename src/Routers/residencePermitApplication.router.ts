@@ -1,71 +1,31 @@
-import * as ResidencePermitApplicationService from "../Services/residencePermitApplication.service";
+const residencePermitApplicationService = require("../Services/residencePermitApplication.service");
 
-import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
 
-import { authenticateToken } from "../Authentication/authentication.middleware";
+const authMiddleware = require("../MiddleWares/auth-middleware");
 
 export const residencePermitApplicationRouter = express.Router();
 
 residencePermitApplicationRouter.get(
   "/specific/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const residencePermitApplication =
-      await ResidencePermitApplicationService.getResidencePermitApplicationById(
-        Number(id)
-      );
-    res.json(residencePermitApplication);
-  }
+  authMiddleware,
+  residencePermitApplicationService.getResidencePermitApplicationById()
 );
 
 residencePermitApplicationRouter.get(
   "/users/:userId",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    const residencePermitApplications =
-      await ResidencePermitApplicationService.getResidencePermitApplicationsByUserId(
-        Number(userId)
-      );
-    res.json(residencePermitApplications);
-  }
+  authMiddleware,
+  residencePermitApplicationService.getResidencePermitApplicationsByUserId()
 );
 
 residencePermitApplicationRouter.post(
-  "/",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const userId = parseInt(req.params.userId);
-    const Errors = validationResult(req);
-    if (!Errors.isEmpty()) {
-      return res.status(400).json({ errors: Errors.array() });
-    }
-    try {
-      const residencePermitApplication =
-        await ResidencePermitApplicationService.createResidencePermitApplication(
-          req.body,
-          userId
-        );
-      res.json(residencePermitApplication);
-    } catch (error: any) {
-      res.status(400).send(error.message);
-    }
-  }
+  "/create",
+  authMiddleware,
+  residencePermitApplicationService.createResidencePermitApplication()
 );
 
 residencePermitApplicationRouter.put(
-  "/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { userId, ...rest } = req.body;
-    const residencePermitApplication =
-      await ResidencePermitApplicationService.updateResidencePermitApplication(
-        Number(id),
-        rest
-      );
-    res.json(residencePermitApplication);
-  }
+  "/update/:id",
+  authMiddleware,
+  residencePermitApplicationService.updateResidencePermitApplication()
 );

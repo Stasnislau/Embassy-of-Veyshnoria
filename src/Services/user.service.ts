@@ -1,8 +1,3 @@
-import * as userService from "../Services/user.service";
-
-import { body, validationResult } from "express-validator";
-import express, { Request, Response } from "express";
-
 import { embassyDB } from "../utils/db.server";
 
 const ApiError = require("../Exceptions/api-error");
@@ -12,7 +7,7 @@ const tokensService = require("../Services/tokens.service");
 
 const bcrypt = require("bcryptjs");
 
-const router = require("../Routers/index.ts");
+const router = require("../Routers/user.router");
 
 class UserService {
   async registration(
@@ -103,11 +98,12 @@ class UserService {
         password,
         credentials.password
       );
+      console.log (isPasswordCorrect, "PASSWORD CORRECT");
       if (!isPasswordCorrect) {
         throw ApiError.badRequest("Incorrect email or password");
       }
-    } catch (error) {
-      throw ApiError.Internal("Internal server error");
+    } catch (error: unknown) {
+      throw ApiError.internal("Internal server error");
     }
     const tokens = await tokensService.generateTokens(user, user.id);
     await tokensService.saveToken(user.id, tokens.refreshToken);

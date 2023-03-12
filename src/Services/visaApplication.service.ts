@@ -1,6 +1,8 @@
 import { VisaApplicationInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 
+const ApiError = require("../exceptions/api-error");
+
 export const getVisaApplicationById = async (
   id: number
 ): Promise<VisaApplicationInterface> => {
@@ -32,7 +34,7 @@ export const getVisaApplicationById = async (
     },
   });
   if (!visaApplication) {
-    throw new Error("VisaApplication not found");
+    throw ApiError.badRequest("VisaApplication not found");
   }
   return visaApplication;
 };
@@ -68,7 +70,7 @@ export const getVisaApplicationsByUserId = async (
     },
   });
   if (!visaApplications) {
-    throw new Error("VisaApplications not found");
+    throw ApiError.badRequest("VisaApplications not found");
   }
   return visaApplications;
 };
@@ -77,7 +79,7 @@ export const createVisaApplication = async (
   userId: number,
   visaApplication: VisaApplicationInterface
 ): Promise<VisaApplicationInterface> => {
-  return await embassyDB.visaApplications.create({
+  const application = await embassyDB.visaApplications.create({
     data: {
       name: visaApplication.name,
       surname: visaApplication.surname,
@@ -105,13 +107,17 @@ export const createVisaApplication = async (
       },
     },
   });
+  if (!application) {
+    throw ApiError.badRequest("VisaApplication not created");
+  }
+  return application;
 };
 
 export const updateVisaApplication = async (
   id: number,
   visaApplication: VisaApplicationInterface
 ): Promise<VisaApplicationInterface> => {
-  return await embassyDB.visaApplications.update({
+  const updatedApplication = await embassyDB.visaApplications.update({
     where: {
       id: Number(id),
     },
@@ -137,4 +143,8 @@ export const updateVisaApplication = async (
       passportIssuingCountry: visaApplication.passportIssuingCountry,
     },
   });
+  if (!updatedApplication) {
+    throw ApiError.badRequest("VisaApplication not updated");
+  }
+  return updatedApplication;
 };

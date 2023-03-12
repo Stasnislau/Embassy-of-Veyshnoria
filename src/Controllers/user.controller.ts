@@ -1,4 +1,4 @@
-import express, { NextFunction, request, response } from "express";
+import { NextFunction, request, response } from "express";
 
 import { validationResult } from "express-validator";
 

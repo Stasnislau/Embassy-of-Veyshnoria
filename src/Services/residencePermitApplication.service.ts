@@ -1,6 +1,8 @@
 import { ResidencePermitApplicationsInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 
+const ApiError = require("../exceptions/api-error");
+
 export const getResidencePermitApplicationById = async (
   id: number
 ): Promise<ResidencePermitApplicationsInterface> => {
@@ -31,7 +33,7 @@ export const getResidencePermitApplicationById = async (
       },
     });
   if (!residencePermitApplication) {
-    throw new Error("Residence Permit Application not found");
+    throw ApiError.badRequest("Residence Permit Application not found");
   }
   return residencePermitApplication;
 };
@@ -66,7 +68,7 @@ export const getResidencePermitApplicationsByUserId = async (
       },
     });
   if (!residencePermitApplications) {
-    throw new Error("Residence Permit Applications not found");
+    throw ApiError.badRequest("Residence Permit Applications not found");
   }
   return residencePermitApplications;
 };
@@ -104,6 +106,11 @@ export const createResidencePermitApplication = async (
         },
       },
     });
+
+  if (!residenceApplication) {
+    throw ApiError.badRequest("Residence Permit Application not found");
+  }
+
   return residenceApplication;
 };
 
@@ -138,5 +145,9 @@ export const updateResidencePermitApplication = async (
         status: residencePermitApplication.status,
       },
     });
+
+  if (!updatedResidencePermitApplication) {
+    throw ApiError.badRequest("Residence Permit Application not found");
+  }
   return updatedResidencePermitApplication;
 };
