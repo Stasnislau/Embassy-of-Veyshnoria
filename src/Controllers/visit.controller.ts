@@ -6,8 +6,6 @@ const visitService = require("../Services/user.service");
 
 const ApiError = require("../exceptions/api-error");
 
-const cookieParser = require("cookie-parser");
-
 class VisitController {
   createVisit = async (req: Request, res: Response, next: NextFunction) => {
     try {
