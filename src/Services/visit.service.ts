@@ -84,7 +84,18 @@ class VisitService {
     return updatedVisit;
   };
 
-  deleteVisit = async (id: number): Promise<VisitInterface> => {
+  deleteVisit = async (id: string, userId: string): Promise<VisitInterface> => {
+    const visit = await embassyDB.visits.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        userId: true,
+      },
+    });
+    if (!visit || visit.userId !== Number(userId)) {
+      throw ApiError.badRequest("Visit not found");
+    }
     const deletedVisit = await embassyDB.visits.delete({
       where: {
         id: Number(id),

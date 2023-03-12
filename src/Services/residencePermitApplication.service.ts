@@ -154,8 +154,25 @@ class ResidencePermitApplicationService {
   };
 
   deleteResidencePermitApplication = async (
-    id: number
+    id: string,
+    userId: string
   ): Promise<ResidencePermitApplicationsInterface> => {
+    const residencePermitApplication =
+      await embassyDB.residencePermitApplications.findUnique({
+        where: {
+          id: Number(id),
+        },
+        select: {
+          userId: true,
+        },
+      });
+    if (
+      !residencePermitApplication ||
+      residencePermitApplication.userId !== Number(userId)
+    ) {
+      throw ApiError.badRequest("Residence Permit Application not found");
+    }
+
     const deletedResidencePermitApplication =
       await embassyDB.residencePermitApplications.delete({
         where: {

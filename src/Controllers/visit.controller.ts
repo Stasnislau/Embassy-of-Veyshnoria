@@ -75,7 +75,12 @@ class VisitController {
   deleteVisit = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body;
-      const visit = await visitService.deleteVisit(id);
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user = jwt.decode(authHeader.split(" ")[1]);
+      const visit = await visitService.deleteVisit(id, user.id);
       return res.json({ visit });
     } catch (error: any) {
       next(error);

@@ -168,7 +168,12 @@ class VisaApplicationController {
   ) => {
     try {
       const { id } = req.body;
-      const visaApplication = await visaService.deleteVisaApplication(id);
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user = jwt.decode(authHeader.split(" ")[1]);
+      const visaApplication = await visaService.deleteVisaApplication(id, user.id);
       return res.json({ visaApplication });
     } catch (error: any) {
       next(error);

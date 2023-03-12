@@ -176,9 +176,15 @@ class ResidencePermitApplicationController {
   ) => {
     try {
       const { id } = req.body;
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user = jwt.decode(authHeader.split(" ")[1]);
       const residencePermitApplication =
         await residencePermitApplicationService.deleteResidencePermitApplication(
-          id
+          id,
+          user.id
         );
       if (!residencePermitApplication) {
         throw ApiError.badRequest("the application has not been deleted");

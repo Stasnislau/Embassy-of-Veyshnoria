@@ -150,8 +150,21 @@ class visaService {
   };
 
   deleteVisaApplication = async (
-    id: number
+    id: string,
+    userId: string
   ): Promise<VisaApplicationInterface> => {
+    const visaApplication = await embassyDB.visaApplications.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        userId: true,
+      },
+    });
+    if (!visaApplication || visaApplication.userId !== Number(userId)) {
+      throw ApiError.badRequest("Visa Application not found");
+    }
+
     const deletedApplication = await embassyDB.visaApplications.delete({
       where: {
         id: Number(id),
