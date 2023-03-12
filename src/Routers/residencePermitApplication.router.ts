@@ -14,7 +14,7 @@ residencePermitApplicationRouter.get(
 );
 
 residencePermitApplicationRouter.get(
-  "/users/:userId",
+  "/users",
   authMiddleware,
   residencePermitApplicationController.getResidencePermitApplicationsByUser
 );
