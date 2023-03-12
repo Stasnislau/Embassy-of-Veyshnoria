@@ -98,7 +98,6 @@ class UserService {
         password,
         credentials.password
       );
-      console.log (isPasswordCorrect, "PASSWORD CORRECT");
       if (!isPasswordCorrect) {
         throw ApiError.badRequest("Incorrect email or password");
       }
@@ -111,7 +110,7 @@ class UserService {
   }
 
   async logout(refreshToken: string) {
-    const token = await tokensService.removeToken(refreshToken);
+    const token = await tokensService.deleteToken(refreshToken);
     return token;
   }
 

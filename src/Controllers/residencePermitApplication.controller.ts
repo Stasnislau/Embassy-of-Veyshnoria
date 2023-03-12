@@ -6,6 +6,8 @@ const residencePermitApplicationService = require("../Services/residencePermitAp
 
 const ApiError = require("../exceptions/api-error");
 
+const jwt = require("jsonwebtoken");
+
 class ResidencePermitApplicationController {
   createResidencePermitApplication = async (
     req: Request,
@@ -71,10 +73,14 @@ class ResidencePermitApplicationController {
     next: NextFunction
   ) => {
     try {
-      const { userId } = req.body;
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user = jwt.decode(authHeader.split(" ")[1]);
       const residencePermitApplications =
         await residencePermitApplicationService.getResidencePermitApplicationsByUserId(
-          userId
+          user.id
         );
       if (!residencePermitApplications) {
         throw ApiError.badRequest("Residence permit applications not found");

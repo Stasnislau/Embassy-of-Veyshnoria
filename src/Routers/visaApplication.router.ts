@@ -1,38 +1,38 @@
 import express, { Request, Response } from "express";
 
 const authMiddleware = require("../MiddleWares/auth-middleware");
-const visaApplicationService = require("../Services/visaApplication.service");
+const visaApplicationController = require("../Controllers/visaApplication.controller");
 const Router = require("express").Router;
 const visaApplicationRouter = new Router();
 
 visaApplicationRouter.get(
   "/specific/:id",
   authMiddleware,
-  visaApplicationService.getVisaApplicationById
+  visaApplicationController.getVisaApplicationById
 );
 
 visaApplicationRouter.get(
   "/users",
   authMiddleware,
-  visaApplicationService.getVisaApplicationsByUserId
+  visaApplicationController.getVisaApplicationsByUser
 );
 
 visaApplicationRouter.post(
   "/create",
   authMiddleware,
-  visaApplicationService.createVisaApplication
+  visaApplicationController.createVisaApplication
 );
 
 visaApplicationRouter.put(
   "/update/:id",
   authMiddleware,
-  visaApplicationService.updateVisaApplication
+  visaApplicationController.updateVisaApplication
 );
 
 visaApplicationRouter.delete(
   "/delete/:id",
   authMiddleware,
-  visaApplicationService.deleteVisaApplication
+  visaApplicationController.deleteVisaApplication
 );
 
 module.exports = visaApplicationRouter;

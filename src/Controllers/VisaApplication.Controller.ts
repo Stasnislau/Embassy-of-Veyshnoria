@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from "express";
 
 import { validationResult } from "express-validator";
 
-const visaService = require("../Services/visa.service");
+const visaService = require("../Services/visaApplication.service");
 
 const ApiError = require("../exceptions/api-error");
+const jwt = require("jsonwebtoken");
 
 class VisaApplicationController {
   createVisaApplication = async (
@@ -17,8 +18,12 @@ class VisaApplicationController {
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest("Validation error"));
       }
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user = jwt.decode(authHeader.split(" ")[1]);
       const {
-        userId,
         name,
         surname,
         birthDate,
@@ -38,7 +43,7 @@ class VisaApplicationController {
         comments,
       } = req.body;
       const visaApplication = await visaService.createVisaApplication(
-        userId,
+        user.id,
         name,
         surname,
         birthDate,
@@ -72,9 +77,13 @@ class VisaApplicationController {
     next: NextFunction
   ) => {
     try {
-      const { userId } = req.body;
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user = jwt.decode(authHeader.split(" ")[1]);
       const visaApplications = await visaService.getVisaApplicationsByUserId(
-        userId
+        user.id
       );
       return res.json({ visaApplications });
     } catch (error: any) {
@@ -166,3 +175,5 @@ class VisaApplicationController {
     }
   };
 }
+
+module.exports = new VisaApplicationController();

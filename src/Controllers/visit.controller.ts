@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 
 import { validationResult } from "express-validator";
 
-const visitService = require("../Services/user.service");
+const visitService = require("../Services/visit.service");
+const jwt = require("jsonwebtoken");
 
 const ApiError = require("../exceptions/api-error");
 
@@ -29,8 +30,12 @@ class VisitController {
 
   getVisitsByUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId } = req.body;
-      const visits = await visitService.getVisitsByUserId(userId);
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user = jwt.decode(authHeader.split(" ")[1]);
+      const visits = await visitService.getVisitsByUserId(user.id);
       return res.json({ visits });
     } catch (error: any) {
       next(error);
@@ -53,9 +58,9 @@ class VisitController {
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest("Validation error"));
       }
-      const { Id, date, time, location, description } = req.body;
+      const { id, date, time, location, description } = req.body;
       const visit = await visitService.updateVisit(
-        Id,
+        id,
         date,
         time,
         location,

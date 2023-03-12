@@ -24,7 +24,7 @@ class VisitService {
     return visit;
   };
 
-  getVisitsByUserId = async (userId: number): Promise<VisitInterface[]> => {
+  getVisitsByUserId = async (userId: String): Promise<VisitInterface[]> => {
     const visits = await embassyDB.visits.findMany({
       where: {
         userId: Number(userId),

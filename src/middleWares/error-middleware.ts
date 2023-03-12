@@ -13,8 +13,8 @@ const errorMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err instanceof ApiError); // should be true, but it's false :(
-  console.log(err instanceof Error);
+  console.log(err instanceof ApiError, "PROBLEMATIC LOG"); // should be true, but it's false :(
+
   if (err instanceof ApiError) {
     return res.status(err.status).json({ message: err.message });
   }
