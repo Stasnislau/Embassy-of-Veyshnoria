@@ -169,3 +169,5 @@ class ResidencePermitApplicationService {
     return deletedResidencePermitApplication;
   };
 }
+
+module.exports = new ResidencePermitApplicationService();

@@ -7,6 +7,9 @@ import express from "express";
 const errorMiddleware = require("../src/middleWares/error-middleware.ts");
 
 const userRouter = require("../src/Routers/user.router.ts");
+const visitRouter = require("../src/Routers/visit.router.ts");
+const visaApplicationRouter = require("../src/Routers/visaApplication.router.ts");
+const residencePermitApplicationRouter = require("../src/Routers/residencePermitApplication.router.ts");
 
 const cookieParser = require("cookie-parser");
 
@@ -23,6 +26,10 @@ app.use(cookieParser());
 
 const prisma = new PrismaClient();
 app.use("/users", userRouter);
+app.use("/visits", visitRouter);
+app.use("/visas", visaApplicationRouter);
+app.use("/permits", residencePermitApplicationRouter);
+
 app.use(errorMiddleware);
 
 

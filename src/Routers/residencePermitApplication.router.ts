@@ -1,37 +1,40 @@
-const residencePermitApplicationService = require("../Services/residencePermitApplication.service");
-
 import express, { Request, Response } from "express";
+
+const residencePermitApplicationService = require("../Services/residencePermitApplication.service");
 
 const authMiddleware = require("../MiddleWares/auth-middleware");
 
-export const residencePermitApplicationRouter = express.Router();
+const Router = require("express").Router;
+const residencePermitApplicationRouter = new Router();
 
 residencePermitApplicationRouter.get(
   "/specific/:id",
   authMiddleware,
-  residencePermitApplicationService.getResidencePermitApplicationById()
+  residencePermitApplicationService.getResidencePermitApplicationById
 );
 
 residencePermitApplicationRouter.get(
   "/users/:userId",
   authMiddleware,
-  residencePermitApplicationService.getResidencePermitApplicationsByUserId()
+  residencePermitApplicationService.getResidencePermitApplicationsByUserId
 );
 
 residencePermitApplicationRouter.post(
   "/create",
   authMiddleware,
-  residencePermitApplicationService.createResidencePermitApplication()
+  residencePermitApplicationService.createResidencePermitApplication
 );
 
 residencePermitApplicationRouter.put(
   "/update/:id",
   authMiddleware,
-  residencePermitApplicationService.updateResidencePermitApplication()
+  residencePermitApplicationService.updateResidencePermitApplication
 );
 
 residencePermitApplicationRouter.delete(
   "/delete/:id",
   authMiddleware,
-  residencePermitApplicationService.deleteResidencePermitApplication()
+  residencePermitApplicationService.deleteResidencePermitApplication
 );
+
+module.exports = residencePermitApplicationRouter;
