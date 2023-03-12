@@ -29,3 +29,9 @@ residencePermitApplicationRouter.put(
   authMiddleware,
   residencePermitApplicationService.updateResidencePermitApplication()
 );
+
+residencePermitApplicationRouter.delete(
+  "/delete/:id",
+  authMiddleware,
+  residencePermitApplicationService.deleteResidencePermitApplication()
+);

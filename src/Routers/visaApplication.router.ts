@@ -28,3 +28,9 @@ visaApplicationRouter.put(
   authMiddleware,
   visaApplicationService.updateVisaApplication()
 );
+
+visaApplicationRouter.delete(
+  "/delete/:id",
+  authMiddleware,
+  visaApplicationService.deleteVisaApplication()
+);
