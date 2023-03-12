@@ -3,7 +3,7 @@ import * as visaApplicationService from "../Services/visaApplication.service";
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
 
-import { authenticateToken } from "../../Authentication/authentication.middleware";
+import { authenticateToken } from "../../src/Authentication/authentication.middleware";
 
 export const visaApplicationRouter = express.Router();
 

@@ -1,96 +1,149 @@
-import { UserInterface } from "../Interfaces";
+import * as userService from "../Services/user.service";
+
+import { body, validationResult } from "express-validator";
+import express, { Request, Response } from "express";
+
 import { embassyDB } from "../utils/db.server";
 
-export const getUserById = async (id: number): Promise<UserInterface> => {
-  const user = await embassyDB.users.findUnique({
-    where: {
-      id: Number(id),
-    },
-    select: {
-      id: true,
-      name: true,
-      surname: true,
-      email: true,
-      dateOfBirth: true,
-      birthPlace: true,
-      phoneNumber: true,
-      address: true,
-      city: true,
-      country: true,
-      zip: true,
-      passportNumber: true,
-      passportExpirationDate: true,
-      passportIssuingDate: true,
-      passportIssuingCountry: true,
-    },
-  });
+const ApiError = require("../Exceptions/api-error");
+const userDTO = require("../dtos/user-dto");
 
-  if (!user) {
-    throw new Error("User not found");
+const tokensService = require("../Services/tokens.service");
+
+const bcrypt = require("bcryptjs");
+
+const router = require("../Routers/index.ts");
+
+class UserService {
+  async registration(
+    name: string,
+    surname: string,
+    email: string,
+    password: string
+  ) {
+    const candidate = await embassyDB.users.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (candidate) {
+      throw ApiError.badRequest(`User with email ${email} already exists`);
+    }
+    const hashPassword = await bcrypt.hash(password, 10);
+    const user = await embassyDB.users.create({
+      data: {
+        name: name,
+        surname: surname,
+        email: email,
+        dateOfBirth: "",
+        birthPlace: "",
+        phoneNumber: "",
+        address: "",
+        city: "",
+        country: "",
+        zip: "",
+        passportNumber: "",
+        passportExpirationDate: "",
+        passportIssuingDate: "",
+        passportIssuingCountry: "",
+      },
+    });
+    await embassyDB.credentials.create({
+      data: {
+        password: hashPassword,
+        user: {
+          connect: {
+            email: email,
+          },
+        },
+      },
+    });
+    const userDTO = embassyDB.users.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        email: true,
+        id: true,
+      },
+    });
+
+    const tokens = await tokensService.generateTokens(userDTO, user.id);
+    await tokensService.saveToken(user.id, tokens.refreshToken);
+    return { ...tokens, userDTO };
   }
 
-  return user;
-};
+  async login(email: string, password: string) {
+    const user = await embassyDB.users.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        email: true,
+        id: true,
+      },
+    });
+    if (!user) {
+      throw ApiError.badRequest("User not found");
+    }
+    const credentials = await embassyDB.credentials.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        email: true,
+        password: true,
+      },
+    });
+    if (!credentials) {
+      throw ApiError.badRequest("User not found");
+    }
+    try {
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        credentials.password
+      );
+      if (!isPasswordCorrect) {
+        throw ApiError.badRequest("Incorrect email or password");
+      }
+    } catch (error) {
+      throw ApiError.Internal("Internal server error");
+    }
+    const tokens = await tokensService.generateTokens(user, user.id);
+    await tokensService.saveToken(user.id, tokens.refreshToken);
+    return { ...tokens, user };
+  }
 
+  async logout(refreshToken: string) {
+    const token = await tokensService.removeToken(refreshToken);
+    return token;
+  }
 
+  async refresh(refreshToken: string) {
+    if (!refreshToken) {
+      throw ApiError.unauthorized();
+    }
+    const userData = tokensService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await tokensService.findToken(refreshToken);
+    if (!userData || !tokenFromDb) {
+      throw ApiError.unauthorized();
+    }
+    const user = await embassyDB.users.findUnique({
+      where: {
+        id: userData.id,
+      },
+      select: {
+        email: true,
+        id: true,
+      },
+    });
+    if (!user) {
+      throw ApiError.badRequest("User not found");
+    }
+    const tokens = await tokensService.generateTokens(user, user.id);
+    await tokensService.saveToken(user.id, tokens.refreshToken);
+    return { ...tokens, user };
+  }
+}
 
-export const createUser = async (
-  user: UserInterface
-): Promise<UserInterface> => {
-  return await embassyDB.users.create({
-    data: {
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      dateOfBirth: user.dateOfBirth,
-      birthPlace: user.birthPlace,
-      phoneNumber: user.phoneNumber,
-      address: user.address,
-      city: user.city,
-      country: user.country,
-      zip: user.zip,
-      passportNumber: user.passportNumber,
-      passportExpirationDate: user.passportExpirationDate,
-      passportIssuingDate: user.passportIssuingDate,
-      passportIssuingCountry: user.passportIssuingCountry,
-    },
-  });
-};
-
-export const updateUser = async (
-  id: number,
-  user: UserInterface
-): Promise<UserInterface> => {
-  return await embassyDB.users.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      dateOfBirth: user.dateOfBirth,
-      birthPlace: user.birthPlace,
-      phoneNumber: user.phoneNumber,
-      address: user.address,
-      city: user.city,
-      country: user.country,
-      zip: user.zip,
-      passportNumber: user.passportNumber,
-      passportExpirationDate: user.passportExpirationDate,
-      passportIssuingDate: user.passportIssuingDate,
-      passportIssuingCountry: user.passportIssuingCountry,
-    },
-  });
-};
-
-export const logoutUser = async (id: number): Promise<UserInterface> => {
-  return await embassyDB.users.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      // accessToken: null,
-    },
-  });
-};
+module.exports = new UserService();
