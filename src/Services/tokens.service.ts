@@ -44,10 +44,10 @@ class tokenService {
       id: user.id,
     };
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "15m",
+      expiresIn: process.env.ACCESS_TOKEN_LIFE,
     });
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-      expiresIn: "15d",
+      expiresIn: process.env.REFRESH_TOKEN_LIFE,
     });
     return { accessToken, refreshToken };
   };

@@ -1,6 +1,7 @@
 import "./index.scss";
 
-import { Context } from "../../index.js";
+import { Context } from "../../index";
+import ErrorMenu from "../../Components/ErrorMenu";
 import React from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -9,17 +10,24 @@ interface values {
   email: string;
   password: string;
 }
+
 const LoginPage = () => {
+  const { store } = React.useContext(Context);
+  const [isErrorOpen, setIsErrorOpen] = React.useState(false);
   const navigate = useNavigate();
   const initialValues = {
     email: "",
     password: "",
   };
-  const handleLogin = () => {
-    navigate("/dashboard");
-  };
+
   const onSubmit = (values: values) => {
-    handleLogin();
+    store.login(values.email, values.password);
+    
+    if (!store.isAuthorized) {
+      setIsErrorOpen(true);
+      return;
+    }
+    navigate("/dashboard");
   };
   const validate = (values: values) => {
     let errors: Partial<values> = {};
@@ -89,6 +97,7 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
+      {isErrorOpen && <ErrorMenu message="Incorrect Credentials" />}
     </div>
   );
 };
