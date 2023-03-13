@@ -25,7 +25,7 @@ interface ResidencePermitInterface {
   status: string;
 }
 
-const ResidencePermitPage = (id: number) => {
+const ResidencePermitPage = () => {
   // try catch for extracting and finding id
   const residencePermit: ResidencePermitInterface = {
     name: "John",

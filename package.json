@@ -34,6 +34,7 @@
   "dependencies": {
     "@prisma/client": "^4.10.1",
     "@types/express": "^4.17.17",
+    "@types/react-router": "^5.1.20",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",

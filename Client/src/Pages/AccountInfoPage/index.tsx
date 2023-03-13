@@ -25,7 +25,7 @@ interface AccountInterface {
   passportIssuingCountry: string;
 }
 
-const AccountInfoPage = (accountId: number) => {
+const AccountInfoPage = () => {
   const [account, setAccount] = useState<AccountInterface>({
     id: 1,
     name: "John",

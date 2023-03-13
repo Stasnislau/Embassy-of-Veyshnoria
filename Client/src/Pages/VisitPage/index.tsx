@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import Header from "../../Components/Header";
 import SurenessModal from "../../Components/SurenessModal";
 
-const VisitPage = (id: number) => {
+const VisitPage = () => {
   // try catch for extracting and finding id
   const visit = {
     id: 1,

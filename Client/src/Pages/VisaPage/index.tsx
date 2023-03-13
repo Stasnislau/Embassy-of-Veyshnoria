@@ -25,7 +25,7 @@ interface VisaInterface {
   status: string;
 }
 
-const VisaPage = (id: number) => {
+const VisaPage = () => {
   // try catch for extracting and finding id
   const visa: VisaInterface = {
     name: "John",
