@@ -1,12 +1,25 @@
 import { AxiosResponse } from "axios";
-import axios from "axios";
+import api from "../Http";
+import { authResponseInterface } from "../Interfaces";
 
 export default class AuthService {
-  static async login(email: string, password: string): Promise<AxiosResponse> {
-    const response = await axios.post("/auth/login", {
+  static async login(
+    email: string,
+    password: string
+  ): Promise<AxiosResponse<authResponseInterface>> {
+    return api.post<authResponseInterface>("/users/login", { email, password });
+  }
+
+  static async register(
+    email: string,
+    password: string
+  ): Promise<AxiosResponse<authResponseInterface>> {
+    return api.post<authResponseInterface>("/users/register", {
       email,
       password,
     });
-    return response.data;
+  }
+  static async logout(): Promise<void> {
+    return api.post("/users/logout");
   }
 }
