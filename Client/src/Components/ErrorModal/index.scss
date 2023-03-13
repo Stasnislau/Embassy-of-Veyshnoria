@@ -1,0 +1,70 @@
+.error-modal-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  .error-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    height: 40%;
+    background-color: #fff;
+    border-radius: 5px;
+    border: solid 1px red;
+    padding: 20px;
+    .error-modal-line {
+      display: flex;
+      width: 100%;
+      clear: black;
+      margin: 0;
+    }
+    .error-modal-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: fit-content;
+    }
+    .error-modal-subtitle {
+      display: flex;
+      width: 100%;
+      height: fit-content;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .error-modal-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      width: 100%;
+      height: fit-content;
+
+      justify-content: right;
+      margin: 0px 20px;
+    }
+    .error-modal-button {
+      width: 30%;
+      height: 50px;
+      border-radius: 5px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .okay-button {
+      background-color: red;
+      color: #fff;
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+    }
+    .okay-button:hover {
+      background-color: rgb(178, 0, 0);
+      color: #fff;
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+      margin-left: 10px;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}
