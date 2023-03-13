@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
+import ApiError from "../exceptions/api-error";
+import { VisitInterface } from "../Interfaces";
+import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
-
-const visitService = require("../Services/visit.service");
-const jwt = require("jsonwebtoken");
-
-const ApiError = require("../exceptions/api-error");
+import visitService from "../Services/visit.service";
 
 class VisitController {
   createVisit = async (req: Request, res: Response, next: NextFunction) => {
@@ -15,13 +14,13 @@ class VisitController {
         return next(ApiError.badRequest("Validation error"));
       }
       const { userId, date, time, location, description } = req.body;
-      const visit = await visitService.createVisit(
-        userId,
+      const visit = await visitService.createVisit({
         date,
         time,
         location,
-        description
-      );
+        description,
+        userId,
+      } as VisitInterface);
       return res.json({ visit });
     } catch (error: any) {
       next(error);
@@ -34,7 +33,13 @@ class VisitController {
       if (!authHeader) {
         return next(ApiError.unauthorized());
       }
-      const user = jwt.decode(authHeader.split(" ")[1]);
+      const user: {
+        id: string;
+        email: string;
+      } = jwt.decode(authHeader.split(" ")[1]) as {
+        id: string;
+        email: string;
+      };
       const visits = await visitService.getVisitsByUserId(user.id);
       return res.json({ visits });
     } catch (error: any) {
@@ -60,11 +65,8 @@ class VisitController {
       }
       const { id, date, time, location, description } = req.body;
       const visit = await visitService.updateVisit(
-        id,
-        date,
-        time,
-        location,
-        description
+        { date, time, location, description } as VisitInterface,
+        id
       );
       return res.json({ visit });
     } catch (error: any) {
@@ -79,7 +81,13 @@ class VisitController {
       if (!authHeader) {
         return next(ApiError.unauthorized());
       }
-      const user = jwt.decode(authHeader.split(" ")[1]);
+      const user: {
+        id: string;
+        email: string;
+      } = jwt.decode(authHeader.split(" ")[1]) as {
+        id: string;
+        email: string;
+      };
       const visit = await visitService.deleteVisit(id, user.id);
       return res.json({ visit });
     } catch (error: any) {
@@ -88,4 +96,4 @@ class VisitController {
   };
 }
 
-module.exports = new VisitController();
+export default new VisitController();

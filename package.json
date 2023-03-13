@@ -22,7 +22,10 @@
   },
   "homepage": "https://github.com/Stasnislau/EmbassyServer#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.14.0",
     "concurrently": "^7.6.0",
     "esbuild": "^0.17.10",

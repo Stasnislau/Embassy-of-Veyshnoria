@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 
-const authMiddleware = require("../MiddleWares/auth-middleware");
-const visaApplicationController = require("../Controllers/visaApplication.controller");
+import authMiddleware from "../MiddleWares/auth-middleware";
+import visaApplicationController from "../Controllers/visaApplication.controller";
+
 const Router = require("express").Router;
 const visaApplicationRouter = new Router();
 
@@ -35,4 +36,4 @@ visaApplicationRouter.delete(
   visaApplicationController.deleteVisaApplication
 );
 
-module.exports = visaApplicationRouter;
+export default visaApplicationRouter;

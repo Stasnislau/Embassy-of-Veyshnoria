@@ -1,7 +1,7 @@
+import ApiError from "../exceptions/api-error";
 import { VisaApplicationInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 
-const ApiError = require("../exceptions/api-error");
 class visaService {
   getVisaApplicationById = async (
     id: number
@@ -40,7 +40,7 @@ class visaService {
   };
 
   getVisaApplicationsByUserId = async (
-    userId: number
+    userId: string
   ): Promise<VisaApplicationInterface[]> => {
     const visaApplications = await embassyDB.visaApplications.findMany({
       where: {
@@ -76,7 +76,7 @@ class visaService {
   };
 
   createVisaApplication = async (
-    userId: number,
+    userId: string,
     visaApplication: VisaApplicationInterface
   ): Promise<VisaApplicationInterface> => {
     const application = await embassyDB.visaApplications.create({
@@ -177,4 +177,4 @@ class visaService {
   };
 }
 
-module.exports = new visaService();
+export default new visaService();

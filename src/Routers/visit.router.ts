@@ -1,10 +1,11 @@
-const VisitController = require("../Controllers/visit.controller");
-
 import express, { Request, Response } from "express";
+
+import VisitController from "../Controllers/visit.controller";
+import authMiddleware from "../MiddleWares/auth-middleware";
 
 const Router = require("express").Router;
 const visitRouter = new Router();
-const authMiddleware = require("../MiddleWares/auth-middleware");
+
 
 visitRouter.get("/specific/:id", authMiddleware, VisitController.getVisitById);
 
@@ -16,4 +17,4 @@ visitRouter.put("/update/:id", authMiddleware, VisitController.updateVisit);
 
 visitRouter.delete("/delete/:id", authMiddleware, VisitController.deleteVisit);
 
-module.exports = visitRouter;
+export default visitRouter;

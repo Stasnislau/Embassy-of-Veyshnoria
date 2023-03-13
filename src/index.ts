@@ -1,17 +1,14 @@
 import * as dotenv from "dotenv";
 
 import { PrismaClient } from "@prisma/client";
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import errorMiddleware from "../src/middleWares/error-middleware";
 import express from "express";
-
-const errorMiddleware = require("../src/middleWares/error-middleware.ts");
-
-const userRouter = require("../src/Routers/user.router.ts");
-const visitRouter = require("../src/Routers/visit.router.ts");
-const visaApplicationRouter = require("../src/Routers/visaApplication.router.ts");
-const residencePermitApplicationRouter = require("../src/Routers/residencePermitApplication.router.ts");
-
-const cookieParser = require("cookie-parser");
+import residencePermitApplicationRouter from "../src/Routers/residencePermitApplication.router";
+import userRouter from "../src/Routers/user.router";
+import visaApplicationRouter from "../src/Routers/visaApplication.router";
+import visitRouter from "../src/Routers/visit.router";
 
 dotenv.config();
 if (!process.env.PORT) {

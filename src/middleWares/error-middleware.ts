@@ -1,19 +1,21 @@
 import { NextFunction, Request, Response } from "express";
 
-interface Error {
+import ApiError from "../exceptions/api-error";
+
+interface ApiErrorInterface {
   status: number;
   message?: string;
+  name: string;
 }
 
-const ApiError = require("../exceptions/api-error");
+
 
 const errorMiddleware = (
-  err: Error,
+  err: ApiErrorInterface,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err instanceof ApiError, "PROBLEMATIC LOG"); // should be true, but it's false :(
 
   if (err instanceof ApiError) {
     return res.status(err.status).json({ message: err.message });
@@ -22,4 +24,4 @@ const errorMiddleware = (
   return res.status(500).json({ error: `Unexpected error:  ${err.message}` });
 };
 
-module.exports = errorMiddleware;
+export default errorMiddleware;

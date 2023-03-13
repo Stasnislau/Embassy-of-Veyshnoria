@@ -6,11 +6,8 @@ import {
   VisitInterface,
 } from "../src/Interfaces";
 
+import bcrypt from "bcrypt";
 import { embassyDB } from "../src/utils/db.server";
-
-const bcrypt = require("bcrypt");
-
-
 
 const getMockUsers = () => {
   const users = [

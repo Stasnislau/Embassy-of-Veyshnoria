@@ -1,6 +1,6 @@
-module.exports = class ApiError extends Error {
+class ApiError extends Error {
   status: number;
-  
+
   constructor(status: number, message: string) {
     super(message);
     this.status = status;
@@ -22,4 +22,6 @@ module.exports = class ApiError extends Error {
   static internal() {
     return new ApiError(500, "Internal server error");
   }
-};
+}
+
+export default ApiError;

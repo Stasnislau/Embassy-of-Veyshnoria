@@ -1,7 +1,6 @@
+import ApiError from "../exceptions/api-error";
 import { ResidencePermitApplicationsInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
-
-const ApiError = require("../exceptions/api-error");
 
 class ResidencePermitApplicationService {
   getResidencePermitApplicationById = async (
@@ -40,7 +39,7 @@ class ResidencePermitApplicationService {
   };
 
   getResidencePermitApplicationsByUserId = async (
-    userId: number
+    userId: string
   ): Promise<ResidencePermitApplicationsInterface[]> => {
     const residencePermitApplications =
       await embassyDB.residencePermitApplications.findMany({
@@ -76,7 +75,7 @@ class ResidencePermitApplicationService {
 
   createResidencePermitApplication = async (
     residencePermitApplication: ResidencePermitApplicationsInterface,
-    userId: number
+    userId: string
   ): Promise<ResidencePermitApplicationsInterface> => {
     const residenceApplication =
       await embassyDB.residencePermitApplications.create({
@@ -187,4 +186,4 @@ class ResidencePermitApplicationService {
   };
 }
 
-module.exports = new ResidencePermitApplicationService();
+export default new ResidencePermitApplicationService();

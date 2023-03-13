@@ -1,7 +1,7 @@
+import ApiError from "../exceptions/api-error";
 import { CredentialsInterface } from "../Interfaces";
+import bcrypt from "bcryptjs";
 import { embassyDB } from "../../src//utils/db.server";
-
-const bcrypt = require("bcryptjs");
 
 export const createCredentials = async (credentials: CredentialsInterface) => {
   const { email, password } = credentials;
@@ -17,7 +17,7 @@ export const createCredentials = async (credentials: CredentialsInterface) => {
     },
   });
   if (!newCredentials) {
-    throw new Error("Credentials not created");
+    throw ApiError.badRequest("Credentials not created");
   }
   return newCredentials;
 };

@@ -1,12 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
+import ApiError from "../exceptions/api-error";
+import { ResidencePermitApplicationsInterface } from "../Interfaces";
+import jwt from "jsonwebtoken";
+import residencePermitApplicationService from "../Services/residencePermitApplication.service";
 import { validationResult } from "express-validator";
-
-const residencePermitApplicationService = require("../Services/residencePermitApplication.service");
-
-const ApiError = require("../exceptions/api-error");
-
-const jwt = require("jsonwebtoken");
 
 class ResidencePermitApplicationController {
   createResidencePermitApplication = async (
@@ -39,26 +37,28 @@ class ResidencePermitApplicationController {
       } = req.body;
       const residencePermitApplication =
         await residencePermitApplicationService.createResidencePermitApplication(
-          userId,
-          name,
-          surname,
-          birthDate,
-          birthPlace,
-          phoneNumber,
-          address,
-          city,
-          country,
-          zip,
-          passportNumber,
-          passportIssuingDate,
-          passportExpirationDate,
-          passportIssuingCountry,
-          residencePermitType,
-          comments
+          {
+            name,
+            surname,
+            birthDate,
+            birthPlace,
+            phoneNumber,
+            address,
+            city,
+            country,
+            zip,
+            passportNumber,
+            passportIssuingDate,
+            passportExpirationDate,
+            passportIssuingCountry,
+            residencePermitType,
+            comments,
+          } as ResidencePermitApplicationsInterface,
+          userId
         );
       if (!residencePermitApplication) {
         throw ApiError.badRequest(
-          "ResidencePermitApplication has not been created"
+          "Residence Permit Application has not been created"
         );
       }
       return res.json({ residencePermitApplication });
@@ -77,7 +77,13 @@ class ResidencePermitApplicationController {
       if (!authHeader) {
         return next(ApiError.unauthorized());
       }
-      const user = jwt.decode(authHeader.split(" ")[1]);
+      const user: {
+        id: string;
+        email: string;
+      } = jwt.decode(authHeader.split(" ")[1]) as {
+        id: string;
+        email: string;
+      };
       const residencePermitApplications =
         await residencePermitApplicationService.getResidencePermitApplicationsByUserId(
           user.id
@@ -142,21 +148,23 @@ class ResidencePermitApplicationController {
       const residencePermitApplication =
         await residencePermitApplicationService.updateResidencePermitApplication(
           id,
-          name,
-          surname,
-          birthDate,
-          birthPlace,
-          phoneNumber,
-          address,
-          city,
-          country,
-          zip,
-          passportNumber,
-          passportIssuingDate,
-          passportExpirationDate,
-          passportIssuingCountry,
-          residencePermitType,
-          comments
+          {
+            name,
+            surname,
+            birthDate,
+            birthPlace,
+            phoneNumber,
+            address,
+            city,
+            country,
+            zip,
+            passportNumber,
+            passportIssuingDate,
+            passportExpirationDate,
+            passportIssuingCountry,
+            residencePermitType,
+            comments,
+          } as ResidencePermitApplicationsInterface
         );
       if (!residencePermitApplication) {
         throw ApiError.badRequest(
@@ -180,7 +188,13 @@ class ResidencePermitApplicationController {
       if (!authHeader) {
         return next(ApiError.unauthorized());
       }
-      const user = jwt.decode(authHeader.split(" ")[1]);
+      const user: {
+        id: string;
+        email: string;
+      } = jwt.decode(authHeader.split(" ")[1]) as {
+        id: string;
+        email: string;
+      };
       const residencePermitApplication =
         await residencePermitApplicationService.deleteResidencePermitApplication(
           id,
@@ -196,4 +210,4 @@ class ResidencePermitApplicationController {
   };
 }
 
-module.exports = new ResidencePermitApplicationController();
+export default new ResidencePermitApplicationController();

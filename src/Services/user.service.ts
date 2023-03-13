@@ -1,13 +1,7 @@
+import ApiError from "../exceptions/api-error"
+import bcrypt from "bcryptjs";
 import { embassyDB } from "../utils/db.server";
-
-const ApiError = require("../Exceptions/api-error");
-const userDTO = require("../dtos/user-dto");
-
-const tokensService = require("../Services/tokens.service");
-
-const bcrypt = require("bcryptjs");
-
-const router = require("../Routers/user.router");
+import tokensService from "../Services/tokens.service";
 
 class UserService {
   async registration(
@@ -53,17 +47,11 @@ class UserService {
         },
       },
     });
-    const userDTO = embassyDB.users.findUnique({
-      where: {
-        email: email,
-      },
-      select: {
-        email: true,
-        id: true,
-      },
-    });
-
-    const tokens = await tokensService.generateTokens(userDTO, user.id);
+    const userDTO = {
+      email: user.email,
+      id: user.id,
+    }
+    const tokens = await tokensService.generateTokens(userDTO);
     await tokensService.saveToken(user.id, tokens.refreshToken);
     return { ...tokens, userDTO };
   }
@@ -93,18 +81,14 @@ class UserService {
     if (!credentials) {
       throw ApiError.badRequest("User not found");
     }
-    try {
-      const isPasswordCorrect = await bcrypt.compare(
-        password,
-        credentials.password
-      );
-      if (!isPasswordCorrect) {
-        throw ApiError.badRequest("Incorrect email or password");
-      }
-    } catch (error: unknown) {
-      throw ApiError.internal("Internal server error");
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      credentials.password
+    );
+    if (!isPasswordCorrect) {
+      throw ApiError.badRequest("Incorrect email or password");
     }
-    const tokens = await tokensService.generateTokens(user, user.id);
+    const tokens = await tokensService.generateTokens(user);
     await tokensService.saveToken(user.id, tokens.refreshToken);
     return { ...tokens, user };
   }
@@ -118,7 +102,10 @@ class UserService {
     if (!refreshToken) {
       throw ApiError.unauthorized();
     }
-    const userData = tokensService.validateRefreshToken(refreshToken);
+    const userData = tokensService.validateRefreshToken(refreshToken) as {
+      id: number;
+      email: string;
+    };
     const tokenFromDb = await tokensService.findToken(refreshToken);
     if (!userData || !tokenFromDb) {
       throw ApiError.unauthorized();
@@ -135,10 +122,10 @@ class UserService {
     if (!user) {
       throw ApiError.badRequest("User not found");
     }
-    const tokens = await tokensService.generateTokens(user, user.id);
+    const tokens = await tokensService.generateTokens(user);
     await tokensService.saveToken(user.id, tokens.refreshToken);
     return { ...tokens, user };
   }
 }
 
-module.exports = new UserService();
+export default new UserService();

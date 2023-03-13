@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 
+import ApiError from "../exceptions/api-error";
 import { NextFunction } from "express";
-
-const jwt = require("jsonwebtoken");
-const ApiError = require("../exceptions/api-error");
+import jwt from "jsonwebtoken";
 
 const authMiddleware = (req: any, res: Response, next: NextFunction) => {
   try {
@@ -15,7 +14,7 @@ const authMiddleware = (req: any, res: Response, next: NextFunction) => {
     if (!accessToken) {
       return next(ApiError.unauthorized());
     }
-    const userData = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    const userData = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
 
     req.user = userData;
     next();
@@ -24,4 +23,4 @@ const authMiddleware = (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

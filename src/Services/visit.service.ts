@@ -1,7 +1,7 @@
+import ApiError from "../exceptions/api-error";
 import { VisitInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 
-const ApiError = require("../exceptions/api-error");
 class VisitService {
   getVisitById = async (id: number): Promise<VisitInterface> => {
     const visit = await embassyDB.visits.findUnique({
@@ -74,7 +74,6 @@ class VisitService {
         time: visit.time,
         location: visit.location,
         description: visit.description,
-        userId: visit.userId,
       },
     });
     if (!updatedVisit) {
@@ -109,4 +108,4 @@ class VisitService {
   };
 }
 
-module.exports = new VisitService();
+export default new VisitService();

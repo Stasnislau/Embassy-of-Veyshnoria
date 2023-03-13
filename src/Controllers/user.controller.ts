@@ -1,21 +1,23 @@
-import { NextFunction, request, response } from "express";
+import { NextFunction, Request, Response } from "express";
 
+import ApiError from "../exceptions/api-error";
+import cookieParser from "cookie-parser";
+import userService from "../Services/user.service";
 import { validationResult } from "express-validator";
 
-const userService = require("../Services/user.service");
-const ApiError = require("../exceptions/api-error");
-const cookieParser = require("cookie-parser");
-interface Request {
+interface RequestInterface extends Request {
   body: any;
+  clearCookie: any;
 }
-interface Response {
+interface ResponseInterface extends Response {
   json: any;
   status: any;
   cookie: any;
+  
 }
 
 class UserController {
-  registration = async (req: Request, res: Response, next: NextFunction) => {
+  registration = async (req: RequestInterface, res: ResponseInterface, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -34,12 +36,12 @@ class UserController {
       });
 
       return res.json({ user });
-    } catch (error) {
+    } catch (error: any) {
       next(error);
     }
   };
 
-  login = async (req: Request, res: Response, next: NextFunction) => {
+  login = async (req: RequestInterface, res: ResponseInterface, next: NextFunction) => {
     try {
       const { email, password } = req.body;
       const user = await userService.login(email, password);
@@ -48,23 +50,23 @@ class UserController {
         httpOnly: true,
       });
       return res.json({ user });
-    } catch (error) {
+    } catch (error: any) {
       next(error);
     }
   };
 
-  logout = async (req: any, res: any, next: NextFunction) => {
+  logout = async (req: RequestInterface, res: any, next: NextFunction) => {
     try {
       const { refreshToken } = req.cookies;
       const token = await userService.logout(refreshToken);
       res.clearCookie("refreshToken");
       return res.json(token);
-    } catch (error) {
+    } catch (error: any) {
       next(error);
     }
   };
 
-  refresh = async (req: any, res: any, next: NextFunction) => {
+  refresh = async (req: RequestInterface, res: ResponseInterface, next: NextFunction) => {
     try {
       const { refreshToken } = req.cookies;
       const userData = await userService.refresh(refreshToken);
@@ -73,10 +75,10 @@ class UserController {
         httpOnly: true,
       });
       return res.json(userData);
-    } catch (error) {
+    } catch (error: any) {
       next(error);
     }
   };
 }
 
-module.exports = new UserController();
+export default new UserController();

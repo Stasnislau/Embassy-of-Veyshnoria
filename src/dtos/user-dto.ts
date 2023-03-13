@@ -1,4 +1,4 @@
-module.exports = class UserDto {
+class UserDto {
   id: number;
   email: string;
   constructor(user: { id: number; email: string }) {
@@ -6,3 +6,5 @@ module.exports = class UserDto {
     this.email = user.email;
   }
 };
+
+export default UserDto;
