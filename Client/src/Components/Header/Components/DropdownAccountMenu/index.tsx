@@ -3,11 +3,14 @@ import "./index.scss";
 import React, { useState } from "react";
 
 import AccountIcon from "../../../../Pictures/accountIcon.svg";
+import { Context } from "../../../../index";
 import DropdownDown from "../../../../Pictures/arrowDown.svg";
 import { useNavigate } from "react-router-dom";
 
 const DropdownAccountMenu = () => {
+  const { store } = React.useContext(Context);
   const [isOpen, setIsOpen] = useState(false);
+
   const navigate = useNavigate();
 
   return (
@@ -62,7 +65,11 @@ const DropdownAccountMenu = () => {
             </button>
             <button
               className="dropdown-account-menu-item"
-              onClick={() => {
+              onClick={async () => {
+                await store.logout();
+                if (store.isAuthorized) {
+                  return;
+                }
                 navigate("/login");
               }}
             >
