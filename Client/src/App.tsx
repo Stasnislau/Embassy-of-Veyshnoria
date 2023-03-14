@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import AccountPage from "./Pages/AccountInfoPage";
+import { Context } from "./index";
 import CreateAccountPage from "./Pages/CreateAccountPage";
 import Dashboard from "./Pages/Dashboard";
 import Footer from "./Components/Footer";
@@ -24,8 +25,17 @@ import VisaPage from "./Pages/VisaPage";
 import VisasPage from "./Pages/Visas";
 import VisitPage from "./Pages/VisitPage";
 import VisitsPage from "./Pages/Visits";
+import { useEffect } from "react";
 
 function App() {
+  const { store } = React.useContext(Context);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      store.checkAuthorization();
+    }
+  }, []);
+
   return (
     <Router>
       <div className="app">

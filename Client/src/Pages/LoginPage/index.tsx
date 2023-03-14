@@ -29,8 +29,8 @@ const LoginPage = () => {
       .min(8, "Password must be at least 8 characters")
       .required("Required"),
   });
-  const onSubmit = (values: values) => {
-    store.login(values.email, values.password);
+  const onSubmit = async (values: values) => {
+    await store.login(values.email, values.password);
 
     if (!store.isAuthorized) {
       setIsErrorOpen(true);
