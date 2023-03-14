@@ -4,8 +4,11 @@ import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
+import AuthService from "../../Services/auth.service";
+import ErrorModal from "../../Components/ErrorModal";
 import React from "react";
 import TextError from "../../Components/TextError";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 
 interface values {
@@ -16,6 +19,7 @@ interface values {
   confirmPassword: string;
 }
 const CreateAccount = () => {
+  const [passwordsMatch, setPasswordsMatch] = useState(0);
   const initialValues = {
     name: "",
     surname: "",
@@ -23,12 +27,28 @@ const CreateAccount = () => {
     password: "",
     confirmPassword: "",
   };
-  const onSubmit = (values: values) => {
+  const navigate = useNavigate();
+  const [errorText, setErrorText] = useState<string | null>(null);
+  const onSubmit = async (values: values) => {
     if (values.password === values.confirmPassword) {
       setPasswordsMatch(0);
-      // TODO: Add functionality to this function
+      try {
+        const registration = await AuthService.register({
+          email: values.email,
+          password: values.password,
+          name: values.name,
+          surname: values.surname,
+        });
+        if (registration) {
+          navigate("/login");
+        }
+      } catch (error: any) {
+        setErrorText(error.response.data.message);
+        console.log(error.response.data.message);
+      }
     } else {
       setPasswordsMatch(1);
+      return;
     }
   };
   const validationSchema = Yup.object({
@@ -44,7 +64,7 @@ const CreateAccount = () => {
     password: Yup.string().required("Required").min(8, "8 characters minimum"),
     confirmPassword: Yup.string().required("Required"),
   });
-  const [passwordsMatch, setPasswordsMatch] = useState(0);
+
   return (
     <div className="create-account-container">
       <div className="create-account-form-container">
@@ -134,6 +154,15 @@ const CreateAccount = () => {
                 Passwords do not match
               </div>
             )}
+            {errorText ? (
+              <ErrorModal
+                message={errorText}
+                open={errorText ? true : false}
+                handleOkay={() => {
+                  setErrorText(null);
+                }}
+              />
+            ) : null}
           </Form>
         </Formik>
       </div>

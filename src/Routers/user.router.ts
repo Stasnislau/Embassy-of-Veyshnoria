@@ -1,7 +1,6 @@
 const Router = require("express").Router;
 
 import UserController from "../Controllers/user.controller";
-import authMiddleware from "../MiddleWares/auth-middleware";
 import { body } from "express-validator";
 
 const router = new Router();
