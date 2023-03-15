@@ -4,9 +4,18 @@ import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
+import { Context }  from "../../index";
 import React from "react";
 import TextError from "../../Components/TextError";
 import { useNavigate } from "react-router-dom";
+
+interface values {
+  name: string;
+  surname: string;
+  email: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
 const ForgotPassword: React.FC = () => {
   const validationSchema = Yup.object().shape({
@@ -21,8 +30,8 @@ const ForgotPassword: React.FC = () => {
       .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
   });
   const navigate = useNavigate();
-  const onSubmit = (values: any) => { // TODO: add type
-    console.log(values);
+  const onSubmit = (values: values) => { 
+    
   };
   const initialValues = {
     name: "",

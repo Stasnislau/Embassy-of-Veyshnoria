@@ -59,6 +59,7 @@
       background-color: red;
       color: #fff;
       box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+      cursor: pointer;
     }
     .okay-button:hover {
       background-color: rgb(178, 0, 0);
@@ -66,6 +67,7 @@
       box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
       margin-left: 10px;
       transition: all 0.3s ease-in-out;
+      
     }
   }
 }

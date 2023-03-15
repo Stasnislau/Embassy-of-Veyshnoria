@@ -1,5 +1,3 @@
-import express, { Request, Response } from "express";
-
 import authMiddleware from "../MiddleWares/auth-middleware";
 import visaApplicationController from "../Controllers/visaApplication.controller";
 

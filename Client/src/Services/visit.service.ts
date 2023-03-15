@@ -2,11 +2,11 @@ import { AxiosResponse } from "axios";
 import api from "../Http";
 import { visitInterface } from "../Interfaces";
 
-export default class VisitService {
-  static async getVisits(): Promise<AxiosResponse<visitInterface[]>> {
+class VisitService {
+  static async fetchVisitsByUser(): Promise<AxiosResponse<visitInterface[]>> {
     return api.get<visitInterface[]>("/visits/users");
   }
-  static async getVisit(id: string): Promise<AxiosResponse<visitInterface>> {
+  static async getVisitById(id: string): Promise<AxiosResponse<visitInterface>> {
     return api.get<visitInterface>(`/visits/specific/${id}`);
   }
   static async createVisit(
@@ -23,3 +23,5 @@ export default class VisitService {
     return api.delete<visitInterface>(`/visits/delete/${id}`);
   }
 }
+
+export default VisitService;
