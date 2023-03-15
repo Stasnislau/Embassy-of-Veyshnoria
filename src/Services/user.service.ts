@@ -1,4 +1,5 @@
-import ApiError from "../exceptions/api-error"
+import ApiError from "../exceptions/api-error";
+import { UserInterface } from "../Interfaces";
 import bcrypt from "bcryptjs";
 import { embassyDB } from "../utils/db.server";
 import tokensService from "../Services/tokens.service";
@@ -50,7 +51,7 @@ class UserService {
     const userDTO = {
       email: user.email,
       id: user.id,
-    }
+    };
     const tokens = await tokensService.generateTokens(userDTO);
     await tokensService.saveToken(user.id, tokens.refreshToken);
     return { ...tokens, userDTO };
@@ -125,6 +126,102 @@ class UserService {
     const tokens = await tokensService.generateTokens(user);
     await tokensService.saveToken(user.id, tokens.refreshToken);
     return { ...tokens, user };
+  }
+
+  async getUser(id: string) {
+    const user = await embassyDB.users.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    return user;
+  }
+
+  async updateUser(id: string, data: {
+    
+    name: string;
+    surname: string;
+    email: string;
+    dateOfBirth: string;
+    birthPlace: string;
+    phoneNumber: string;
+    address: string;
+    city: string;
+    country: string;
+    zip: string;
+    passportNumber: string;
+    passportExpirationDate: string;
+    passportIssuingDate: string;
+    passportIssuingCountry: string;
+  }) {
+    const candidate = await embassyDB.users.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        email: true,
+      },
+    });
+    if (!candidate) {
+      throw ApiError.badRequest(`User with does not exist`);
+    }
+    if (candidate.email !== data.email) {
+      const credentials = await embassyDB.credentials.findUnique({
+        where: {
+          email: candidate.email,
+        },
+        select: {
+          id: true,
+        },
+      });
+      if (!credentials) {
+        throw ApiError.badRequest(`User with does not exist`);
+      }
+      await embassyDB.credentials.update({
+        where: {
+          id: credentials.id,
+        },
+        data: {
+          email: data.email,
+        },
+      });
+      const user = await embassyDB.users.update({
+        where: {
+          id: Number(id),
+        },
+        data: data as UserInterface
+      });
+      return user;
+    }
+  }
+
+  async updatePassword(email: string, password: string) {
+    const candidate = await embassyDB.credentials.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        password: true,
+        id: true,
+      },
+    });
+    if (!candidate) {
+      throw ApiError.badRequest(`User with does not exist`);
+    }
+    if (await bcrypt.compare(password, candidate.password)) {
+      throw ApiError.badRequest(`Password is the same`);
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    const updatedCredentials = await embassyDB.credentials.update({
+      where: {
+        id: candidate.id,
+      },
+      data: {
+        password: hashPassword,
+      },
+    });
+    return updatedCredentials;
   }
 }
 

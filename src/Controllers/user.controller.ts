@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import ApiError from "../exceptions/api-error";
-import cookieParser from "cookie-parser";
+import { UserInterface } from "../Interfaces";
+import jwt from "jsonwebtoken";
 import userService from "../Services/user.service";
 import { validationResult } from "express-validator";
 
@@ -13,11 +14,14 @@ interface ResponseInterface extends Response {
   json: any;
   status: any;
   cookie: any;
-  
 }
 
 class UserController {
-  registration = async (req: RequestInterface, res: ResponseInterface, next: NextFunction) => {
+  registration = async (
+    req: RequestInterface,
+    res: ResponseInterface,
+    next: NextFunction
+  ) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -41,7 +45,11 @@ class UserController {
     }
   };
 
-  login = async (req: RequestInterface, res: ResponseInterface, next: NextFunction) => {
+  login = async (
+    req: RequestInterface,
+    res: ResponseInterface,
+    next: NextFunction
+  ) => {
     try {
       const { email, password } = req.body;
       const user = await userService.login(email, password);
@@ -66,7 +74,11 @@ class UserController {
     }
   };
 
-  refresh = async (req: RequestInterface, res: ResponseInterface, next: NextFunction) => {
+  refresh = async (
+    req: RequestInterface,
+    res: ResponseInterface,
+    next: NextFunction
+  ) => {
     try {
       const { refreshToken } = req.cookies;
       const userData = await userService.refresh(refreshToken);
@@ -75,6 +87,82 @@ class UserController {
         httpOnly: true,
       });
       return res.json(userData);
+    } catch (error: any) {
+      next(error);
+    }
+  };
+
+  getUser = async (
+    req: RequestInterface,
+    res: ResponseInterface,
+    next: NextFunction
+  ) => {
+    const authHeader = req.headers && req.headers.authorization;
+    if (!authHeader) {
+      return next(ApiError.unauthorized());
+    }
+    const user: {
+      id: string;
+      email: string;
+    } = jwt.decode(authHeader.split(" ")[1]) as {
+      id: string;
+      email: string;
+    };
+    const userData = await userService.getUser(user.id);
+    return res.json({ userData });
+  };
+
+  updateUser = async (
+    req: RequestInterface,
+    res: ResponseInterface,
+    next: NextFunction
+  ) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(ApiError.badRequest("Validation error"));
+      }
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user: {
+        id: string;
+        email: string;
+      } = jwt.decode(authHeader.split(" ")[1]) as {
+        id: string;
+        email: string;
+      };
+      const newData = req.body as UserInterface;
+      userService.updateUser(user.id, newData);
+    } catch (error: any) {
+      next(error);
+    }
+  };
+
+  updatePassword = async (
+    req: RequestInterface,
+    res: ResponseInterface,
+    next: NextFunction
+  ) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(ApiError.badRequest("Validation error"));
+      }
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const user: {
+        id: string;
+        email: string;
+      } = jwt.decode(authHeader.split(" ")[1]) as {
+        id: string;
+        email: string;
+      };
+      const { password } = req.body;
+      userService.updatePassword(user.email, password);
     } catch (error: any) {
       next(error);
     }

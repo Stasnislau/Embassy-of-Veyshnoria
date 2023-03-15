@@ -15,4 +15,12 @@ router.post("/logout", UserController.logout);
 
 router.get("/refresh", UserController.refresh);
 
+router.get("/specific", UserController.getUser);
+
+router.put("/update/user", UserController.updateUser);
+
+router.put("/update/password", UserController.updatePassword)
+
+
+
 export default router;
