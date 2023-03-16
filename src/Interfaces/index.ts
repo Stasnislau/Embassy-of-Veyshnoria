@@ -75,3 +75,10 @@ export interface TokenInterface {
   userId: number;
   createdAt: string;
 }
+
+export interface UserDTOInterface {
+  id: number;
+  email: string;
+  name: string;
+  surname: string;
+}

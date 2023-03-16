@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
+import { UserDTOInterface, UserInterface } from "../Interfaces";
 
 import ApiError from "../exceptions/api-error";
-import { UserInterface } from "../Interfaces";
 import jwt from "jsonwebtoken";
 import userService from "../Services/user.service";
 import { validationResult } from "express-validator";
@@ -150,22 +150,32 @@ class UserController {
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest("Validation error"));
       }
-      const authHeader = req.headers && req.headers.authorization;
-      if (!authHeader) {
-        return next(ApiError.unauthorized());
-      }
-      const user: {
-        id: string;
+      const user = req.body as {
         email: string;
-      } = jwt.decode(authHeader.split(" ")[1]) as {
-        id: string;
-        email: string;
+        password: string;
       };
-      const { password } = req.body;
-      userService.updatePassword(user.email, password);
+
+      const success = await userService.updatePassword(
+        user.email,
+        user.password
+      );
+      if (!success) {
+        throw ApiError.badRequest("Password was not updated, wrong data");
+      }
+      return res.json(Boolean(success));
     } catch (error: any) {
-      next(error);
+      return res.json(false);
     }
+  };
+
+  getUserDTOByEmail = async (
+    req: RequestInterface,
+    res: ResponseInterface,
+    next: NextFunction
+  ) => {
+    const email = req.params.email;
+    const user = await userService.getShortUserByEmail(email);
+    return res.json(user);
   };
 }
 

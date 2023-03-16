@@ -4,10 +4,13 @@ import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-import { Context }  from "../../index";
+import { Context } from "../../index";
+import ErrorModal from "../../Components/ErrorModal";
 import React from "react";
 import TextError from "../../Components/TextError";
 import { useNavigate } from "react-router-dom";
+import { userDtoInterface } from "../../Interfaces";
+import userService from "../../Services/user.service";
 
 interface values {
   name: string;
@@ -17,7 +20,9 @@ interface values {
   confirmPassword: string;
 }
 
-const ForgotPassword: React.FC = () => {
+const ForgotPassword = () => {
+  const { store } = React.useContext(Context);
+  const [errorText, setErrorText] = React.useState<string | null>(null);
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     surname: Yup.string().required("Surname is required"),
@@ -29,9 +34,37 @@ const ForgotPassword: React.FC = () => {
       .required("Confirm password is required")
       .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
   });
+
   const navigate = useNavigate();
-  const onSubmit = (values: values) => { 
-    
+  const onSubmit = async (values: values) => {
+    const user: userDtoInterface | null = (
+      await userService.fetchUserDTO(values.email)
+    ).data;
+    if (!user) {
+      setErrorText("User not found");
+      return;
+    }
+    try {
+      if (
+        user.name === values.name &&
+        user.surname === values.surname &&
+        user.email === values.email
+      ) {
+        const changePassword = await userService.updatePassword(
+          values.email,
+          values.newPassword
+        );
+        if (changePassword.data) {
+          navigate("/login");
+        } else {
+          setErrorText("Invalid data");
+        }
+      } else {
+        setErrorText("Invalid data");
+      }
+    } catch (error: any) {
+      setErrorText(error.message);
+    }
   };
   const initialValues = {
     name: "",
@@ -127,6 +160,13 @@ const ForgotPassword: React.FC = () => {
           </Form>
         </Formik>
       </div>
+      {errorText && (
+        <ErrorModal
+          open={Boolean(errorText)}
+          handleOkay={() => setErrorText(null)}
+          message={errorText}
+        />
+      )}
     </div>
   );
 };

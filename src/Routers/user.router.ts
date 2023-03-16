@@ -16,6 +16,7 @@ router.post("/logout", UserController.logout);
 router.get("/refresh", UserController.refresh);
 
 router.get("/specific", UserController.getUser);
+router.get("/dto/:email", UserController.getUserDTOByEmail);
 
 router.put("/update/user", UserController.updateUser);
 

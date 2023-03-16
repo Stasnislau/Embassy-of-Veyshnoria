@@ -1,5 +1,6 @@
+import { UserDTOInterface, UserInterface } from "../Interfaces";
+
 import ApiError from "../exceptions/api-error";
-import { UserInterface } from "../Interfaces";
 import bcrypt from "bcryptjs";
 import { embassyDB } from "../utils/db.server";
 import tokensService from "../Services/tokens.service";
@@ -137,23 +138,25 @@ class UserService {
     return user;
   }
 
-  async updateUser(id: string, data: {
-    
-    name: string;
-    surname: string;
-    email: string;
-    dateOfBirth: string;
-    birthPlace: string;
-    phoneNumber: string;
-    address: string;
-    city: string;
-    country: string;
-    zip: string;
-    passportNumber: string;
-    passportExpirationDate: string;
-    passportIssuingDate: string;
-    passportIssuingCountry: string;
-  }) {
+  async updateUser(
+    id: string,
+    data: {
+      name: string;
+      surname: string;
+      email: string;
+      dateOfBirth: string;
+      birthPlace: string;
+      phoneNumber: string;
+      address: string;
+      city: string;
+      country: string;
+      zip: string;
+      passportNumber: string;
+      passportExpirationDate: string;
+      passportIssuingDate: string;
+      passportIssuingCountry: string;
+    }
+  ) {
     const candidate = await embassyDB.users.findUnique({
       where: {
         id: Number(id),
@@ -189,7 +192,7 @@ class UserService {
         where: {
           id: Number(id),
         },
-        data: data as UserInterface
+        data: data as UserInterface,
       });
       return user;
     }
@@ -211,7 +214,6 @@ class UserService {
     if (await bcrypt.compare(password, candidate.password)) {
       throw ApiError.badRequest(`Password is the same`);
     }
-
     const hashPassword = await bcrypt.hash(password, 10);
     const updatedCredentials = await embassyDB.credentials.update({
       where: {
@@ -223,6 +225,21 @@ class UserService {
     });
     return updatedCredentials;
   }
+
+  async getShortUserByEmail  (email: string)  {
+    const user = await embassyDB.users.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        surname: true,
+      },
+    });
+    return user;
+  };
 }
 
 export default new UserService();

@@ -3,9 +3,14 @@ export interface authResponseInterface {
   refreshToken: string;
   user: userDtoInterface;
 }
+export interface userResponseInterface{
+  user: UserInterface;
+}
 export interface userDtoInterface {
   id: string;
   email: string;
+  name: string;
+  surname: string;
 }
 
 export interface VisaApplicationInterface {
