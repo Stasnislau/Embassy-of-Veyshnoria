@@ -21,7 +21,6 @@ interface values {
 }
 
 const ForgotPassword = () => {
-  const { store } = React.useContext(Context);
   const [errorText, setErrorText] = React.useState<string | null>(null);
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),

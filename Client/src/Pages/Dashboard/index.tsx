@@ -1,214 +1,79 @@
 import "./index.scss";
 
+import {
+  ResidencePermitApplicationsInterface,
+  VisaApplicationInterface,
+  visitInterface,
+} from "../../Interfaces";
+
+import { Context } from "../../index";
+import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import PaginationComponent from "../../Components/Pagination";
+import PermitService from "../../Services/residence.service";
 import React from "react";
+import ResidencePermitCard from "../../Components/EventCards/PermitCard";
 import VisaCard from "../../Components/EventCards/VisaCard";
+import VisaService from "../../Services/visa.service";
 import VisitCard from "../../Components/EventCards/VisitCard";
+import VisitService from "../../Services/visit.service";
+import { useEffect } from "react";
 import { useState } from "react";
 
 const Dashboard = () => {
+  const { store } = React.useContext(Context);
+  const user = store.user;
   const [currentPage, setCurrentPage] = useState(1);
-  const visits = [
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "1 Main Street, New York, NY 10001",
-      description: "Visit to submit documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "2 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "3 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "4 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "5 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "6 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "7 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "8 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "9 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-  ];
-  const visa = {
-    dateOfSubmission: "2020-12-12",
-    dateOfDecision: "2020-12-12",
-    status: "Pending",
-    description: "",
-  };
+  const [visits, setVisits] = useState<visitInterface[]>([]);
+  const [visa, setVisa] = useState<VisaApplicationInterface | null>(null);
+  const [permit, setPermit] =
+    useState<ResidencePermitApplicationsInterface | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [errorText, setErrorText] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (store.isAuthorized) {
+      try {
+        VisitService.fetchVisitsByUser().then((response: any) => {
+          setVisits(response.data.visits);
+          setIsLoading(false);
+        });
+      } catch (error: any) {
+        setErrorText(error.message);
+      }
+    }
+    try {
+      VisaService.fetchVisaApplicationsByUser().then((response: any) => {
+        response.data.visaApplications.forEach((visa: any) => {
+          if (visa.status === "Approved" || visa.status === "Rejected") {
+            setVisa(visa);
+          }
+        });
+        setIsLoading(false);
+      });
+    } catch (error: any) {
+      setErrorText(error.message);
+    }
+    try {
+      PermitService.fetchPermitApplicationsByUser().then((response: any) => {
+        response.data.residencePermitApplications.forEach((permit: any) => {
+          if (permit.status === "Approved" || permit.status === "Rejected") {
+            setPermit(permit);
+          }
+        });
+        setIsLoading(false);
+      });
+    } catch (error: any) {
+      setErrorText(error.message);
+    }
+  }, [user, store.isAuthorized]);
   const maxPages =
-    (visits.length + (visa.status ? 1 : 0)) % 6 === 0
-      ? (visits.length + (visa.status ? 1 : 0)) / 6
-      : Math.ceil((visits.length + (visa.status ? 1 : 0)) / 6);
+    (visits.length + (visa || permit ? 1 : 0)) % 6 === 0
+      ? (visits.length + (visa || permit ? 1 : 0)) / 6
+      : Math.ceil((visits.length + (visa || permit ? 1 : 0)) / 6);
   const checkNumberToSliceBegin = () => {
-    if (visa.status)
+    if (visa || permit)
       if (currentPage === 1) {
         return 0;
       } else {
@@ -221,7 +86,7 @@ const Dashboard = () => {
     }
   };
   const checkNumberToSliceEnd = () => {
-    if (visa.status)
+    if (visa || permit)
       if (currentPage === 1) {
         return 5;
       } else {
@@ -234,14 +99,35 @@ const Dashboard = () => {
     }
   };
 
+  const hasEvents = visits.length > 0 || !visa || !permit;
+
   return (
     <div className="dashboard-container">
       <Header />
       <div className="dashboard-body">
-        <div className="dashboard-boxes-container">
-          {visa.status && currentPage === 1 ? (
+          
+          <div className="dashboard-boxes-container">
+          {visa && currentPage === 1 ? (
             <div className="dashboard-box dashboard-box-highlight">
-              <VisaCard props={visa} />
+              <VisaCard
+                props={{
+                  dateOfSubmission: visa.dateOfSubmission,
+                  dateOfDecision: visa.dateOfDecision,
+                  status: visa.status,
+                  description: visa.description,
+                }}
+              />
+            </div>
+          ) : permit && currentPage === 1 ? (
+            <div className="dashboard-box dashboard-box-highlight">
+              <ResidencePermitCard
+                props={{
+                  dateOfSubmission: permit.dateOfSubmission,
+                  dateOfDecision: permit.dateOfDecision,
+                  status: permit.status,
+                  description: permit.description,
+                }}
+              />
             </div>
           ) : null}
           {visits
@@ -254,12 +140,27 @@ const Dashboard = () => {
               );
             })}
         </div>
+
+        {!hasEvents && (
+          <div className="dashboard-no-events">
+            <h1>You have no events</h1>
+          </div>
+        )}
+        
         <PaginationComponent
           maxPages={maxPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
       </div>
+
+      {errorText && (
+        <ErrorModal
+          message={errorText}
+          handleOkay={() => setErrorText(null)}
+          open={errorText ? true : false}
+        />
+      )}
     </div>
   );
 };
