@@ -27,7 +27,7 @@ model users {
   visaApplications            visa_applications[]
   visits                      visits[]
   credentials                 credentials?
-  Token                       tokens?
+  token                       tokens?
 }
 
 model residence_permit_applications {

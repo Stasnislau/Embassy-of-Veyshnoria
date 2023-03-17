@@ -45,7 +45,7 @@ class VisaApplicationController {
         visaType,
         visaDuration,
         visaDate,
-        comments,
+        description,
       } = req.body;
       const visaApplication = await visaService.createVisaApplication(user.id, {
         name,
@@ -64,7 +64,7 @@ class VisaApplicationController {
         visaType,
         visaDuration,
         visaDate,
-        comments,
+        description,
       } as VisaApplicationInterface);
       if (!visaApplication) {
         throw ApiError.badRequest("VisaApplication has not been created");
@@ -143,7 +143,9 @@ class VisaApplicationController {
         visaType,
         visaDuration,
         visaDate,
-        comments,
+        description,
+        dateOfSubmission,
+        dateOfDecision,
       } = req.body;
       const visaApplication = await visaService.updateVisaApplication(id, {
         name,
@@ -162,7 +164,9 @@ class VisaApplicationController {
         visaType,
         visaDuration,
         visaDate,
-        comments,
+        description,
+        dateOfSubmission,
+        dateOfDecision,
       } as VisaApplicationInterface);
       return res.json({ visaApplication });
     } catch (error: any) {

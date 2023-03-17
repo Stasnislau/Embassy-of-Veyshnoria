@@ -33,7 +33,7 @@ class ResidencePermitApplicationController {
         passportExpirationDate,
         passportIssuingCountry,
         residencePermitType,
-        comments,
+        description,
       } = req.body;
       const residencePermitApplication =
         await residencePermitApplicationService.createResidencePermitApplication(
@@ -52,7 +52,7 @@ class ResidencePermitApplicationController {
             passportExpirationDate,
             passportIssuingCountry,
             residencePermitType,
-            comments,
+            description
           } as ResidencePermitApplicationsInterface,
           userId
         );
@@ -143,7 +143,9 @@ class ResidencePermitApplicationController {
         passportExpirationDate,
         passportIssuingCountry,
         residencePermitType,
-        comments,
+        description,
+        dateOfSubmission,
+        dateOfDecision,
       } = req.body;
       const residencePermitApplication =
         await residencePermitApplicationService.updateResidencePermitApplication(
@@ -163,7 +165,9 @@ class ResidencePermitApplicationController {
             passportExpirationDate,
             passportIssuingCountry,
             residencePermitType,
-            comments,
+            description,
+            dateOfSubmission,
+            dateOfDecision,
           } as ResidencePermitApplicationsInterface
         );
       if (!residencePermitApplication) {

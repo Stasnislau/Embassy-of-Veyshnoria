@@ -6,13 +6,13 @@ import jwt from "jsonwebtoken";
 
 class tokenService {
   saveToken = async (userId: number, token: string) => {
-    const tokenData = await embassyDB.token.findUnique({
+    const tokenData = await embassyDB.tokens.findUnique({
       where: {
         userId: userId,
       },
     });
     if (tokenData) {
-      await embassyDB.token.update({
+      await embassyDB.tokens.update({
         where: {
           userId: userId,
         },
@@ -22,7 +22,7 @@ class tokenService {
       });
       return;
     }
-    await embassyDB.token.create({
+    await embassyDB.tokens.create({
       data: {
         token: token,
         userId: userId,
@@ -46,7 +46,7 @@ class tokenService {
   };
 
   deleteToken = async (token: string) => {
-    await embassyDB.token.delete({
+    await embassyDB.tokens.delete({
       where: {
         token: token,
       },
@@ -88,7 +88,7 @@ class tokenService {
   };
 
   findToken = async (token: string) => {
-    const tokenData = await embassyDB.token.findUnique({
+    const tokenData = await embassyDB.tokens.findUnique({
       where: {
         token: token,
       },
