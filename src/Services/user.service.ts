@@ -66,6 +66,8 @@ class UserService {
       select: {
         email: true,
         id: true,
+        name: true,
+        surname: true,
       },
     });
     if (!user) {
@@ -226,7 +228,7 @@ class UserService {
     return updatedCredentials;
   }
 
-  async getShortUserByEmail  (email: string)  {
+  async getShortUserByEmail(email: string) {
     const user = await embassyDB.users.findUnique({
       where: {
         email: email,
@@ -239,7 +241,7 @@ class UserService {
       },
     });
     return user;
-  };
+  }
 }
 
 export default new UserService();

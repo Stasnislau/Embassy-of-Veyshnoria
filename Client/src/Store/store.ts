@@ -5,6 +5,7 @@ import axios from "axios";
 import { makeAutoObservable } from "mobx";
 
 export default class Store {
+  tokens = {} as authResponseInterface;
   user = {} as userDtoInterface;
   isAuthorized = false;
   isLoading = false;

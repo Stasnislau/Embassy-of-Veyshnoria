@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { UserDTOInterface, UserInterface } from "../Interfaces";
 
 import ApiError from "../exceptions/api-error";
+import { UserInterface } from "../Interfaces";
 import jwt from "jsonwebtoken";
 import userService from "../Services/user.service";
 import { validationResult } from "express-validator";
@@ -57,7 +57,7 @@ class UserController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
-      return res.json({ user });
+      return res.json( user );
     } catch (error: any) {
       next(error);
     }

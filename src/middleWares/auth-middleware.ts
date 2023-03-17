@@ -11,7 +11,7 @@ const authMiddleware = (req: any, res: Response, next: NextFunction) => {
       return next(ApiError.unauthorized());
     }
     const accessToken = authorizationHeader.split(" ")[1];
-    if (!accessToken) {
+    if (!accessToken || accessToken === "null") {
       return next(ApiError.unauthorized());
     }
     const userData = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
