@@ -9,6 +9,7 @@ import {
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
 import PermitService from "../../Services/residence.service";
 import React from "react";
@@ -28,7 +29,6 @@ const Dashboard = () => {
   const [visa, setVisa] = useState<VisaApplicationInterface | null>(null);
   const [permit, setPermit] =
     useState<ResidencePermitApplicationsInterface | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const [errorText, setErrorText] = useState<string | null>(null);
 
@@ -37,7 +37,6 @@ const Dashboard = () => {
       try {
         VisitService.fetchVisitsByUser().then((response: any) => {
           setVisits(response.data.visits);
-          setIsLoading(false);
         });
       } catch (error: any) {
         setErrorText(error.message);
@@ -52,7 +51,6 @@ const Dashboard = () => {
             }
           }
         );
-        setIsLoading(false);
       });
     } catch (error: any) {
       setErrorText(error.message);
@@ -66,7 +64,6 @@ const Dashboard = () => {
             }
           }
         );
-        setIsLoading(false);
       });
     } catch (error: any) {
       setErrorText(error.message);
@@ -103,7 +100,7 @@ const Dashboard = () => {
     }
   };
 
-  const hasEvents = visits.length > 0 || !visa || !permit;
+  const hasEvents = visits.length > 0 || visa || permit;
 
   return (
     <div className="dashboard-container">
@@ -145,9 +142,7 @@ const Dashboard = () => {
               })}
           </div>
         ) : (
-          <div className="dashboard-no-events">
-            <h1>You have no events</h1>
-          </div>
+          <NoEventsCard />
         )}
         <PaginationComponent
           maxPages={maxPages}
