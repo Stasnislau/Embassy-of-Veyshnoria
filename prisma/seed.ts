@@ -67,8 +67,10 @@ const getMockVisaApplications = () => {
       passportExpirationDate: "01.01.2025",
       passportIssuingDate: "01.01.2015",
       passportIssuingCountry: "Test Country",
-      comments: "Test comment",
+      description: "Test description",
       status: "Pending",
+      dateOfSubmission: "01.01.2021",
+      dateOfDecision: "01.10.2021",
     },
     {
       name: "Steven",
@@ -88,8 +90,10 @@ const getMockVisaApplications = () => {
       passportExpirationDate: "01.01.2025",
       passportIssuingDate: "01.01.2015",
       passportIssuingCountry: "United States",
-      comments: "Test comment",
+      description: "Test description",
       status: "Pending",
+      dateOfSubmission: "01.01.2021",
+      dateOfDecision: "01.10.2021",
     },
   ];
   return visaApplications;
@@ -113,8 +117,10 @@ const getMockResidencePermitApplications = () => {
       passportExpirationDate: "01.01.2025",
       passportIssuingDate: "01.01.2015",
       passportIssuingCountry: "Test Country",
-      comments: "Test comment",
+      description: "Test description",
       status: "Rejected",
+      dateOfSubmission: "01.01.2021",
+      dateOfDecision: "03.10.2021",
     },
   ];
   return residencePermitApplications;
@@ -184,7 +190,7 @@ async function seed() {
   await Promise.all(
     getMockVisaApplications().map(
       async (visaApplication: VisaApplicationInterface) => {
-        return embassyDB.visaApplications.create({
+        return embassyDB.visa_applications.create({
           data: {
             ...visaApplication,
             user: {
@@ -203,7 +209,7 @@ async function seed() {
       async (
         residencePermitApplication: ResidencePermitApplicationsInterface
       ) => {
-        return embassyDB.residencePermitApplications.create({
+        return embassyDB.residence_permit_applications.create({
           data: {
             ...residencePermitApplication,
             user: {

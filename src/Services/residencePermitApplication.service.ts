@@ -7,7 +7,7 @@ class ResidencePermitApplicationService {
     id: number
   ): Promise<ResidencePermitApplicationsInterface> => {
     const residencePermitApplication =
-      await embassyDB.residencePermitApplications.findUnique({
+      await embassyDB.residence_permit_applications.findUnique({
         where: {
           id: Number(id),
         },
@@ -25,11 +25,13 @@ class ResidencePermitApplicationService {
           zip: true,
           passportNumber: true,
           residencePermitType: true,
-          comments: true,
+          description: true,
           status: true,
           passportExpirationDate: true,
           passportIssuingDate: true,
           passportIssuingCountry: true,
+          dateOfSubmission: true,
+          dateOfDecision: true,
         },
       });
     if (!residencePermitApplication) {
@@ -42,7 +44,7 @@ class ResidencePermitApplicationService {
     userId: string
   ): Promise<ResidencePermitApplicationsInterface[]> => {
     const residencePermitApplications =
-      await embassyDB.residencePermitApplications.findMany({
+      await embassyDB.residence_permit_applications.findMany({
         where: {
           userId: Number(userId),
         },
@@ -60,11 +62,13 @@ class ResidencePermitApplicationService {
           zip: true,
           passportNumber: true,
           residencePermitType: true,
-          comments: true,
+          description: true,
           status: true,
           passportExpirationDate: true,
           passportIssuingDate: true,
           passportIssuingCountry: true,
+          dateOfSubmission: true,
+          dateOfDecision: true,
         },
       });
     if (!residencePermitApplications) {
@@ -78,7 +82,7 @@ class ResidencePermitApplicationService {
     userId: string
   ): Promise<ResidencePermitApplicationsInterface> => {
     const residenceApplication =
-      await embassyDB.residencePermitApplications.create({
+      await embassyDB.residence_permit_applications.create({
         data: {
           name: residencePermitApplication.name,
           surname: residencePermitApplication.surname,
@@ -97,8 +101,10 @@ class ResidencePermitApplicationService {
           passportIssuingDate: residencePermitApplication.passportIssuingDate,
           passportIssuingCountry:
             residencePermitApplication.passportIssuingCountry,
-          comments: residencePermitApplication.comments,
+          description: residencePermitApplication.description,
           status: residencePermitApplication.status,
+          dateOfSubmission: new Date().toLocaleDateString(),
+          dateOfDecision: "To be decided",
           user: {
             connect: {
               id: Number(userId),
@@ -119,7 +125,7 @@ class ResidencePermitApplicationService {
     residencePermitApplication: ResidencePermitApplicationsInterface
   ): Promise<ResidencePermitApplicationsInterface> => {
     const updatedResidencePermitApplication =
-      await embassyDB.residencePermitApplications.update({
+      await embassyDB.residence_permit_applications.update({
         where: {
           id: Number(id),
         },
@@ -141,8 +147,10 @@ class ResidencePermitApplicationService {
           passportIssuingDate: residencePermitApplication.passportIssuingDate,
           passportIssuingCountry:
             residencePermitApplication.passportIssuingCountry,
-          comments: residencePermitApplication.comments,
+          description: residencePermitApplication.description,
           status: residencePermitApplication.status,
+          dateOfSubmission: residencePermitApplication.dateOfSubmission,
+          dateOfDecision: residencePermitApplication.dateOfDecision,
         },
       });
 
@@ -157,7 +165,7 @@ class ResidencePermitApplicationService {
     userId: string
   ): Promise<ResidencePermitApplicationsInterface> => {
     const residencePermitApplication =
-      await embassyDB.residencePermitApplications.findUnique({
+      await embassyDB.residence_permit_applications.findUnique({
         where: {
           id: Number(id),
         },
@@ -173,7 +181,7 @@ class ResidencePermitApplicationService {
     }
 
     const deletedResidencePermitApplication =
-      await embassyDB.residencePermitApplications.delete({
+      await embassyDB.residence_permit_applications.delete({
         where: {
           id: Number(id),
         },

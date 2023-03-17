@@ -16,8 +16,10 @@ export interface VisaApplicationInterface {
   passportExpirationDate: string;
   passportIssuingDate: string;
   passportIssuingCountry: string;
-  comments: string;
+  description: string;
   status: string;
+  dateOfSubmission: string;
+  dateOfDecision: string;
 }
 
 export interface ResidencePermitApplicationsInterface {
@@ -36,8 +38,10 @@ export interface ResidencePermitApplicationsInterface {
   passportExpirationDate: string;
   passportIssuingDate: string;
   passportIssuingCountry: string;
-  comments: string;
+  description: string;
   status: string;
+  dateOfSubmission: string;
+  dateOfDecision: string;
 }
 
 export interface UserInterface {

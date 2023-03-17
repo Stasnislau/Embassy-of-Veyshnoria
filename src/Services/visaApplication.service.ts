@@ -6,7 +6,7 @@ class visaService {
   getVisaApplicationById = async (
     id: number
   ): Promise<VisaApplicationInterface> => {
-    const visaApplication = await embassyDB.visaApplications.findUnique({
+    const visaApplication = await embassyDB.visa_applications.findUnique({
       where: {
         id: Number(id),
       },
@@ -26,11 +26,13 @@ class visaService {
         visaType: true,
         visaDuration: true,
         visaDate: true,
-        comments: true,
+        description: true,
         status: true,
         passportExpirationDate: true,
         passportIssuingDate: true,
         passportIssuingCountry: true,
+        dateOfSubmission: true,
+        dateOfDecision: true,
       },
     });
     if (!visaApplication) {
@@ -42,7 +44,7 @@ class visaService {
   getVisaApplicationsByUserId = async (
     userId: string
   ): Promise<VisaApplicationInterface[]> => {
-    const visaApplications = await embassyDB.visaApplications.findMany({
+    const visaApplications = await embassyDB.visa_applications.findMany({
       where: {
         userId: Number(userId),
       },
@@ -62,11 +64,13 @@ class visaService {
         visaType: true,
         visaDuration: true,
         visaDate: true,
-        comments: true,
+        description: true,
         status: true,
         passportExpirationDate: true,
         passportIssuingDate: true,
         passportIssuingCountry: true,
+        dateOfSubmission: true,
+        dateOfDecision: true,
       },
     });
     if (!visaApplications) {
@@ -79,7 +83,7 @@ class visaService {
     userId: string,
     visaApplication: VisaApplicationInterface
   ): Promise<VisaApplicationInterface> => {
-    const application = await embassyDB.visaApplications.create({
+    const application = await embassyDB.visa_applications.create({
       data: {
         name: visaApplication.name,
         surname: visaApplication.surname,
@@ -95,11 +99,13 @@ class visaService {
         visaType: visaApplication.visaType,
         visaDuration: visaApplication.visaDuration,
         visaDate: visaApplication.visaDate,
-        comments: visaApplication.comments,
+        description: visaApplication.description,
         status: visaApplication.status,
         passportExpirationDate: visaApplication.passportExpirationDate,
         passportIssuingDate: visaApplication.passportIssuingDate,
         passportIssuingCountry: visaApplication.passportIssuingCountry,
+        dateOfSubmission: new Date().toLocaleDateString(),
+        dateOfDecision: "To be decided",
         user: {
           connect: {
             id: Number(userId),
@@ -117,7 +123,7 @@ class visaService {
     id: number,
     visaApplication: VisaApplicationInterface
   ): Promise<VisaApplicationInterface> => {
-    const updatedApplication = await embassyDB.visaApplications.update({
+    const updatedApplication = await embassyDB.visa_applications.update({
       where: {
         id: Number(id),
       },
@@ -136,11 +142,13 @@ class visaService {
         visaType: visaApplication.visaType,
         visaDuration: visaApplication.visaDuration,
         visaDate: visaApplication.visaDate,
-        comments: visaApplication.comments,
+        description: visaApplication.description,
         status: visaApplication.status,
         passportExpirationDate: visaApplication.passportExpirationDate,
         passportIssuingDate: visaApplication.passportIssuingDate,
         passportIssuingCountry: visaApplication.passportIssuingCountry,
+        dateOfSubmission: visaApplication.dateOfSubmission,
+        dateOfDecision: visaApplication.dateOfDecision,
       },
     });
     if (!updatedApplication) {
@@ -153,7 +161,7 @@ class visaService {
     id: string,
     userId: string
   ): Promise<VisaApplicationInterface> => {
-    const visaApplication = await embassyDB.visaApplications.findUnique({
+    const visaApplication = await embassyDB.visa_applications.findUnique({
       where: {
         id: Number(id),
       },
@@ -165,7 +173,7 @@ class visaService {
       throw ApiError.badRequest("Visa Application not found");
     }
 
-    const deletedApplication = await embassyDB.visaApplications.delete({
+    const deletedApplication = await embassyDB.visa_applications.delete({
       where: {
         id: Number(id),
       },

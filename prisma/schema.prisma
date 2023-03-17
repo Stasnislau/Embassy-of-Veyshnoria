@@ -23,14 +23,14 @@ model users {
   passportExpirationDate      String
   passportIssuingDate         String
   passportIssuingCountry      String
-  residencePermitApplications residencePermitApplications[]
-  visaApplications            visaApplications[]
+  residencePermitApplications residence_permit_applications[]
+  visaApplications            visa_applications[]
   visits                      visits[]
   credentials                 credentials?
-  Token                       Token?
+  Token                       tokens?
 }
 
-model residencePermitApplications {
+model residence_permit_applications {
   id                     Int    @id @default(autoincrement())
   name                   String
   surname                String
@@ -47,13 +47,15 @@ model residencePermitApplications {
   passportIssuingCountry String
   passportExpirationDate String
   passportIssuingDate    String
-  comments               String
+  description            String
   userId                 Int
   user                   users  @relation(fields: [userId], references: [id])
   status                 String
+  dateOfSubmission       String
+  dateOfDecision         String
 }
 
-model visaApplications {
+model visa_applications {
   id                     Int    @id @default(autoincrement())
   name                   String
   surname                String
@@ -72,10 +74,12 @@ model visaApplications {
   visaType               String
   visaDuration           String
   visaDate               String
-  comments               String
+  description            String
   userId                 Int
   user                   users  @relation(fields: [userId], references: [id])
   status                 String
+  dateOfSubmission       String
+  dateOfDecision         String
 }
 
 model visits {
@@ -95,10 +99,10 @@ model credentials {
   user     users  @relation(fields: [email], references: [email])
 }
 
-model Token {
+model tokens {
   id        Int    @id @default(autoincrement())
   token     String @unique
   createdAt String
-  userId    Int   @unique
+  userId    Int    @unique
   user      users  @relation(fields: [userId], references: [id])
 }
