@@ -1,12 +1,12 @@
-export interface authResponseInterface {
+export interface AuthResponseInterface {
   accessToken: string;
   refreshToken: string;
-  user: userDtoInterface;
+  user: UserDtoInterface;
 }
-export interface userResponseInterface{
+export interface UserResponseInterface{
   user: UserInterface;
 }
-export interface userDtoInterface {
+export interface UserDtoInterface {
   id: string;
   email: string;
   name: string;
@@ -59,24 +59,7 @@ export interface ResidencePermitApplicationsInterface {
   dateOfDecision: string;
 }
 
-export interface UserInterface {
-  name: string;
-  surname: string;
-  email: string;
-  dateOfBirth: string;
-  birthPlace: string;
-  phoneNumber: string;
-  address: string;
-  city: string;
-  country: string;
-  zip: string;
-  passportNumber: string;
-  passportExpirationDate: string;
-  passportIssuingDate: string;
-  passportIssuingCountry: string;
-}
-
-export interface visitInterface {
+export interface VisitInterface {
   date: string;
   time: string;
   location: string;
@@ -85,29 +68,7 @@ export interface visitInterface {
   id: number;
 }
 
-export interface visaApplicationInterface {
-  name: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
-  birthDate: string;
-  birthPlace: string;
-  address: string;
-  city: string;
-  zip: string;
-  country: string;
-  visaType: string;
-  visaDuration: string;
-  visaDate: string;
-  passportNumber: string;
-  passportExpirationDate: string;
-  passportIssuingDate: string;
-  passportIssuingCountry: string;
-  comments: string;
-  status: string;
-}
-
-export interface userInterface {
+export interface UserInterface {
   name: string;
   surname: string;
   email: string;

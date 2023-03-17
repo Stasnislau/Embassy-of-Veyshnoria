@@ -8,8 +8,8 @@ import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import React from "react";
 import TextError from "../../Components/TextError";
+import { UserDtoInterface } from "../../Interfaces";
 import { useNavigate } from "react-router-dom";
-import { userDtoInterface } from "../../Interfaces";
 import userService from "../../Services/user.service";
 
 interface values {
@@ -36,7 +36,7 @@ const ForgotPassword = () => {
 
   const navigate = useNavigate();
   const onSubmit = async (values: values) => {
-    const user: userDtoInterface | null = (
+    const user: UserDtoInterface | null = (
       await userService.fetchUserDTO(values.email)
     ).data;
     if (!user) {

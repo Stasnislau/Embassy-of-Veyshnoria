@@ -1,18 +1,18 @@
-import { authResponseInterface, userDtoInterface } from "../Interfaces";
+import { AuthResponseInterface, UserDtoInterface } from "../Interfaces";
 
 import AuthService from "../Services/auth.service";
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
 
 export default class Store {
-  tokens = {} as authResponseInterface;
-  user = {} as userDtoInterface;
+  tokens = {} as AuthResponseInterface;
+  user = {} as UserDtoInterface;
   isAuthorized = false;
   isLoading = false;
 
   constructor() {
     makeAutoObservable(this);
-    this.user = {} as userDtoInterface;
+    this.user = {} as UserDtoInterface;
     this.isAuthorized = false;
   }
 
@@ -20,7 +20,7 @@ export default class Store {
     this.isAuthorized = isAuthorized;
   };
 
-  setUser = (user: userDtoInterface) => {
+  setUser = (user: UserDtoInterface) => {
     this.user = user;
   };
 
@@ -44,7 +44,7 @@ export default class Store {
       await AuthService.logout();
       localStorage.removeItem("accessToken");
       this.setIsAuthorized(false);
-      this.setUser({} as userDtoInterface);
+      this.setUser({} as UserDtoInterface);
     } catch (error: any) {
       console.log(error.response?.data?.message);
     }
@@ -53,7 +53,7 @@ export default class Store {
   async checkAuthorization() {
     this.setIsLoading(true);
     try {
-      const response = await axios.get<authResponseInterface>(
+      const response = await axios.get<AuthResponseInterface>(
         "http://localhost:5000/users/refresh",
         {
           headers: {

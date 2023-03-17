@@ -1,31 +1,31 @@
-import { userDtoInterface, userInterface } from "../Interfaces";
+import { UserDtoInterface, UserInterface } from "../Interfaces";
 
 import { AxiosResponse } from "axios";
 import api from "../Http";
 
 class userService {
-  static async fetchUser(): Promise<AxiosResponse<userInterface>> {
-    return api.get<userInterface>("/users/specific");
+  static async fetchUser(): Promise<AxiosResponse<UserInterface>> {
+    return api.get<UserInterface>("/users/specific");
   }
   static async updateUser(
-    data: userInterface
-  ): Promise<AxiosResponse<userInterface>> {
-    return api.put<userInterface>("/users/update/user", data);
+    data: UserInterface
+  ): Promise<AxiosResponse<UserInterface>> {
+    return api.put<UserInterface>("/users/update/user", data);
   }
 
   static async updatePassword(
     email: string,
     password: string
-  ): Promise<AxiosResponse<userInterface>> {
-    return api.put<userInterface>("/users/update/password", {
+  ): Promise<AxiosResponse<UserInterface>> {
+    return api.put<UserInterface>("/users/update/password", {
       email: email,
       password: password,
     });
   }
   static async fetchUserDTO(
     email: string
-  ): Promise<AxiosResponse<userDtoInterface>> {
-    return api.get<userDtoInterface>(`/users/dto/${email}`);
+  ): Promise<AxiosResponse<UserDtoInterface>> {
+    return api.get<UserDtoInterface>(`/users/dto/${email}`);
   }
 }
 

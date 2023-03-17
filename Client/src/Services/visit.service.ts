@@ -1,26 +1,26 @@
 import { AxiosResponse } from "axios";
+import { VisitInterface } from "../Interfaces";
 import api from "../Http";
-import { visitInterface } from "../Interfaces";
 
 class VisitService {
-  static async fetchVisitsByUser(): Promise<AxiosResponse<visitInterface[]>> {
-    return api.get<visitInterface[]>("/visits/users");
+  static async fetchVisitsByUser(): Promise<AxiosResponse<VisitInterface[]>> {
+    return api.get<VisitInterface[]>("/visits/users");
   }
-  static async getVisitById(id: string): Promise<AxiosResponse<visitInterface>> {
-    return api.get<visitInterface>(`/visits/specific/${id}`);
+  static async getVisitById(id: string): Promise<AxiosResponse<VisitInterface>> {
+    return api.get<VisitInterface>(`/visits/specific/${id}`);
   }
   static async createVisit(
-    visit: visitInterface
-  ): Promise<AxiosResponse<visitInterface>> {
-    return api.post<visitInterface>("/visits/create", visit);
+    visit: VisitInterface
+  ): Promise<AxiosResponse<VisitInterface>> {
+    return api.post<VisitInterface>("/visits/create", visit);
   }
   static async updateVisit(
-    visit: visitInterface
-  ): Promise<AxiosResponse<visitInterface>> {
-    return api.put<visitInterface>(`/visits/update/${visit.id}`, visit);
+    visit: VisitInterface
+  ): Promise<AxiosResponse<VisitInterface>> {
+    return api.put<VisitInterface>(`/visits/update/${visit.id}`, visit);
   }
-  static async deleteVisit(id: string): Promise<AxiosResponse<visitInterface>> {
-    return api.delete<visitInterface>(`/visits/delete/${id}`);
+  static async deleteVisit(id: string): Promise<AxiosResponse<VisitInterface>> {
+    return api.delete<VisitInterface>(`/visits/delete/${id}`);
   }
 }
 

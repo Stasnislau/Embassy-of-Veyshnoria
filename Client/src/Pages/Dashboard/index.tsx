@@ -3,7 +3,7 @@ import "./index.scss";
 import {
   ResidencePermitApplicationsInterface,
   VisaApplicationInterface,
-  visitInterface,
+  VisitInterface,
 } from "../../Interfaces";
 
 import { Context } from "../../index";
@@ -24,7 +24,7 @@ const Dashboard = () => {
   const { store } = React.useContext(Context);
   const user = store.user;
   const [currentPage, setCurrentPage] = useState(1);
-  const [visits, setVisits] = useState<visitInterface[]>([]);
+  const [visits, setVisits] = useState<VisitInterface[]>([]);
   const [visa, setVisa] = useState<VisaApplicationInterface | null>(null);
   const [permit, setPermit] =
     useState<ResidencePermitApplicationsInterface | null>(null);
@@ -45,11 +45,13 @@ const Dashboard = () => {
     }
     try {
       VisaService.fetchVisaApplicationsByUser().then((response: any) => {
-        response.data.visaApplications.forEach((visa: any) => {
-          if (visa.status === "Approved" || visa.status === "Rejected") {
-            setVisa(visa);
+        response.data.visaApplications.forEach(
+          (visa: VisaApplicationInterface) => {
+            if (visa.status !== "Approved" && visa.status !== "Rejected") {
+              setVisa(visa);
+            }
           }
-        });
+        );
         setIsLoading(false);
       });
     } catch (error: any) {
@@ -57,11 +59,13 @@ const Dashboard = () => {
     }
     try {
       PermitService.fetchPermitApplicationsByUser().then((response: any) => {
-        response.data.residencePermitApplications.forEach((permit: any) => {
-          if (permit.status === "Approved" || permit.status === "Rejected") {
-            setPermit(permit);
+        response.data.residencePermitApplications.forEach(
+          (permit: ResidencePermitApplicationsInterface) => {
+            if (permit.status !== "Approved" && permit.status !== "Rejected") {
+              setPermit(permit);
+            }
           }
-        });
+        );
         setIsLoading(false);
       });
     } catch (error: any) {
@@ -105,48 +109,46 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <Header />
       <div className="dashboard-body">
-          
+        {hasEvents ? (
           <div className="dashboard-boxes-container">
-          {visa && currentPage === 1 ? (
-            <div className="dashboard-box dashboard-box-highlight">
-              <VisaCard
-                props={{
-                  dateOfSubmission: visa.dateOfSubmission,
-                  dateOfDecision: visa.dateOfDecision,
-                  status: visa.status,
-                  description: visa.description,
-                }}
-              />
-            </div>
-          ) : permit && currentPage === 1 ? (
-            <div className="dashboard-box dashboard-box-highlight">
-              <ResidencePermitCard
-                props={{
-                  dateOfSubmission: permit.dateOfSubmission,
-                  dateOfDecision: permit.dateOfDecision,
-                  status: permit.status,
-                  description: permit.description,
-                }}
-              />
-            </div>
-          ) : null}
-          {visits
-            .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
-            .map((visit) => {
-              return (
-                <div className="dashboard-box">
-                  <VisitCard props={visit} />
-                </div>
-              );
-            })}
-        </div>
-
-        {!hasEvents && (
+            {visa && currentPage === 1 ? (
+              <div className="dashboard-box dashboard-box-highlight">
+                <VisaCard
+                  props={{
+                    dateOfSubmission: visa.dateOfSubmission,
+                    dateOfDecision: visa.dateOfDecision,
+                    status: visa.status,
+                    description: visa.description,
+                  }}
+                />
+              </div>
+            ) : permit && currentPage === 1 ? (
+              <div className="dashboard-box dashboard-box-highlight">
+                <ResidencePermitCard
+                  props={{
+                    dateOfSubmission: permit.dateOfSubmission,
+                    dateOfDecision: permit.dateOfDecision,
+                    status: permit.status,
+                    description: permit.description,
+                  }}
+                />
+              </div>
+            ) : null}
+            {visits
+              .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
+              .map((visit) => {
+                return (
+                  <div className="dashboard-box">
+                    <VisitCard props={visit} />
+                  </div>
+                );
+              })}
+          </div>
+        ) : (
           <div className="dashboard-no-events">
             <h1>You have no events</h1>
           </div>
         )}
-        
         <PaginationComponent
           maxPages={maxPages}
           currentPage={currentPage}
