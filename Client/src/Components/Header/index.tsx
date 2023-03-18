@@ -13,16 +13,21 @@ const Header = () => {
     <header className="header">
       <div className="header-container">
         <div className="left-container">
-          <button className="header-button" onClick={() => Navigate("/dashboard")}>
+          <button
+            className="header-button"
+            onClick={() => Navigate("/dashboard")}
+          >
             <img
               src={MinistryLogo}
               className="ministry-logo"
               alt="Ministry Logo"
             />
           </button>
-          <b className="ministry-text">
-            Ministry of foreign affairs of Veyshnoria
-          </b>
+          <div className="ministry-text-container">
+            <b className="ministry-text">
+              Ministry of foreign affairs of Veyshnoria
+            </b>
+          </div>
         </div>
         <div className="right-container">
           <DropdownAccountMenu />

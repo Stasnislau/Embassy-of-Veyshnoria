@@ -21,29 +21,29 @@
       flex-direction: row-reverse;
     }
     .ministry-logo {
-      width: 100px;
-      height: 100px;
-      
-      
+      max-width: 100px;
+      max-height: 100px;
     }
-    .ministry-text {
-      font-size: 30px;
+    .ministry-text-container {
+      display: flex;
+      font-size: 1.8rem;
       font-weight: 600;
       font-family: "Trebuchet MS", sans-serif;
       color: #000;
+      overflow: hidden;
     }
   }
-  .dropdown-menu-button{
+  .dropdown-menu-button {
     background-color: inherit;
     border-radius: 5px;
     border: 1px solid #ccc;
     background-color: #e8f9fc;
   }
-  .dropdown-menu-button:hover{
+  .dropdown-menu-button:hover {
     background-color: #d4edff;
     transition: 0.2s;
   }
-  .header-button{
+  .header-button {
     background-color: inherit;
     border: none;
     cursor: pointer;
