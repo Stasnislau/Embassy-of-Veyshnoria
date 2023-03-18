@@ -57,12 +57,14 @@
         width: 100px;
         height: 50px;
         width: 40%;
-        background-color: #4caf50;
+        background-color: #3f51b5;
+        border: none;
         color: white;
         border-radius: 5px;
         font-size: 1.5rem;
+        cursor: pointer;
         &:hover {
-          background-color: #4caf50;
+          background-color: #3f51b5;
           scale: 1.01;
           transition: 0.2s;
           box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);

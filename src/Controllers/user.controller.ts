@@ -101,15 +101,15 @@ class UserController {
     if (!authHeader) {
       return next(ApiError.unauthorized());
     }
-    const user: {
+    const userData: {
       id: string;
       email: string;
     } = jwt.decode(authHeader.split(" ")[1]) as {
       id: string;
       email: string;
     };
-    const userData = await userService.getUser(user.id);
-    return res.json({ userData });
+    const user = await userService.getUser(userData.id);
+    return res.json({ user });
   };
 
   updateUser = async (
@@ -134,6 +134,7 @@ class UserController {
         email: string;
       };
       const newData = req.body as UserInterface;
+      console.log("newData", newData)
       userService.updateUser(user.id, newData);
     } catch (error: any) {
       next(error);

@@ -5,49 +5,38 @@ import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 
+import { Context } from "../../index";
+import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import TextError from "../../Components/TextError";
+import { UserInterface } from "../../Interfaces";
+import moment from "moment";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface AccountInterface {
-  id: number;
-  name: string;
-  surname: string;
-  email: string;
-  dateOfBirth: string;
-  phoneNumber: string;
-  address: string;
-  city: string;
-  country: string;
-  zipCode: string;
-  passportNumber: string;
-  passportExpirationDate: string;
-  passportIssuingCountry: string;
-}
+import userService from "../../Services/user.service";
 
 const AccountInfoPage = () => {
-  const [account, setAccount] = useState<AccountInterface>({
-    id: 1,
-    name: "John",
-    surname: "Doe",
-    email: "something@gmail.com",
-    dateOfBirth: "2020-01-01",
-    phoneNumber: "123456789",
-    address: "Some address",
-    city: "Some city",
-    country: "Some country",
-    zipCode: "12345",
-    passportNumber: "123456789",
-    passportExpirationDate: "2020-01-01",
-    passportIssuingCountry: "Some country",
-  });
-  const found = true;
+  const [account, setAccount] = useState<UserInterface>({} as UserInterface);
+  const { store } = React.useContext(Context);
+  const [errorText, setErrorText] = useState<string | null>(null);
+  useEffect(() => {
+    try {
+      store.isLoading = true;
+      userService.fetchUser().then((response: any) => {
+        setAccount(response.data.user);
+      });
+    } catch (error: any) {
+      setErrorText(error.message);
+    } finally {
+      store.isLoading = false;
+    }
+  }, [store, account]);
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
   return (
     <div className="account-info-page">
       <Header />
-      {found && !edit && (
+      {!edit && (
         <div className="account-info-container">
           <div>
             <h1 className="account-info-page-title">Account Information</h1>
@@ -66,6 +55,9 @@ const AccountInfoPage = () => {
             <div className="info-line date-of-birth-line">
               <b>Date of birth:</b> {account.dateOfBirth}
             </div>
+            <div className="info-line birth-place-line">
+              <b>Birth place:</b> {account.birthPlace}
+            </div>
             <div className="info-line phone-number-line">
               <b>Phone number:</b> {account.phoneNumber}
             </div>
@@ -78,11 +70,14 @@ const AccountInfoPage = () => {
             <div className="info-line country-line">
               <b>Country:</b> {account.country}
             </div>
-            <div className="info-line zip-code-line">
-              <b>Zip code:</b> {account.zipCode}
+            <div className="info-line zip-line">
+              <b>Zip:</b> {account.zip}
             </div>
             <div className="info-line passport-number-line">
               <b>Passport number:</b> {account.passportNumber}
+            </div>
+            <div className="info-line passport-issuing-date-line">
+              <b>Passport issuing date:</b> {account.passportIssuingDate}
             </div>
             <div className="info-line passport-expiration-date-line">
               <b>Passport expiration date:</b> {account.passportExpirationDate}
@@ -111,7 +106,7 @@ const AccountInfoPage = () => {
           </div>
         </div>
       )}
-      {found && edit && (
+      {edit && (
         <div className="account-info-container">
           <div>
             <h1 className="account-info-page-title">Account Information</h1>
@@ -123,46 +118,51 @@ const AccountInfoPage = () => {
               surname: account.surname,
               email: account.email,
               dateOfBirth: account.dateOfBirth,
+              birthPlace: account.birthPlace,
               phoneNumber: account.phoneNumber,
               address: account.address,
               city: account.city,
               country: account.country,
-              zipCode: account.zipCode,
+              zip: account.zip,
               passportNumber: account.passportNumber,
+              passportIssuingDate: account.passportIssuingDate,
               passportExpirationDate: account.passportExpirationDate,
               passportIssuingCountry: account.passportIssuingCountry,
             }}
             onSubmit={(values) => {
-              console.log(values);
-              setAccount({
-                id: 1,
-                name: values.name,
-                surname: values.surname,
-                email: values.email,
-                dateOfBirth: values.dateOfBirth,
-                phoneNumber: values.phoneNumber,
-                address: values.address,
-                city: values.city,
-                country: values.country,
-                zipCode: values.zipCode,
-                passportNumber: values.passportNumber,
-                passportExpirationDate: values.passportExpirationDate,
-                passportIssuingCountry: values.passportIssuingCountry,
-              });
+              try {
+                store.isLoading = true;
+                userService.updateUser(values).then((response: any) => {
+                  setAccount(response.data.user);
+                });
+              } catch (error: any) {
+                setErrorText(error.message);
+              }
               setEdit(false);
             }}
             validationSchema={Yup.object().shape({
               name: Yup.string().required("Name is required"),
               surname: Yup.string().required("Surname is required"),
               email: Yup.string().required("Email is required"),
-              dateOfBirth: Yup.string().required("Date of birth is required"),
+              dateOfBirth: Yup.date()
+                .required("Date of birth is required")
+                .transform((value, originalValue) => {
+                  const date = moment(originalValue, "DD.MM.YYYY", true);
+                  return date.isValid() ? date.toDate() : null;
+                })
+                .typeError(
+                  "Please enter a valid date in the format DD.MM.YYYY"
+                ),
               phoneNumber: Yup.string().required("Phone number is required"),
               address: Yup.string().required("Address is required"),
               city: Yup.string().required("City is required"),
               country: Yup.string().required("Country is required"),
-              zipCode: Yup.string().required("Zip code is required"),
+              zip: Yup.string().required("Zip is required"),
               passportNumber: Yup.string().required(
                 "Passport number is required"
+              ),
+              passportIssuingDate: Yup.string().required(
+                "Passport issuing date is required"
               ),
               passportExpirationDate: Yup.string().required(
                 "Passport expiration date is required"
@@ -230,6 +230,20 @@ const AccountInfoPage = () => {
                     className="error-message"
                   />
                 </div>
+                <div className="info-line birth-place-line">
+                  <b>Birth place:</b>
+                  <Field
+                    className="input-field"
+                    name="birthPlace"
+                    type="text"
+                    placeholder="Birth place"
+                  />
+                  <ErrorMessage
+                    name="birthPlace"
+                    component={TextError}
+                    className="error-message"
+                  />
+                </div>
                 <div className="info-line phone-number-line">
                   <b>Phone number:</b>
                   <Field
@@ -286,16 +300,16 @@ const AccountInfoPage = () => {
                     className="error-message"
                   />
                 </div>
-                <div className="info-line zip-code-line">
+                <div className="info-line zip-line">
                   <b>Zip code:</b>
                   <Field
                     className="input-field"
-                    name="zipCode"
+                    name="zip"
                     type="text"
                     placeholder="Zip code"
                   />
                   <ErrorMessage
-                    name="zipCode"
+                    name="zip"
                     component={TextError}
                     className="error-message"
                   />
@@ -310,6 +324,20 @@ const AccountInfoPage = () => {
                   />
                   <ErrorMessage
                     name="passportNumber"
+                    component={TextError}
+                    className="error-message"
+                  />
+                </div>
+                <div className="info-line passport-issuing-date-line">
+                  <b>Passport issuing date:</b>
+                  <Field
+                    className="input-field"
+                    name="passportIssuingDate"
+                    type="text"
+                    placeholder="Passport issuing date"
+                  />
+                  <ErrorMessage
+                    name="passportIssuingDate"
                     component={TextError}
                     className="error-message"
                   />
@@ -329,7 +357,7 @@ const AccountInfoPage = () => {
                   />
                 </div>
                 <div className="info-line passport-issuing-country-line">
-                  <b>Country of passport issue :</b>
+                  <b>Country of passport issue:</b>
                   <Field
                     className="input-field"
                     name="passportIssuingCountry"
@@ -361,12 +389,12 @@ const AccountInfoPage = () => {
           </Formik>
         </div>
       )}
-
-      {!found && (
-        <div className="error-header">
-          <h1 className="error-message-title">Error 404</h1>
-          <h2 className="error-message-subtitle">Account not found</h2>
-        </div>
+      {errorText && (
+        <ErrorModal
+          message={errorText}
+          handleOkay={() => setErrorText(null)}
+          open={errorText ? true : false}
+        />
       )}
     </div>
   );

@@ -159,6 +159,7 @@ class UserService {
       passportIssuingCountry: string;
     }
   ) {
+    console.log("ZASHLO");
     const candidate = await embassyDB.users.findUnique({
       where: {
         id: Number(id),
@@ -170,6 +171,7 @@ class UserService {
     if (!candidate) {
       throw ApiError.badRequest(`User with does not exist`);
     }
+    console.log("ZASHLO1");
     if (candidate.email !== data.email) {
       const credentials = await embassyDB.credentials.findUnique({
         where: {
@@ -179,6 +181,7 @@ class UserService {
           id: true,
         },
       });
+      console.log("credentials" + credentials);
       if (!credentials) {
         throw ApiError.badRequest(`User with does not exist`);
       }
@@ -190,14 +193,16 @@ class UserService {
           email: data.email,
         },
       });
-      const user = await embassyDB.users.update({
-        where: {
-          id: Number(id),
-        },
-        data: data as UserInterface,
-      });
-      return user;
     }
+    console.log("data", data);
+    const user = await embassyDB.users.update({
+      where: {
+        id: Number(id),
+      },
+      data: data as UserInterface,
+    });
+    console.log(user, "user");
+    return user;
   }
 
   async updatePassword(email: string, password: string) {
