@@ -57,7 +57,7 @@ class UserController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
-      return res.json( user );
+      return res.json(user);
     } catch (error: any) {
       next(error);
     }
@@ -134,7 +134,6 @@ class UserController {
         email: string;
       };
       const newData = req.body as UserInterface;
-      console.log("newData", newData)
       userService.updateUser(user.id, newData);
     } catch (error: any) {
       next(error);

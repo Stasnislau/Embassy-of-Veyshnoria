@@ -134,6 +134,7 @@ const AccountInfoPage = () => {
                 store.isLoading = true;
                 userService.updateUser(values).then((response: any) => {
                   setAccount(response.data.user);
+                  setEdit(false);
                 });
               } catch (error: any) {
                 setErrorText(error.message);
@@ -143,7 +144,6 @@ const AccountInfoPage = () => {
             validationSchema={Yup.object().shape({
               name: Yup.string().required("Name is required"),
               surname: Yup.string().required("Surname is required"),
-              email: Yup.string().required("Email is required"),
               dateOfBirth: Yup.date()
                 .required("Date of birth is required")
                 .transform((value, originalValue) => {
@@ -198,20 +198,6 @@ const AccountInfoPage = () => {
                   />
                   <ErrorMessage
                     name="surname"
-                    component={TextError}
-                    className="error-message"
-                  />
-                </div>
-                <div className="info-line email-line">
-                  <b>Email:</b>
-                  <Field
-                    className="input-field"
-                    name="email"
-                    type="text"
-                    placeholder="Email"
-                  />
-                  <ErrorMessage
-                    name="email"
                     component={TextError}
                     className="error-message"
                   />
