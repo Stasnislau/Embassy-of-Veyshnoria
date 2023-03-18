@@ -11,6 +11,7 @@ import AccountPage from "./Pages/AccountInfoPage";
 import { Context } from "./index";
 import CreateAccountPage from "./Pages/CreateAccountPage";
 import Dashboard from "./Pages/Dashboard";
+import FAQPage from "./Pages/InformationPages/FAQPage";
 import Footer from "./Components/Footer";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
 import LoginPage from "./Pages/LoginPage";
@@ -70,6 +71,7 @@ function App() {
                 element={<ResidencePermits />}
               ></Route>
               <Route path="/visas" element={<VisasPage />}></Route>
+              <Route path="/faq" element={<FAQPage />}></Route>
 
               <Route path="*" element={<Navigate to="/dashboard" />}></Route>
             </Routes>
@@ -88,6 +90,7 @@ function App() {
                 path="/forgot-password"
                 element={<ForgotPasswordPage />}
               ></Route>
+              <Route path="/faq" element={<FAQPage />}></Route>
               <Route path="*" element={<Navigate to="/login" />}></Route>
             </Routes>
           )}

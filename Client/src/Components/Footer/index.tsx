@@ -1,12 +1,15 @@
-import React from "react";
 import "./index.scss";
-import twitterLogo from "./../../Pictures/twitter.png";
+
+import React from "react";
 import facebookLogo from "./../../Pictures/facebook.png";
-import instagramLogo from "./../../Pictures/instagram.png";
-import youtubeLogo from "./../../Pictures/youtube.png";
 import flag from "./../../Pictures/nationalFlag.png";
+import instagramLogo from "./../../Pictures/instagram.png";
+import twitterLogo from "./../../Pictures/twitter.png";
+import { useNavigate } from "react-router";
+import youtubeLogo from "./../../Pictures/youtube.png";
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -41,7 +44,14 @@ const Footer = () => {
         </div>
         <div className="footer-container-center">
           <div className="footer-container-flag">
-            <img src={flag} alt="National Flag" className="flag" />
+            <img
+              src={flag}
+              alt="National Flag"
+              className="flag"
+              onClick={() => {
+                navigate("/");
+              }}
+            />
           </div>
         </div>
         <div className="footer-container-right">
@@ -77,10 +87,7 @@ const Footer = () => {
               {" "}
               Legal basis
             </a>
-            <a
-              className="footer-link"
-              href="https://en.wikipedia.org/wiki/Veyshnoria"
-            >
+            <a className="footer-link" href="/faq">
               FAQ
             </a>
           </div>
