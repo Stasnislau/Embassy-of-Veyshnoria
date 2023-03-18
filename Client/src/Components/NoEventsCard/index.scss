@@ -1,15 +1,41 @@
-.no-events-card{
-    position: relative;
+.events-to-see {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+
+  &__message {
     display: flex;
-    align-items: center;
     flex-direction: column;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 100%;
-    margin-top: 30px;
-    .no-events-text{
-      font-size: 26px;
-      font-weight: 600;
-      color: #020202;
-    }
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
   }
+
+  &__title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  &__description {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    color: #777;
+  }
+
+  &__image {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background-color: #ddd;
+    background-image: url("https://media.istockphoto.com/id/1082084640/vector/sketch-of-astronaut-with-spyglass.jpg?s=612x612&w=0&k=20&c=GXxnFkxz0WLz7jCi1Gbtw-1fM5lWPi7MnV-_LM0HSd8=");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+}
