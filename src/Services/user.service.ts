@@ -26,7 +26,7 @@ class UserService {
         name: name,
         surname: surname,
         email: email,
-        dateOfBirth: "",
+        birthDate: "",
         birthPlace: "",
         phoneNumber: "",
         address: "",
@@ -145,7 +145,7 @@ class UserService {
     data: {
       name: string;
       surname: string;
-      dateOfBirth: string;
+      birthDate: string;
       birthPlace: string;
       phoneNumber: string;
       address: string;

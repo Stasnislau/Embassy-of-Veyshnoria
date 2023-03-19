@@ -53,7 +53,7 @@ const AccountInfoPage = () => {
               <b>Email:</b> {account.email}
             </div>
             <div className="info-line date-of-birth-line">
-              <b>Date of birth:</b> {account.dateOfBirth}
+              <b>Date of birth:</b> {account.birthDate}
             </div>
             <div className="info-line birth-place-line">
               <b>Birth place:</b> {account.birthPlace}
@@ -117,7 +117,7 @@ const AccountInfoPage = () => {
               name: account.name,
               surname: account.surname,
               email: account.email,
-              dateOfBirth: account.dateOfBirth,
+              birthDate: account.birthDate,
               birthPlace: account.birthPlace,
               phoneNumber: account.phoneNumber,
               address: account.address,
@@ -144,7 +144,7 @@ const AccountInfoPage = () => {
             validationSchema={Yup.object().shape({
               name: Yup.string().required("Name is required"),
               surname: Yup.string().required("Surname is required"),
-              dateOfBirth: Yup.date()
+              birthDate: Yup.date()
                 .required("Date of birth is required")
                 .transform((value, originalValue) => {
                   const date = moment(originalValue, "DD.MM.YYYY", true);
@@ -153,7 +153,9 @@ const AccountInfoPage = () => {
                 .typeError(
                   "Please enter a valid date in the format DD.MM.YYYY"
                 ),
-              phoneNumber: Yup.string().required("Phone number is required"),
+              phoneNumber: Yup.string()
+                .required("Required")
+                .matches(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
               address: Yup.string().required("Address is required"),
               city: Yup.string().required("City is required"),
               country: Yup.string().required("Country is required"),
@@ -161,12 +163,24 @@ const AccountInfoPage = () => {
               passportNumber: Yup.string().required(
                 "Passport number is required"
               ),
-              passportIssuingDate: Yup.string().required(
-                "Passport issuing date is required"
-              ),
-              passportExpirationDate: Yup.string().required(
-                "Passport expiration date is required"
-              ),
+              passportIssuingDate: Yup.string()
+                .required("Passport issuing date is required")
+                .transform((value, originalValue) => {
+                  const date = moment(originalValue, "DD.MM.YYYY", true);
+                  return date.isValid() ? date.toDate() : null;
+                })
+                .typeError(
+                  "Please enter a valid date in the format DD.MM.YYYY"
+                ),
+              passportExpirationDate: Yup.string()
+                .required("Passport expiration date is required")
+                .transform((value, originalValue) => {
+                  const date = moment(originalValue, "DD.MM.YYYY", true);
+                  return date.isValid() ? date.toDate() : null;
+                })
+                .typeError(
+                  "Please enter a valid date in the format DD.MM.YYYY"
+                ),
               passportIssuingCountry: Yup.string().required(
                 "Passport issuing country is required"
               ),
@@ -206,12 +220,12 @@ const AccountInfoPage = () => {
                   <b>Date of birth:</b>
                   <Field
                     className="input-field"
-                    name="dateOfBirth"
+                    name="birthDate"
                     type="text"
                     placeholder="Date of birth"
                   />
                   <ErrorMessage
-                    name="dateOfBirth"
+                    name="birthDate"
                     component={TextError}
                     className="error-message"
                   />

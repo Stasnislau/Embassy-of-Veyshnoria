@@ -72,7 +72,7 @@ export interface UserInterface {
   name: string;
   surname: string;
   email: string;
-  dateOfBirth: string;
+  birthDate: string;
   birthPlace: string;
   phoneNumber: string;
   address: string;
