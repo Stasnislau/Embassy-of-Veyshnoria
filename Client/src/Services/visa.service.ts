@@ -1,10 +1,11 @@
+import { VisaApplicationFrontInterface, VisaApplicationInterface } from "../Interfaces";
+
 import { AxiosResponse } from "axios";
-import { VisaApplicationInterface } from "../Interfaces";
 import api from "../Http";
 
 class VisaService {
   static async createVisaApplication(
-    data: VisaApplicationInterface
+    data: VisaApplicationFrontInterface
   ): Promise<AxiosResponse<VisaApplicationInterface>> {
     return api.post<VisaApplicationInterface>("/visas/create", data);
   }
@@ -13,24 +14,24 @@ class VisaService {
     data: VisaApplicationInterface,
     id: string
   ): Promise<AxiosResponse<VisaApplicationInterface>> {
-    return api.put<VisaApplicationInterface>(`/visas/update/:${id}`, data);
+    return api.put<VisaApplicationInterface>(`/visas/update/${id}`, data);
   }
 
   static async deleteVisaApplication(
     id: string
   ): Promise<AxiosResponse<VisaApplicationInterface>> {
-    return api.delete<VisaApplicationInterface>(`/visas/delete/:${id}`);
+    return api.delete<VisaApplicationInterface>(`/visas/delete/${id}`);
   }
 
   static async fetchVisaApplicationsByUser(): Promise<
-    AxiosResponse<VisaApplicationInterface>
+    AxiosResponse<VisaApplicationInterface[]>
   > {
-    return api.get<VisaApplicationInterface>(`/visas/users`);
+    return api.get<VisaApplicationInterface[]>(`/visas/users`);
   }
   static async fetchVisaApplicationById(
     id: string
   ): Promise<AxiosResponse<VisaApplicationInterface>> {
-    return api.get<VisaApplicationInterface>(`/visas/specific/:${id}`);
+    return api.get<VisaApplicationInterface>(`/visas/specific/${id}`);
   }
 }
 

@@ -21,6 +21,7 @@ const ResidencePermitPage = () => {
     );
   const [errorText, setErrorText] = useState<string | null>(null);
   const id = useParams().id as string;
+
   useEffect(() => {
     (async () => {
       try {
@@ -36,12 +37,10 @@ const ResidencePermitPage = () => {
     })();
   }, [id, store]);
 
-  const found = true;
   const [open, setOpen] = useState(false);
   return (
     <div className="residence-permit-page">
       <Header />
-      {found && (
         <div className="residence-permit-page-container">
           <h1 className="residence-permit-page-title">
             Residence Permit Application
@@ -58,12 +57,12 @@ const ResidencePermitPage = () => {
             </div>
             <div className="residence-permit-field name-field">
               {" "}
-              First Name:{" "}
+              Name:{" "}
               <span className="user-info">{residencePermit.name}</span>
             </div>
             <div className="residence-permit-field surname-field">
               {" "}
-              Last Name:{" "}
+              Surname:{" "}
               <span className="user-info">{residencePermit.surname}</span>
             </div>
             <div className="residence-permit-field email-field">
@@ -160,25 +159,20 @@ const ResidencePermitPage = () => {
             </button>
           </div>
         </div>
-      )}
-      {!found && (
-        <h1 className="error-header">Residence Permit Application Not Found</h1>
-      )}
       <SurenessModal
         open={open}
         handleClose={() => {
           setOpen(false);
         }}
-        handleConfirm={ async () => {
-            
-            try {
-              const response = await ResidenceService.deletePermitApplication(id);
-            if(response.status === 200){
+        handleConfirm={async () => {
+          try {
+            const response = await ResidenceService.deletePermitApplication(id);
+            if (response.status === 200) {
               navigate("/dashboard");
             }
-            } catch (error: any) {
-              setErrorText(error.response.data.message);
-            }
+          } catch (error: any) {
+            setErrorText(error.response.data.message);
+          }
         }}
         text="delete this residence permit application"
       />

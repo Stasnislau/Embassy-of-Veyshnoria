@@ -1,6 +1,6 @@
 import {
   CredentialsInterface,
-  ResidencePermitApplicationsInterface,
+  ResidencePermitApplicationInterface,
   UserInterface,
   VisaApplicationInterface,
   VisitInterface,
@@ -71,7 +71,7 @@ const getMockVisaApplications = () => {
       status: "Pending",
       dateOfSubmission: "01.01.2021",
       dateOfDecision: "01.10.2021",
-    },
+    } as VisaApplicationInterface,
     {
       name: "Steven",
       surname: "Universe",
@@ -94,7 +94,7 @@ const getMockVisaApplications = () => {
       status: "Pending",
       dateOfSubmission: "01.01.2021",
       dateOfDecision: "01.10.2021",
-    },
+    } as VisaApplicationInterface,
   ];
   return visaApplications;
 };
@@ -102,6 +102,7 @@ const getMockVisaApplications = () => {
 const getMockResidencePermitApplications = () => {
   const residencePermitApplications = [
     {
+      id: 1,
       name: "Test",
       surname: "Testovich",
       email: "test.testovich@gmail.com",
@@ -121,7 +122,7 @@ const getMockResidencePermitApplications = () => {
       status: "Rejected",
       dateOfSubmission: "01.01.2021",
       dateOfDecision: "03.10.2021",
-    },
+    } as ResidencePermitApplicationInterface,
   ];
   return residencePermitApplications;
 };
@@ -207,7 +208,7 @@ async function seed() {
   await Promise.all(
     getMockResidencePermitApplications().map(
       async (
-        residencePermitApplication: ResidencePermitApplicationsInterface
+        residencePermitApplication: ResidencePermitApplicationInterface
       ) => {
         return embassyDB.residence_permit_applications.create({
           data: {

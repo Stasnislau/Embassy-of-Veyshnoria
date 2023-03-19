@@ -95,7 +95,7 @@ class VisaApplicationController {
       const visaApplications = await visaService.getVisaApplicationsByUserId(
         user.id
       );
-      return res.json({ visaApplications });
+      return res.json(visaApplications);
     } catch (error: any) {
       next(error);
     }
@@ -107,9 +107,11 @@ class VisaApplicationController {
     next: NextFunction
   ) => {
     try {
-      const { id } = req.body;
-      const visaApplication = await visaService.getVisaApplicationById(id);
-      return res.json({ visaApplication });
+      const id = req.params.id;
+      const visaApplication = await visaService.getVisaApplicationById(
+        Number(id)
+      );
+      return res.json(visaApplication);
     } catch (error: any) {
       next(error);
     }
@@ -121,12 +123,12 @@ class VisaApplicationController {
     next: NextFunction
   ) => {
     try {
+      const id = req.params.id;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest("Validation error"));
       }
       const {
-        id,
         name,
         surname,
         birthDate,
@@ -147,27 +149,30 @@ class VisaApplicationController {
         dateOfSubmission,
         dateOfDecision,
       } = req.body;
-      const visaApplication = await visaService.updateVisaApplication(id, {
-        name,
-        surname,
-        birthDate,
-        birthPlace,
-        phoneNumber,
-        address,
-        city,
-        country,
-        zip,
-        passportNumber,
-        passportIssuingDate,
-        passportExpirationDate,
-        passportIssuingCountry,
-        visaType,
-        visaDuration,
-        visaDate,
-        description,
-        dateOfSubmission,
-        dateOfDecision,
-      } as VisaApplicationInterface);
+      const visaApplication = await visaService.updateVisaApplication(
+        Number(id),
+        {
+          name,
+          surname,
+          birthDate,
+          birthPlace,
+          phoneNumber,
+          address,
+          city,
+          country,
+          zip,
+          passportNumber,
+          passportIssuingDate,
+          passportExpirationDate,
+          passportIssuingCountry,
+          visaType,
+          visaDuration,
+          visaDate,
+          description,
+          dateOfSubmission,
+          dateOfDecision,
+        } as VisaApplicationInterface
+      );
       return res.json({ visaApplication });
     } catch (error: any) {
       next(error);
@@ -180,7 +185,7 @@ class VisaApplicationController {
     next: NextFunction
   ) => {
     try {
-      const { id } = req.body;
+      const id = req.params.id;
       const authHeader = req.headers && req.headers.authorization;
       if (!authHeader) {
         return next(ApiError.unauthorized());

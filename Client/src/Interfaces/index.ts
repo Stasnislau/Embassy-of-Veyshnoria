@@ -14,6 +14,7 @@ export interface UserDtoInterface {
 }
 
 export interface VisaApplicationInterface {
+  id: number;
   name: string;
   surname: string;
   email: string;
@@ -37,8 +38,29 @@ export interface VisaApplicationInterface {
   dateOfDecision: string;
 }
 
+export interface VisaApplicationFrontInterface {
+  name: string;
+  surname: string;
+  email: string;
+  phoneNumber: string;
+  birthDate: string;
+  birthPlace: string;
+  address: string;
+  city: string;
+  zip: string;
+  country: string;
+  visaType: string;
+  visaDuration: string;
+  visaDate: string;
+  passportNumber: string;
+  passportExpirationDate: string;
+  passportIssuingDate: string;
+  passportIssuingCountry: string;
+  description: string;
+}
+
 export interface ResidencePermitApplicationInterface {
-  id : number;
+  id: number;
   name: string;
   surname: string;
   email: string;
@@ -80,12 +102,18 @@ export interface ResidencePermitApplicationFrontInterface {
 }
 
 export interface VisitInterface {
+  id: number;
   date: string;
   time: string;
   location: string;
   description: string;
-  userId: number;
-  id: number;
+}
+
+export interface VisitFrontInterface {
+  date: string;
+  time: string;
+  location: string;
+  description: string;
 }
 
 export interface UserInterface {

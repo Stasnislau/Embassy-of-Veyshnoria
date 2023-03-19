@@ -32,9 +32,9 @@ class ResidenceService {
     );
   }
   static async fetchPermitApplicationsByUser(): Promise<
-    AxiosResponse<ResidencePermitApplicationInterface>
+    AxiosResponse<ResidencePermitApplicationInterface[]>
   > {
-    return api.get<ResidencePermitApplicationInterface>(`/permits/users`);
+    return api.get<ResidencePermitApplicationInterface[]>(`/permits/users`);
   }
   static async fetchPermitApplicationById(
     id: string

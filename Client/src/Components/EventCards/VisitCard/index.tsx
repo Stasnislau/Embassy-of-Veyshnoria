@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 interface VisitCardProps {
   props: {
+    id: number;
     date: string;
     time: string;
     location: string;
@@ -19,7 +20,7 @@ const VisitCard = ({ props }: VisitCardProps) => {
     <button
       className="visit-card"
       onClick={() => {
-        Navigate("/visit");
+        Navigate(`/visit/${props.id}`);
       }}
     >
       <h1> Visit to the office </h1>

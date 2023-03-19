@@ -41,7 +41,7 @@ class VisitController {
         email: string;
       };
       const visits = await visitService.getVisitsByUserId(user.id);
-      return res.json({ visits });
+      return res.json( visits );
     } catch (error: any) {
       next(error);
     }
@@ -51,7 +51,7 @@ class VisitController {
     try {
       const { id } = req.body;
       const visit = await visitService.getVisitById(id);
-      return res.json({ visit });
+      return res.json( visit );
     } catch (error: any) {
       next(error);
     }

@@ -105,7 +105,7 @@ class ResidencePermitApplicationController {
       if (!residencePermitApplications) {
         throw ApiError.badRequest("Residence permit applications not found");
       }
-      return res.json({ residencePermitApplications });
+      return res.json( residencePermitApplications );
     } catch (error: any) {
       next(error);
     }

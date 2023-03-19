@@ -23,52 +23,51 @@ import { useState } from "react";
 
 const Dashboard = () => {
   const { store } = React.useContext(Context);
-  const user = store.user;
   const [currentPage, setCurrentPage] = useState(1);
-  const [visits, setVisits] = useState<VisitInterface[]>([]);
-  const [visa, setVisa] = useState<VisaApplicationInterface | null>(null);
-  const [permit, setPermit] =
-    useState<ResidencePermitApplicationInterface | null>(null);
+  const [visits, setVisits] = useState<VisitInterface[]>(
+    [] as VisitInterface[]
+  );
+  const [visa, setVisa] = useState<VisaApplicationInterface>(
+    {} as VisaApplicationInterface
+  );
+  const [permit, setPermit] = useState<ResidencePermitApplicationInterface>(
+    {} as ResidencePermitApplicationInterface
+  );
 
   const [errorText, setErrorText] = useState<string | null>(null);
 
   useEffect(() => {
-    if (store.isAuthorized) {
+    (async () => {
+      if (store.isAuthorized) {
+        try {
+          const response = await VisitService.fetchVisitsByUser();
+          setVisits(response.data);
+        } catch (error: any) {
+          setErrorText(error.message);
+        }
+      }
       try {
-        VisitService.fetchVisitsByUser().then((response: any) => {
-          setVisits(response.data.visits);
+        const response = await VisaService.fetchVisaApplicationsByUser();
+        response.data.forEach((visa: VisaApplicationInterface) => {
+          if (visa.status !== "Approved" && visa.status !== "Rejected") {
+            setVisa(visa);
+          }
         });
       } catch (error: any) {
         setErrorText(error.message);
       }
-    }
-    try {
-      VisaService.fetchVisaApplicationsByUser().then((response: any) => {
-        response.data.visaApplications.forEach(
-          (visa: VisaApplicationInterface) => {
-            if (visa.status !== "Approved" && visa.status !== "Rejected") {
-              setVisa(visa);
-            }
+      try {
+        const response = await PermitService.fetchPermitApplicationsByUser();
+        response.data.forEach((permit: ResidencePermitApplicationInterface) => {
+          if (permit.status !== "Approved" && permit.status !== "Rejected") {
+            setPermit(permit);
           }
-        );
-      });
-    } catch (error: any) {
-      setErrorText(error.message);
-    }
-    try {
-      PermitService.fetchPermitApplicationsByUser().then((response: any) => {
-        response.data.residencePermitApplications.forEach(
-          (permit: ResidencePermitApplicationInterface) => {
-            if (permit.status !== "Approved" && permit.status !== "Rejected") {
-              setPermit(permit);
-            }
-          }
-        );
-      });
-    } catch (error: any) {
-      setErrorText(error.message);
-    }
-  }, [user, store.isAuthorized]);
+        });
+      } catch (error: any) {
+        setErrorText(error.message);
+      }
+    })();
+  }, [store.isAuthorized]);
   const maxPages =
     (visits.length + (visa || permit ? 1 : 0)) % 6 === 0
       ? (visits.length + (visa || permit ? 1 : 0)) / 6
@@ -106,12 +105,13 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <Header />
       <div className="dashboard-body">
-        { hasEvents ? (
+        {hasEvents ? (
           <div className="dashboard-boxes-container">
             {visa && currentPage === 1 ? (
               <div className="dashboard-box dashboard-box-highlight">
                 <VisaCard
                   props={{
+                    id: visa.id,
                     dateOfSubmission: visa.dateOfSubmission,
                     dateOfDecision: visa.dateOfDecision,
                     status: visa.status,

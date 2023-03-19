@@ -1,43 +1,38 @@
 import "./index.scss";
 
 import React, { useState } from "react";
+import {
+  VisaApplicationFrontInterface,
+  VisaApplicationInterface,
+} from "../../Interfaces";
 
+import { Context } from "../..";
 import Header from "../../Components/Header";
 import PaginationComponent from "../../Components/Pagination";
 import VisaCard from "../../Components/EventCards/VisaCard";
-
-interface VisaProps {
-  id: number;
-  dateOfSubmission: string;
-  dateOfDecision: string;
-  status: string;
-  description: string;
-}
+import VisaService from "../../Services/visa.service";
+import { useEffect } from "react";
 
 const VisasPage = () => {
-  const visas: VisaProps[] = [
-    {
-      id: 1,
-      dateOfSubmission: "2020-12-12",
-      dateOfDecision: "2020-12-12",
-      status: "Pending",
-      description: "Description",
-    },
-    {
-      id: 2,
-      dateOfSubmission: "2020-12-12",
-      dateOfDecision: "2020-12-12",
-      status: "Rejected",
-      description: "Description",
-    },
-    {
-      id: 3,
-      dateOfSubmission: "2020-12-12",
-      dateOfDecision: "2020-12-12",
-      status: "Approved",
-      description: "Description",
-    },
-  ];
+  const [visas, setVisas] = useState<VisaApplicationInterface[]>([]);
+  const [errorText, setErrorText] = useState<string | null>(null);
+  const { store } = React.useContext(Context);
+
+  useEffect(() => {
+    const fetchVisas = async () => {
+      try {
+        store.isLoading = true;
+        const response = await VisaService.fetchVisaApplicationsByUser();
+        console.log(response.data);
+        setVisas(response.data);
+      } catch (error: any) {
+        setErrorText(error.response.data.message);
+      } finally {
+        store.isLoading = false;
+      }
+    };
+    fetchVisas();
+  }, []);
   const maxPages = Math.ceil(visas.length / 6);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +56,7 @@ const VisasPage = () => {
                 <div className="visas-page-box">
                   <VisaCard
                     props={{
+                      id: visa.id,
                       dateOfSubmission: visa.dateOfSubmission,
                       dateOfDecision: visa.dateOfDecision,
                       status: visa.status,

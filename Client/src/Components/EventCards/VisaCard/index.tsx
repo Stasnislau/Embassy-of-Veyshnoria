@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 interface VisaCardProps {
   props: {
+    id: number;
     dateOfSubmission: string;
     dateOfDecision: string;
     status: string;
@@ -19,7 +20,7 @@ const VisaCard = ({ props }: VisaCardProps) => {
     <button
       className="visa-card"
       onClick={() => {
-        Navigate("/visa");
+        Navigate(`/visa/${props.id}`);
       }}
     >
       <h1> Visa </h1>

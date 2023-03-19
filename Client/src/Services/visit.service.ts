@@ -1,5 +1,6 @@
+import { VisitFrontInterface, VisitInterface } from "../Interfaces";
+
 import { AxiosResponse } from "axios";
-import { VisitInterface } from "../Interfaces";
 import api from "../Http";
 
 class VisitService {
@@ -11,7 +12,7 @@ class VisitService {
   }
   static async createVisit(
     visit: VisitInterface
-  ): Promise<AxiosResponse<VisitInterface>> {
+  ): Promise<AxiosResponse<VisitFrontInterface>> {
     return api.post<VisitInterface>("/visits/create", visit);
   }
   static async updateVisit(

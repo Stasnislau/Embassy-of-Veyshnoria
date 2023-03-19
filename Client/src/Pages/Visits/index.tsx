@@ -4,6 +4,7 @@ import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { VisitFrontInterface, VisitInterface } from "../../Interfaces";
 
 import Header from "../../Components/Header";
 import Modal from "@mui/material/Modal";
@@ -12,184 +13,206 @@ import TextError from "../../Components/TextError";
 import VisitCard from "../../Components/EventCards/VisitCard";
 import plusIcon from "../../Pictures/plus.svg";
 
-interface visitInterface {
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-}
-
 const VisitsPage = () => {
-  const [visits, setVisits] = useState<visitInterface[]>([
+  const [visits, setVisits] = useState<VisitInterface[]>([
     {
+      id: 1,
       date: "2020-12-12",
       time: "12:00",
       location: "1 Main Street, New York, NY 10001",
       description: "Visit to submit documents",
     },
     {
+      id: 2,
       date: "2020-12-12",
       time: "12:00",
       location: "2 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 3,
       date: "2020-12-12",
       time: "12:00",
       location: "3 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 4,
       date: "2020-12-12",
       time: "12:00",
       location: "4 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 5,
       date: "2020-12-12",
       time: "12:00",
       location: "5 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 6,
       date: "2020-12-12",
       time: "12:00",
       location: "6 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 7,
       date: "2020-12-12",
       time: "12:00",
       location: "7 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 8,
       date: "2020-12-12",
       time: "12:00",
       location: "8 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 9,
       date: "2020-12-12",
       time: "12:00",
       location: "9 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 10,
       date: "2020-12-12",
       time: "12:00",
       location: "10 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 11,
       date: "2020-12-12",
       time: "12:00",
       location: "11 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 12,
       date: "2020-12-12",
       time: "12:00",
       location: "12 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 13,
       date: "2020-12-12",
       time: "12:00",
       location: "13 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 14,
       date: "2020-12-12",
       time: "12:00",
       location: "14 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 15,
       date: "2020-12-12",
       time: "12:00",
       location: "15 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 16,
       date: "2020-12-12",
       time: "12:00",
       location: "16 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 17,
       date: "2020-12-12",
       time: "12:00",
       location: "17 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 18,
       date: "2020-12-12",
       time: "12:00",
       location: "18 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 19,
       date: "2020-12-12",
       time: "12:00",
       location: "19 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 20,
       date: "2020-12-12",
       time: "12:00",
       location: "20 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 21,
       date: "2020-12-12",
       time: "12:00",
       location: "21 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 22,
       date: "2020-12-12",
       time: "12:00",
       location: "22 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 23,
       date: "2020-12-12",
       time: "12:00",
       location: "23 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 24,
       date: "2020-12-12",
       time: "12:00",
       location: "24 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 25,
       date: "2020-12-12",
       time: "12:00",
       location: "25 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 26,
       date: "2020-12-12",
       time: "12:00",
       location: "26 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 27,
       date: "2020-12-12",
       time: "12:00",
       location: "27 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 28,
       date: "2020-12-12",
       time: "12:00",
       location: "28 Main Street, New York, NY 10001",
       description: "Visit to submit new documents",
     },
     {
+      id: 29,
       date: "2020-12-12",
       time: "12:00",
       location: "29 Main Street, New York, NY 10001",
@@ -221,10 +244,8 @@ const VisitsPage = () => {
     location: "10 Main Street, New York, NY 10001",
     description: "Submission of new documents",
   };
-  const onSubmit = (values: visitInterface) => {
-    setVisits((prevVisits) => [...prevVisits, values]);
-    setMaxPages(Math.ceil(visits.length / 6));
-    setOpenedNewVisit(false);
+  const onSubmit = (values: VisitFrontInterface) => {
+    console.log(values);
   };
   const [openedNewVisit, setOpenedNewVisit] = useState(false);
 
