@@ -44,7 +44,6 @@ const CreateAccount = () => {
         }
       } catch (error: any) {
         setErrorText(error.response.data.message);
-        console.log(error.response.data.message);
       }
     } else {
       setPasswordsMatch(1);

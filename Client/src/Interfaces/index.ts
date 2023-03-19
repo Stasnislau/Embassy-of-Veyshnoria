@@ -38,6 +38,7 @@ export interface VisaApplicationInterface {
 }
 
 export interface ResidencePermitApplicationInterface {
+  id : number;
   name: string;
   surname: string;
   email: string;

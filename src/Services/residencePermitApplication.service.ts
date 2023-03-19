@@ -7,7 +7,7 @@ import moment from "moment";
 
 class ResidencePermitApplicationService {
   getResidencePermitApplicationById = async (
-    id: number
+    id: string
   ): Promise<ResidencePermitApplicationInterface> => {
     const residencePermitApplication =
       await embassyDB.residence_permit_applications.findUnique({
@@ -40,6 +40,7 @@ class ResidencePermitApplicationService {
     if (!residencePermitApplication) {
       throw ApiError.badRequest("Residence Permit Application not found");
     }
+    
     return residencePermitApplication;
   };
 
@@ -84,7 +85,6 @@ class ResidencePermitApplicationService {
     residencePermitApplication: ResidencePermitApplicationInterface,
     userId: string
   ): Promise<ResidencePermitApplicationInterface> => {
-    console.log("ZASHLO", residencePermitApplication, userId)
     const residenceApplication =
       await embassyDB.residence_permit_applications.create({
         data: {

@@ -3,18 +3,38 @@ import "./index.scss";
 import React, { useState } from "react";
 
 import { Context } from "../../index";
+import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import { ResidencePermitApplicationInterface } from "../../Interfaces";
 import ResidenceService from "../../Services/residence.service";
 import SurenessModal from "../../Components/SurenessModal";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ResidencePermitPage = () => {
-  const { store} = React.useContext(Context);
-  const [residencePermit, setResidencePermit] = useState<
-    ResidencePermitApplicationInterface
-  >({} as ResidencePermitApplicationInterface);
-  const [errorText, setErrorText] = useState("");
+  const navigate = useNavigate();
+  const { store } = React.useContext(Context);
+  const [residencePermit, setResidencePermit] =
+    useState<ResidencePermitApplicationInterface>(
+      {} as ResidencePermitApplicationInterface
+    );
+  const [errorText, setErrorText] = useState<string | null>(null);
+  const id = useParams().id as string;
+  useEffect(() => {
+    (async () => {
+      try {
+        store.isLoading = true;
+        const response = await ResidenceService.fetchPermitApplicationById(id);
+        console.log(response.data);
+        setResidencePermit(response.data);
+      } catch (error: any) {
+        setErrorText(error.response.data.message);
+      } finally {
+        store.isLoading = false;
+      }
+    })();
+  }, [id, store]);
 
   const found = true;
   const [open, setOpen] = useState(false);
@@ -115,8 +135,7 @@ const ResidencePermitPage = () => {
             </div>
             <div className="residence-permit-field zip-field">
               {" "}
-              Zip Code:{" "}
-              <span className="user-info">{residencePermit.zip}</span>
+              Zip: <span className="user-info">{residencePermit.zip}</span>
             </div>
             <div className="residence-permit-page-subtitle">
               Residence Permit Information{" "}
@@ -150,12 +169,26 @@ const ResidencePermitPage = () => {
         handleClose={() => {
           setOpen(false);
         }}
-        handleConfirm={() => {
-          // delete application
-          setOpen(false);
+        handleConfirm={ async () => {
+            
+            try {
+              const response = await ResidenceService.deletePermitApplication(id);
+            if(response.status === 200){
+              navigate("/dashboard");
+            }
+            } catch (error: any) {
+              setErrorText(error.response.data.message);
+            }
         }}
         text="delete this residence permit application"
       />
+      {errorText && (
+        <ErrorModal
+          message={errorText}
+          open={errorText ? true : false}
+          handleOkay={() => setErrorText(null)}
+        />
+      )}
     </div>
   );
 };

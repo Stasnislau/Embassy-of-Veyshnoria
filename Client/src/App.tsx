@@ -55,15 +55,15 @@ function App() {
               ></Route>
               <Route path="/account" element={<AccountPage />}></Route>
               <Route path="/visits" element={<VisitsPage />}></Route>
-              <Route path="/visit" element={<VisitPage />}></Route>
+              <Route path="/visit/:id" element={<VisitPage />}></Route>
               <Route path="/visa-info" element={<VisaInfoPage />}></Route>
               <Route
                 path="/residence-info"
                 element={<ResidenceInfoPage />}
               ></Route>
-              <Route path="/visa" element={<VisaPage />}></Route>
+              <Route path="/visa/:id" element={<VisaPage />}></Route>
               <Route
-                path="/residence-permit"
+                path="/residence-permit/:id"
                 element={<ResidencePermitPage />}
               ></Route>
               <Route

@@ -115,13 +115,13 @@ const ResidencePermitApplication = () => {
       })
       .typeError("Not in format DD.MM.YYYY"),
     description: Yup.string(), 
-    checkboxes: Yup.array() //  TODO: check for boxes
-      .required("You must accept the terms and conditions")
-      .length(2, "You must accept the terms and conditions")
-      .test({
-        test: (value: any) => value.includes(true),
-        message: "You must accept the terms and conditions",
-      }),
+    // checkboxes: Yup.array() //  TODO: check for boxes
+    //   .required("You must accept the terms and conditions")
+    //   .length(2, "You must accept the terms and conditions")
+    //   .test({
+    //     test: (value: any) => value.includes(true),
+    //     message: "You must accept the terms and conditions",
+    //   }),
   });
   const onSubmit = async (values: ResidencePermitValues) => {
     try {
@@ -146,7 +146,6 @@ const ResidencePermitApplication = () => {
       });
       navigate("/dashboard");
     } catch (error: any) {
-      console.log(error);
       setErrorText(error.message);
     } finally {
       store.isLoading = false;

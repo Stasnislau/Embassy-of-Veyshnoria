@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 interface ResidencePermitCardProps {
   props: {
-    id: string;
+    id: number;
     dateOfSubmission: string;
     dateOfDecision: string;
     status: string;
@@ -20,7 +20,7 @@ const ResidencePermitCard = ({ props }: ResidencePermitCardProps) => {
     <button
       className="residence-permit-card"
       onClick={() => {
-        Navigate(`/residence-permit/${props.id}`);
+        Navigate(`/residence-permit/${String(props.id)}`);
       }}
     >
       <h1> Residence Permit </h1>
@@ -34,7 +34,7 @@ const ResidencePermitCard = ({ props }: ResidencePermitCardProps) => {
           </p>
         </div>
         <div className="residence-permit-card-status">
-          Status: {props.status}
+          Status:{" "}
           <b
             className={
               props.status !== "Rejected" && props.status !== "Approved"

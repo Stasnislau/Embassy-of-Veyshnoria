@@ -123,6 +123,7 @@ const Dashboard = () => {
               <div className="dashboard-box dashboard-box-highlight">
                 <ResidencePermitCard
                   props={{
+                    id: permit.id,
                     dateOfSubmission: permit.dateOfSubmission,
                     dateOfDecision: permit.dateOfDecision,
                     status: permit.status,

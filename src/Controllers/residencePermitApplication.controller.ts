@@ -70,7 +70,6 @@ class ResidencePermitApplicationController {
           } as ResidencePermitApplicationInterface,
           userId
         );
-      console.log("ZASHLO");
       if (!residencePermitApplication) {
         throw ApiError.badRequest(
           "Residence Permit Application has not been created"
@@ -118,7 +117,7 @@ class ResidencePermitApplicationController {
     next: NextFunction
   ) => {
     try {
-      const { id } = req.body;
+      const id = req.params.id;
       const residencePermitApplication =
         await residencePermitApplicationService.getResidencePermitApplicationById(
           id
@@ -126,7 +125,8 @@ class ResidencePermitApplicationController {
       if (!residencePermitApplication) {
         throw ApiError.badRequest("Residence permit application not found");
       }
-      return res.json({ residencePermitApplication });
+
+      return res.json(residencePermitApplication);
     } catch (error: any) {
       next(error);
     }
@@ -138,12 +138,12 @@ class ResidencePermitApplicationController {
     next: NextFunction
   ) => {
     try {
+      const id = req.params.id;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest("Validation error"));
       }
       const {
-        id,
         name,
         surname,
         birthDate,
@@ -164,7 +164,7 @@ class ResidencePermitApplicationController {
       } = req.body;
       const residencePermitApplication =
         await residencePermitApplicationService.updateResidencePermitApplication(
-          id,
+          Number(id),
           {
             name,
             surname,
@@ -202,7 +202,7 @@ class ResidencePermitApplicationController {
     next: NextFunction
   ) => {
     try {
-      const { id } = req.body;
+      const id = req.params.id;
       const authHeader = req.headers && req.headers.authorization;
       if (!authHeader) {
         return next(ApiError.unauthorized());

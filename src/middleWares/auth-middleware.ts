@@ -19,6 +19,7 @@ const authMiddleware = (req: any, res: Response, next: NextFunction) => {
     req.user = userData;
     next();
   } catch (e) {
+
     next(ApiError.unauthorized());
   }
 };
