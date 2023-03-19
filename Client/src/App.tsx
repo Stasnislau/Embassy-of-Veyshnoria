@@ -33,7 +33,7 @@ function App() {
   const { store } = React.useContext(Context);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("accessToken")) {
       store.checkAuthorization();
     }
   }, []);
