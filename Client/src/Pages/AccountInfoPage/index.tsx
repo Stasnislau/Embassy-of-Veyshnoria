@@ -151,7 +151,7 @@ const AccountInfoPage = () => {
                   return date.isValid() ? date.toDate() : null;
                 })
                 .typeError(
-                  "Please enter a valid date in the format DD.MM.YYYY"
+                  "Not in format DD.MM.YYYY"
                 ),
               phoneNumber: Yup.string()
                 .required("Required")
@@ -163,23 +163,23 @@ const AccountInfoPage = () => {
               passportNumber: Yup.string().required(
                 "Passport number is required"
               ),
-              passportIssuingDate: Yup.string()
+              passportIssuingDate: Yup.date()
                 .required("Passport issuing date is required")
                 .transform((value, originalValue) => {
                   const date = moment(originalValue, "DD.MM.YYYY", true);
                   return date.isValid() ? date.toDate() : null;
                 })
                 .typeError(
-                  "Please enter a valid date in the format DD.MM.YYYY"
+                  "Not in format DD.MM.YYYY"
                 ),
-              passportExpirationDate: Yup.string()
+              passportExpirationDate: Yup.date()
                 .required("Passport expiration date is required")
                 .transform((value, originalValue) => {
                   const date = moment(originalValue, "DD.MM.YYYY", true);
                   return date.isValid() ? date.toDate() : null;
                 })
                 .typeError(
-                  "Please enter a valid date in the format DD.MM.YYYY"
+                  "Not in format DD.MM.YYYY"
                 ),
               passportIssuingCountry: Yup.string().required(
                 "Passport issuing country is required"
