@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import ApiError from "../exceptions/api-error";
-import { ResidencePermitApplicationsInterface } from "../Interfaces";
+import { ResidencePermitApplicationInterface } from "../Interfaces";
 import jwt from "jsonwebtoken";
 import residencePermitApplicationService from "../Services/residencePermitApplication.service";
 import { validationResult } from "express-validator";
@@ -17,10 +17,21 @@ class ResidencePermitApplicationController {
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest("Validation error"));
       }
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const userId = (
+        jwt.decode(authHeader.split(" ")[1]) as {
+          id: string;
+          email: string;
+        }
+      ).id;
+
       const {
-        userId,
         name,
         surname,
+        email,
         birthDate,
         birthPlace,
         phoneNumber,
@@ -34,12 +45,14 @@ class ResidencePermitApplicationController {
         passportIssuingCountry,
         residencePermitType,
         description,
+        status,
       } = req.body;
       const residencePermitApplication =
         await residencePermitApplicationService.createResidencePermitApplication(
           {
             name,
             surname,
+            email,
             birthDate,
             birthPlace,
             phoneNumber,
@@ -52,10 +65,12 @@ class ResidencePermitApplicationController {
             passportExpirationDate,
             passportIssuingCountry,
             residencePermitType,
-            description
-          } as ResidencePermitApplicationsInterface,
+            description,
+            status,
+          } as ResidencePermitApplicationInterface,
           userId
         );
+      console.log("ZASHLO");
       if (!residencePermitApplication) {
         throw ApiError.badRequest(
           "Residence Permit Application has not been created"
@@ -168,7 +183,7 @@ class ResidencePermitApplicationController {
             description,
             dateOfSubmission,
             dateOfDecision,
-          } as ResidencePermitApplicationsInterface
+          } as ResidencePermitApplicationInterface
         );
       if (!residencePermitApplication) {
         throw ApiError.badRequest(

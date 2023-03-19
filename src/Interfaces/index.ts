@@ -22,7 +22,7 @@ export interface VisaApplicationInterface {
   dateOfDecision: string;
 }
 
-export interface ResidencePermitApplicationsInterface {
+export interface ResidencePermitApplicationInterface {
   name: string;
   surname: string;
   email: string;

@@ -1,11 +1,14 @@
 import ApiError from "../exceptions/api-error";
-import { ResidencePermitApplicationsInterface } from "../Interfaces";
+import {
+  ResidencePermitApplicationInterface,
+} from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
+import moment from "moment";
 
 class ResidencePermitApplicationService {
   getResidencePermitApplicationById = async (
     id: number
-  ): Promise<ResidencePermitApplicationsInterface> => {
+  ): Promise<ResidencePermitApplicationInterface> => {
     const residencePermitApplication =
       await embassyDB.residence_permit_applications.findUnique({
         where: {
@@ -42,7 +45,7 @@ class ResidencePermitApplicationService {
 
   getResidencePermitApplicationsByUserId = async (
     userId: string
-  ): Promise<ResidencePermitApplicationsInterface[]> => {
+  ): Promise<ResidencePermitApplicationInterface[]> => {
     const residencePermitApplications =
       await embassyDB.residence_permit_applications.findMany({
         where: {
@@ -78,9 +81,10 @@ class ResidencePermitApplicationService {
   };
 
   createResidencePermitApplication = async (
-    residencePermitApplication: ResidencePermitApplicationsInterface,
+    residencePermitApplication: ResidencePermitApplicationInterface,
     userId: string
-  ): Promise<ResidencePermitApplicationsInterface> => {
+  ): Promise<ResidencePermitApplicationInterface> => {
+    console.log("ZASHLO", residencePermitApplication, userId)
     const residenceApplication =
       await embassyDB.residence_permit_applications.create({
         data: {
@@ -102,8 +106,8 @@ class ResidencePermitApplicationService {
           passportIssuingCountry:
             residencePermitApplication.passportIssuingCountry,
           description: residencePermitApplication.description,
-          status: residencePermitApplication.status,
-          dateOfSubmission: new Date().toLocaleDateString(),
+          status: "Pending",
+          dateOfSubmission: moment().format("DD.MM.YYYY"),
           dateOfDecision: "To be decided",
           user: {
             connect: {
@@ -122,8 +126,8 @@ class ResidencePermitApplicationService {
 
   updateResidencePermitApplication = async (
     id: number,
-    residencePermitApplication: ResidencePermitApplicationsInterface
-  ): Promise<ResidencePermitApplicationsInterface> => {
+    residencePermitApplication: ResidencePermitApplicationInterface
+  ): Promise<ResidencePermitApplicationInterface> => {
     const updatedResidencePermitApplication =
       await embassyDB.residence_permit_applications.update({
         where: {
@@ -163,7 +167,7 @@ class ResidencePermitApplicationService {
   deleteResidencePermitApplication = async (
     id: string,
     userId: string
-  ): Promise<ResidencePermitApplicationsInterface> => {
+  ): Promise<ResidencePermitApplicationInterface> => {
     const residencePermitApplication =
       await embassyDB.residence_permit_applications.findUnique({
         where: {
