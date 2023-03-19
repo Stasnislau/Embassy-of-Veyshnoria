@@ -83,6 +83,35 @@ class visaService {
     userId: string,
     visaApplication: VisaApplicationInterface
   ): Promise<VisaApplicationInterface> => {
+    const candidateApplications = await embassyDB.visa_applications.findFirst({
+      where: {
+        userId: Number(userId),
+        status: {
+          not: "Approved" || "Rejected",
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    const candidatePermitApplications =
+      await embassyDB.residence_permit_applications.findFirst({
+        where: {
+          userId: Number(userId),
+          status: {
+            not: "Approved" || "Rejected",
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+    if (candidateApplications || candidatePermitApplications) {
+      throw ApiError.badRequest(
+        "You have already submitted a visa application"
+      );
+    }
+
     const application = await embassyDB.visa_applications.create({
       data: {
         name: visaApplication.name,
@@ -123,6 +152,17 @@ class visaService {
     id: number,
     visaApplication: VisaApplicationInterface
   ): Promise<VisaApplicationInterface> => {
+    const candidateApplication = await embassyDB.visa_applications.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        status: true,
+      },
+    });
+    if (candidateApplication?.status !== "Pending") {
+      throw ApiError.badRequest("You can upgrade only pending applications");
+    }
     const updatedApplication = await embassyDB.visa_applications.update({
       where: {
         id: Number(id),
@@ -167,12 +207,21 @@ class visaService {
       },
       select: {
         userId: true,
+        status: true,
       },
     });
     if (!visaApplication || visaApplication.userId !== Number(userId)) {
       throw ApiError.badRequest("Visa Application not found");
     }
-
+    if (
+      visaApplication.status !== "Pending" &&
+      visaApplication.status !== "Rejected" &&
+      visaApplication.status !== "Approved"
+    ) {
+      throw ApiError.badRequest(
+        "You can not delete an application that is in progress"
+      );
+    }
     const deletedApplication = await embassyDB.visa_applications.delete({
       where: {
         id: Number(id),

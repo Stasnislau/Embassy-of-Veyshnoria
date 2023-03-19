@@ -84,36 +84,33 @@ class ResidencePermitApplicationService {
     userId: string
   ): Promise<ResidencePermitApplicationInterface> => {
     const candidateApplications =
-      await embassyDB.residence_permit_applications.findMany({
+      await embassyDB.residence_permit_applications.findFirst({
         where: {
           userId: Number(userId),
+          status: {
+            not: "Approved" || "Rejected",
+          },
         },
         select: {
           status: true,
         },
       });
-    const checkIfApplicationIsPending = candidateApplications.some(
-      (application) =>
-        application.status !== "Accepted" && application.status !== "Rejected"
-    );
-    if (checkIfApplicationIsPending) {
-      throw ApiError.badRequest("You already have a pending application");
-    }
     const candidateVisaApplications =
-      await embassyDB.visa_applications.findMany({
+      await embassyDB.visa_applications.findFirst({
         where: {
           userId: Number(userId),
+          status: {
+            not: "Approved" || "Rejected",
+          },
         },
         select: {
           status: true,
         },
       });
-    const checkIfVisaApplicationIsPending = candidateVisaApplications.some(
-      (application) =>
-        application.status !== "Accepted" && application.status !== "Rejected"
-    );
-    if (checkIfVisaApplicationIsPending) {
-      throw ApiError.badRequest("You already have a pending visa application");
+    if (candidateApplications || candidateVisaApplications) {
+      throw ApiError.badRequest(
+        "You have already applied for a residence permit or a visa"
+      );
     }
     const residenceApplication =
       await embassyDB.residence_permit_applications.create({
@@ -230,7 +227,7 @@ class ResidencePermitApplicationService {
     }
 
     if (
-      residencePermitApplication.status !== "Accepted" &&
+      residencePermitApplication.status !== "Approved" &&
       residencePermitApplication.status !== "Rejected" &&
       residencePermitApplication.status !== "Pending"
     ) {
