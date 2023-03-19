@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 interface ResidencePermitCardProps {
   props: {
+    id: string;
     dateOfSubmission: string;
     dateOfDecision: string;
     status: string;
@@ -19,21 +20,21 @@ const ResidencePermitCard = ({ props }: ResidencePermitCardProps) => {
     <button
       className="residence-permit-card"
       onClick={() => {
-        Navigate("/residence-permit");
+        Navigate(`/residence-permit/${props.id}`);
       }}
     >
       <h1> Residence Permit </h1>
       <div className="residence-permit-card-body">
         <div className="residence-permit-card-date">
           <p>
-            Date of submission: <b>2020-12-12</b>
+            Date of submission: <b>{props.dateOfSubmission}</b>
           </p>
           <p>
-            Date of decision: <b>2020-12-12</b>
+            Date of decision: <b>{props.dateOfDecision}</b>
           </p>
         </div>
         <div className="residence-permit-card-status">
-          Status:{" "}
+          Status: {props.status}
           <b
             className={
               props.status !== "Rejected" && props.status !== "Approved"
@@ -45,7 +46,7 @@ const ResidencePermitCard = ({ props }: ResidencePermitCardProps) => {
           </b>
         </div>
         <div className="residence-permit-card-description">
-          <p> Description: </p>
+          <p> Description: {props.description}</p>
         </div>
       </div>
     </button>
