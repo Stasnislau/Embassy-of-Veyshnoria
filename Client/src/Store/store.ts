@@ -54,13 +54,10 @@ export default class Store {
     this.setIsLoading(true);
     try {
       const response = await axios.get<AuthResponseInterface>(
-        "http://localhost:5000/users/refresh",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
+        "http://localhost:3001/users/refresh",
+        { withCredentials: true }
       );
+      console.log(response);
       this.setIsAuthorized(true);
       this.setUser(response.data.user);
     } catch (error: any) {

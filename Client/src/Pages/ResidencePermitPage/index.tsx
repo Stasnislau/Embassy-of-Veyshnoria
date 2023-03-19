@@ -2,50 +2,20 @@ import "./index.scss";
 
 import React, { useState } from "react";
 
+import { Context } from "../../index";
 import Header from "../../Components/Header";
+import { ResidencePermitApplicationInterface } from "../../Interfaces";
+import ResidenceService from "../../Services/residence.service";
 import SurenessModal from "../../Components/SurenessModal";
-
-interface ResidencePermitInterface {
-  name: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
-  birthDate: string;
-  birthPlace: string;
-  address: string;
-  city: string;
-  country: string;
-  zipCode: string;
-  residencePermitType: string;
-  passportNumber: string;
-  passportIssuingCountry: string;
-  passportExpirationDate: string;
-  passportIssuingDate: string;
-  comments: string;
-  status: string;
-}
+import { useEffect } from "react";
 
 const ResidencePermitPage = () => {
-  // try catch for extracting and finding id
-  const residencePermit: ResidencePermitInterface = {
-    name: "John",
-    surname: "Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "123-456-7890",
-    birthDate: "01/01/1990",
-    birthPlace: "New York, USA",
-    address: "123 Main Street",
-    city: "New York",
-    country: "USA",
-    zipCode: "10001",
-    residencePermitType: "Work Permit",
-    passportNumber: "123456789",
-    passportIssuingCountry: "USA",
-    passportExpirationDate: "12/31/2025",
-    passportIssuingDate: "12/31/2015",
-    comments: "N/A",
-    status: "Pending",
-  };
+  const { store} = React.useContext(Context);
+  const [residencePermit, setResidencePermit] = useState<
+    ResidencePermitApplicationInterface
+  >({} as ResidencePermitApplicationInterface);
+  const [errorText, setErrorText] = useState("");
+
   const found = true;
   const [open, setOpen] = useState(false);
   return (
@@ -143,10 +113,10 @@ const ResidencePermitPage = () => {
               Country:{" "}
               <span className="user-info">{residencePermit.country}</span>
             </div>
-            <div className="residence-permit-field zip-code-field">
+            <div className="residence-permit-field zip-field">
               {" "}
               Zip Code:{" "}
-              <span className="user-info">{residencePermit.zipCode}</span>
+              <span className="user-info">{residencePermit.zip}</span>
             </div>
             <div className="residence-permit-page-subtitle">
               Residence Permit Information{" "}
@@ -159,10 +129,10 @@ const ResidencePermitPage = () => {
               </span>
             </div>
 
-            <div className="residence-permit-field comments-field">
+            <div className="residence-permit-field description-field">
               {" "}
-              Comments:{" "}
-              <span className="user-info">{residencePermit.comments}</span>
+              Description:{" "}
+              <span className="user-info">{residencePermit.description}</span>
             </div>
           </div>
           <div className="delete-button-container">

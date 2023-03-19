@@ -1,7 +1,7 @@
 import "./index.scss";
 
 import {
-  ResidencePermitApplicationsInterface,
+  ResidencePermitApplicationInterface,
   VisaApplicationInterface,
   VisitInterface,
 } from "../../Interfaces";
@@ -28,7 +28,7 @@ const Dashboard = () => {
   const [visits, setVisits] = useState<VisitInterface[]>([]);
   const [visa, setVisa] = useState<VisaApplicationInterface | null>(null);
   const [permit, setPermit] =
-    useState<ResidencePermitApplicationsInterface | null>(null);
+    useState<ResidencePermitApplicationInterface | null>(null);
 
   const [errorText, setErrorText] = useState<string | null>(null);
 
@@ -58,7 +58,7 @@ const Dashboard = () => {
     try {
       PermitService.fetchPermitApplicationsByUser().then((response: any) => {
         response.data.residencePermitApplications.forEach(
-          (permit: ResidencePermitApplicationsInterface) => {
+          (permit: ResidencePermitApplicationInterface) => {
             if (permit.status !== "Approved" && permit.status !== "Rejected") {
               setPermit(permit);
             }
@@ -106,7 +106,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <Header />
       <div className="dashboard-body">
-        {hasEvents ? (
+        { hasEvents ? (
           <div className="dashboard-boxes-container">
             {visa && currentPage === 1 ? (
               <div className="dashboard-box dashboard-box-highlight">

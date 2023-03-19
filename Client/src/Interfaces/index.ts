@@ -3,7 +3,7 @@ export interface AuthResponseInterface {
   refreshToken: string;
   user: UserDtoInterface;
 }
-export interface UserResponseInterface{
+export interface UserResponseInterface {
   user: UserInterface;
 }
 export interface UserDtoInterface {
@@ -37,7 +37,7 @@ export interface VisaApplicationInterface {
   dateOfDecision: string;
 }
 
-export interface ResidencePermitApplicationsInterface {
+export interface ResidencePermitApplicationInterface {
   name: string;
   surname: string;
   email: string;
@@ -57,6 +57,25 @@ export interface ResidencePermitApplicationsInterface {
   status: string;
   dateOfSubmission: string;
   dateOfDecision: string;
+}
+
+export interface ResidencePermitApplicationFrontInterface {
+  name: string;
+  surname: string;
+  email: string;
+  phoneNumber: string;
+  birthDate: string;
+  birthPlace: string;
+  address: string;
+  city: string;
+  zip: string;
+  country: string;
+  residencePermitType: string;
+  passportNumber: string;
+  passportExpirationDate: string;
+  passportIssuingDate: string;
+  passportIssuingCountry: string;
+  description: string;
 }
 
 export interface VisitInterface {

@@ -1,41 +1,45 @@
+import {
+  ResidencePermitApplicationFrontInterface,
+  ResidencePermitApplicationInterface,
+} from "../Interfaces";
+
 import { AxiosResponse } from "axios";
-import { ResidencePermitApplicationsInterface } from "../Interfaces";
 import api from "../Http";
 
 class ResidenceService {
   static async createPermitApplication(
-    data: ResidencePermitApplicationsInterface
-  ): Promise<AxiosResponse<ResidencePermitApplicationsInterface>> {
-    return api.post<ResidencePermitApplicationsInterface>(
+    data: ResidencePermitApplicationFrontInterface
+  ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
+    return api.post<ResidencePermitApplicationInterface>(
       "/permits/create",
       data
     );
   }
   static async updatePermitApplication(
-    data: ResidencePermitApplicationsInterface,
+    data: ResidencePermitApplicationInterface,
     id: string
-  ): Promise<AxiosResponse<ResidencePermitApplicationsInterface>> {
-    return api.put<ResidencePermitApplicationsInterface>(
+  ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
+    return api.put<ResidencePermitApplicationInterface>(
       `/permits/update/:${id}`,
       data
     );
   }
   static async deletePermitApplication(
     id: string
-  ): Promise<AxiosResponse<ResidencePermitApplicationsInterface>> {
-    return api.delete<ResidencePermitApplicationsInterface>(
+  ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
+    return api.delete<ResidencePermitApplicationInterface>(
       `/permits/delete/:${id}`
     );
   }
   static async fetchPermitApplicationsByUser(): Promise<
-    AxiosResponse<ResidencePermitApplicationsInterface>
+    AxiosResponse<ResidencePermitApplicationInterface>
   > {
-    return api.get<ResidencePermitApplicationsInterface>(`/permits/users`);
+    return api.get<ResidencePermitApplicationInterface>(`/permits/users`);
   }
   static async fetchPermitApplicationById(
     id: string
-  ): Promise<AxiosResponse<ResidencePermitApplicationsInterface>> {
-    return api.get<ResidencePermitApplicationsInterface>(
+  ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
+    return api.get<ResidencePermitApplicationInterface>(
       `/permits/specific/:${id}`
     );
   }
