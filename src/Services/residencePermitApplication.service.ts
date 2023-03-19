@@ -1,7 +1,5 @@
 import ApiError from "../exceptions/api-error";
-import {
-  ResidencePermitApplicationInterface,
-} from "../Interfaces";
+import { ResidencePermitApplicationInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 import moment from "moment";
 
@@ -40,7 +38,7 @@ class ResidencePermitApplicationService {
     if (!residencePermitApplication) {
       throw ApiError.badRequest("Residence Permit Application not found");
     }
-    
+
     return residencePermitApplication;
   };
 
@@ -85,6 +83,38 @@ class ResidencePermitApplicationService {
     residencePermitApplication: ResidencePermitApplicationInterface,
     userId: string
   ): Promise<ResidencePermitApplicationInterface> => {
+    const candidateApplications =
+      await embassyDB.residence_permit_applications.findMany({
+        where: {
+          userId: Number(userId),
+        },
+        select: {
+          status: true,
+        },
+      });
+    const checkIfApplicationIsPending = candidateApplications.some(
+      (application) =>
+        application.status !== "Accepted" && application.status !== "Rejected"
+    );
+    if (checkIfApplicationIsPending) {
+      throw ApiError.badRequest("You already have a pending application");
+    }
+    const candidateVisaApplications =
+      await embassyDB.visa_applications.findMany({
+        where: {
+          userId: Number(userId),
+        },
+        select: {
+          status: true,
+        },
+      });
+    const checkIfVisaApplicationIsPending = candidateVisaApplications.some(
+      (application) =>
+        application.status !== "Accepted" && application.status !== "Rejected"
+    );
+    if (checkIfVisaApplicationIsPending) {
+      throw ApiError.badRequest("You already have a pending visa application");
+    }
     const residenceApplication =
       await embassyDB.residence_permit_applications.create({
         data: {
@@ -128,6 +158,21 @@ class ResidencePermitApplicationService {
     id: number,
     residencePermitApplication: ResidencePermitApplicationInterface
   ): Promise<ResidencePermitApplicationInterface> => {
+    const candidateApplication =
+      await embassyDB.residence_permit_applications.findUnique({
+        where: {
+          id: Number(id),
+        },
+        select: {
+          status: true,
+        },
+      });
+    if (!candidateApplication) {
+      throw ApiError.badRequest("Residence Permit Application not found");
+    }
+    if (candidateApplication.status !== "Pending") {
+      throw ApiError.badRequest("You can only update a pending application");
+    }
     const updatedResidencePermitApplication =
       await embassyDB.residence_permit_applications.update({
         where: {
@@ -157,7 +202,6 @@ class ResidencePermitApplicationService {
           dateOfDecision: residencePermitApplication.dateOfDecision,
         },
       });
-
     if (!updatedResidencePermitApplication) {
       throw ApiError.badRequest("Residence Permit Application not found");
     }
@@ -175,6 +219,7 @@ class ResidencePermitApplicationService {
         },
         select: {
           userId: true,
+          status: true,
         },
       });
     if (
@@ -182,6 +227,16 @@ class ResidencePermitApplicationService {
       residencePermitApplication.userId !== Number(userId)
     ) {
       throw ApiError.badRequest("Residence Permit Application not found");
+    }
+
+    if (
+      residencePermitApplication.status !== "Accepted" &&
+      residencePermitApplication.status !== "Rejected" &&
+      residencePermitApplication.status !== "Pending"
+    ) {
+      throw ApiError.badRequest(
+        "You can not delete an application that is in progress"
+      );
     }
 
     const deletedResidencePermitApplication =
