@@ -33,7 +33,8 @@ const VisitPage = () => {
         store.setIsLoading(false);
       }
     })();
-  }, [id, store.isLoading]);
+  }, [id, store, store.isLoading]);
+  console.log(store.user);
 
   const [open, setOpen] = useState(false);
   return (

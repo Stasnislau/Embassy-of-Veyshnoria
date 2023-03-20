@@ -49,7 +49,7 @@ class VisitController {
 
   getVisitById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.body;
+      const id = req.params.id;
       const visit = await visitService.getVisitById(id);
       return res.json( visit );
     } catch (error: any) {

@@ -81,7 +81,6 @@ class UserController {
   ) => {
     try {
       const { refreshToken } = req.cookies;
-      console.log("ZASHLO v REFRESH")
       const userData = await userService.refresh(refreshToken);
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,

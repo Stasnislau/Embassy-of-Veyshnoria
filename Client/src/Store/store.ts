@@ -58,13 +58,11 @@ export default class Store {
         "http://localhost:3001/users/refresh",
         { withCredentials: true }
       );
-      console.log(response);
 
       this.setIsAuthorized(true);
       this.setUser(response.data.user);
     } catch (error: any) {
-      console.log("suda");
-      console.log(error.response?.data?.message);
+      console.log(error.response?.data.message);
     } finally {
       this.setIsLoading(false);
     }

@@ -1,4 +1,4 @@
-import { TokenInterface, UserInterface } from "../Interfaces";
+import { TokenInterface, UserDTOInterface, UserInterface } from "../Interfaces";
 
 import ApiError from "../exceptions/api-error";
 import { embassyDB } from "../utils/db.server";
@@ -31,10 +31,17 @@ class tokenService {
     });
   };
 
-  generateTokens = async (user: { email: string; id: number }) => {
+  generateTokens = async (user: {
+    email: string;
+    id: number;
+    name: string;
+    surname: string;
+  }) => {
     const payload = {
       email: user.email,
       id: user.id,
+      name: user.name,
+      surname: user.surname,
     };
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
       expiresIn: process.env.ACCESS_TOKEN_LIFE,
@@ -57,15 +64,29 @@ class tokenService {
     if (!token) {
       throw ApiError.unauthorized();
     }
-    const userData = (await this.validateRefreshToken(token)) as {
-      email: string;
-      id: number;
-    };
+    const userData = (await this.validateRefreshToken(
+      token
+    )) as UserDTOInterface;
+
     if (!userData) {
       throw ApiError.unauthorized();
     }
-    const tokens = await this.generateTokens(userData);
-    await this.saveToken(userData.id, tokens.refreshToken);
+    const user = await embassyDB.users.findUnique({
+      where: {
+        id: userData.id,
+      },
+      select: {
+        email: true,
+        id: true,
+        name: true,
+        surname: true,
+      },
+    });
+    if (!user) {
+      throw ApiError.badRequest("User not found");
+    }
+    const tokens = await this.generateTokens(user as UserDTOInterface);
+    await this.saveToken(user.id, tokens.refreshToken);
     return tokens;
   };
 

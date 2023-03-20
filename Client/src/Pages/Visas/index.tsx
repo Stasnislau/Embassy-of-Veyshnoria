@@ -7,6 +7,7 @@ import {
 } from "../../Interfaces";
 
 import { Context } from "../..";
+import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import PaginationComponent from "../../Components/Pagination";
 import VisaCard from "../../Components/EventCards/VisaCard";
@@ -73,6 +74,16 @@ const VisasPage = () => {
           setCurrentPage={setCurrentPage}
         />
       </div>
+
+      {errorText && (
+        <ErrorModal
+          message={errorText}
+          open={errorText ? true : false}
+          handleOkay={() => {
+            setErrorText(null);
+          }}
+        />
+      )}
     </div>
   );
 };

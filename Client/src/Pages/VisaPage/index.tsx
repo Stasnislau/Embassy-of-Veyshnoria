@@ -33,6 +33,7 @@ const VisaPage = () => {
       } finally {
         store.setIsLoading(false);
       }
+
     })();
   }, [id, store.isLoading]);
 

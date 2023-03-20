@@ -3,7 +3,7 @@ import { VisitInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 
 class VisitService {
-  getVisitById = async (id: number): Promise<VisitInterface> => {
+  getVisitById = async (id: string): Promise<VisitInterface> => {
     const visit = await embassyDB.visits.findUnique({
       where: {
         id: Number(id),
@@ -30,6 +30,7 @@ class VisitService {
         userId: Number(userId),
       },
       select: {
+        id: true,
         date: true,
         time: true,
         location: true,

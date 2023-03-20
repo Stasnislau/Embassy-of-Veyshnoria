@@ -34,7 +34,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     (async () => {
-      console.log("ZASHLO");
       try {
         const response = await VisitService.fetchVisitsByUser();
         setVisits(response.data);
@@ -51,6 +50,7 @@ const Dashboard = () => {
       } catch (error: any) {
         setErrorText(error.message);
       }
+
       try {
         const response = await PermitService.fetchPermitApplicationsByUser();
         response.data.forEach((permit: ResidencePermitApplicationInterface) => {
@@ -95,7 +95,6 @@ const Dashboard = () => {
   };
 
   const hasEvents = visits.length > 0 || visa || permit;
-  console.log(visa, "VISA BLIAT");
   return (
     <div className="dashboard-container">
       <Header />
@@ -132,7 +131,15 @@ const Dashboard = () => {
               .map((visit) => {
                 return (
                   <div className="dashboard-box">
-                    <VisitCard props={visit} />
+                    <VisitCard
+                      props={{
+                        id: visit.id,
+                        date: visit.date,
+                        time: visit.time,
+                        location: visit.location,
+                        description: visit.description,
+                      }}
+                    />
                   </div>
                 );
               })}

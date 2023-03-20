@@ -10,11 +10,6 @@ class VisitService {
   static async fetchVisitById(
     id: string
   ): Promise<AxiosResponse<VisitInterface>> {
-    return api.get<VisitInterface>(`/visits/users/${id}`);
-  }
-  static async getVisitById(
-    id: string
-  ): Promise<AxiosResponse<VisitInterface>> {
     return api.get<VisitInterface>(`/visits/specific/${id}`);
   }
   static async createVisit(
