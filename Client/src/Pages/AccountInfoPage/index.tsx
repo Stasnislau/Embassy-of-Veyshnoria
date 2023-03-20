@@ -21,14 +21,14 @@ const AccountInfoPage = () => {
   const [errorText, setErrorText] = useState<string | null>(null);
   useEffect(() => {
     try {
-      store.isLoading = true;
+      store.setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setAccount(response.data.user);
       });
     } catch (error: any) {
       setErrorText(error.message);
     } finally {
-      store.isLoading = false;
+      store.setIsLoading(false);
     }
   }, [store, account]);
   const navigate = useNavigate();
@@ -131,13 +131,15 @@ const AccountInfoPage = () => {
             }}
             onSubmit={(values) => {
               try {
-                store.isLoading = true;
+                store.setIsLoading(false);
                 userService.updateUser(values).then((response: any) => {
                   setAccount(response.data.user);
                   setEdit(false);
                 });
               } catch (error: any) {
                 setErrorText(error.message);
+              } finally {
+                store.setIsLoading(false);
               }
               setEdit(false);
             }}
@@ -150,9 +152,7 @@ const AccountInfoPage = () => {
                   const date = moment(originalValue, "DD.MM.YYYY", true);
                   return date.isValid() ? date.toDate() : null;
                 })
-                .typeError(
-                  "Not in format DD.MM.YYYY"
-                ),
+                .typeError("Not in format DD.MM.YYYY"),
               phoneNumber: Yup.string()
                 .required("Required")
                 .matches(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
@@ -169,18 +169,14 @@ const AccountInfoPage = () => {
                   const date = moment(originalValue, "DD.MM.YYYY", true);
                   return date.isValid() ? date.toDate() : null;
                 })
-                .typeError(
-                  "Not in format DD.MM.YYYY"
-                ),
+                .typeError("Not in format DD.MM.YYYY"),
               passportExpirationDate: Yup.date()
                 .required("Passport expiration date is required")
                 .transform((value, originalValue) => {
                   const date = moment(originalValue, "DD.MM.YYYY", true);
                   return date.isValid() ? date.toDate() : null;
                 })
-                .typeError(
-                  "Not in format DD.MM.YYYY"
-                ),
+                .typeError("Not in format DD.MM.YYYY"),
               passportIssuingCountry: Yup.string().required(
                 "Passport issuing country is required"
               ),

@@ -21,14 +21,14 @@ const VisasPage = () => {
   useEffect(() => {
     const fetchVisas = async () => {
       try {
-        store.isLoading = true;
+        store.setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationsByUser();
         console.log(response.data);
         setVisas(response.data);
       } catch (error: any) {
         setErrorText(error.response.data.message);
       } finally {
-        store.isLoading = false;
+        store.setIsLoading(false);
       }
     };
     fetchVisas();

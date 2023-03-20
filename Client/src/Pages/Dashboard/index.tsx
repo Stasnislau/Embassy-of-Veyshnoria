@@ -27,24 +27,19 @@ const Dashboard = () => {
   const [visits, setVisits] = useState<VisitInterface[]>(
     [] as VisitInterface[]
   );
-  const [visa, setVisa] = useState<VisaApplicationInterface>(
-    {} as VisaApplicationInterface
-  );
-  const [permit, setPermit] = useState<ResidencePermitApplicationInterface>(
-    {} as ResidencePermitApplicationInterface
-  );
+  const [visa, setVisa] = useState<VisaApplicationInterface>();
+  const [permit, setPermit] = useState<ResidencePermitApplicationInterface>();
 
   const [errorText, setErrorText] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
-      if (store.isAuthorized) {
-        try {
-          const response = await VisitService.fetchVisitsByUser();
-          setVisits(response.data);
-        } catch (error: any) {
-          setErrorText(error.message);
-        }
+      console.log("ZASHLO");
+      try {
+        const response = await VisitService.fetchVisitsByUser();
+        setVisits(response.data);
+      } catch (error: any) {
+        setErrorText(error.message);
       }
       try {
         const response = await VisaService.fetchVisaApplicationsByUser();
@@ -100,7 +95,7 @@ const Dashboard = () => {
   };
 
   const hasEvents = visits.length > 0 || visa || permit;
-
+  console.log(visa, "VISA BLIAT");
   return (
     <div className="dashboard-container">
       <Header />

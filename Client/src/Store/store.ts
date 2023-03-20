@@ -35,6 +35,7 @@ export default class Store {
       this.setIsAuthorized(true);
       this.setUser(response.data.user);
     } catch (error: any) {
+      
       console.log(error.response?.data?.message);
     }
   }
@@ -58,9 +59,11 @@ export default class Store {
         { withCredentials: true }
       );
       console.log(response);
+
       this.setIsAuthorized(true);
       this.setUser(response.data.user);
     } catch (error: any) {
+      console.log("suda");
       console.log(error.response?.data?.message);
     } finally {
       this.setIsLoading(false);

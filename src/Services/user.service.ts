@@ -106,14 +106,19 @@ class UserService {
     if (!refreshToken) {
       throw ApiError.unauthorized();
     }
+    console.log("REFRESH TOKEN", refreshToken);
     const userData = tokensService.validateRefreshToken(refreshToken) as {
       id: number;
       email: string;
     };
     const tokenFromDb = await tokensService.findToken(refreshToken);
+    console.log("VYSHLO IZ POD REFRESH");
+    console.log( userData, tokenFromDb);
     if (!userData || !tokenFromDb) {
+      console.log("Refresh token is not valid");
       throw ApiError.unauthorized();
     }
+    
     const user = await embassyDB.users.findUnique({
       where: {
         id: userData.id,
@@ -123,11 +128,13 @@ class UserService {
         id: true,
       },
     });
+    
     if (!user) {
       throw ApiError.badRequest("User not found");
     }
     const tokens = await tokensService.generateTokens(user);
     await tokensService.saveToken(user.id, tokens.refreshToken);
+    
     return { ...tokens, user };
   }
 

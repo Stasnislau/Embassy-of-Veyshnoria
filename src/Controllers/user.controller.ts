@@ -81,6 +81,7 @@ class UserController {
   ) => {
     try {
       const { refreshToken } = req.cookies;
+      console.log("ZASHLO v REFRESH")
       const userData = await userService.refresh(refreshToken);
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -97,19 +98,23 @@ class UserController {
     res: ResponseInterface,
     next: NextFunction
   ) => {
-    const authHeader = req.headers && req.headers.authorization;
-    if (!authHeader) {
-      return next(ApiError.unauthorized());
+    try {
+      const authHeader = req.headers && req.headers.authorization;
+      if (!authHeader) {
+        return next(ApiError.unauthorized());
+      }
+      const userData: {
+        id: string;
+        email: string;
+      } = jwt.decode(authHeader.split(" ")[1]) as {
+        id: string;
+        email: string;
+      };
+      const user = await userService.getUser(userData.id);
+      return res.json({ user });
+    } catch (error: any) {
+      next(error);
     }
-    const userData: {
-      id: string;
-      email: string;
-    } = jwt.decode(authHeader.split(" ")[1]) as {
-      id: string;
-      email: string;
-    };
-    const user = await userService.getUser(userData.id);
-    return res.json({ user });
   };
 
   updateUser = async (
@@ -173,9 +178,13 @@ class UserController {
     res: ResponseInterface,
     next: NextFunction
   ) => {
-    const email = req.params.email;
-    const user = await userService.getShortUserByEmail(email);
-    return res.json(user);
+    try {
+      const email = req.params.email;
+      const user = await userService.getShortUserByEmail(email);
+      return res.json(user);
+    } catch (error: any) {
+      next(error);
+    }
   };
 }
 

@@ -14,6 +14,7 @@ import Dashboard from "./Pages/Dashboard";
 import FAQPage from "./Pages/InformationPages/FAQPage";
 import Footer from "./Components/Footer";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
+import LoadingComponent from "./Components/LoadingComponent";
 import LoginPage from "./Pages/LoginPage";
 import React from "react";
 import ResidenceInfoPage from "./Pages/InformationPages/ResidenceInfoPage";
@@ -37,6 +38,10 @@ function App() {
       store.checkAuthorization();
     }
   }, []);
+
+  if (store.isLoading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <Router>

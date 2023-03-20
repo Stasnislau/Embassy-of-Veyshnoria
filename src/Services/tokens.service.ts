@@ -92,6 +92,9 @@ class tokenService {
       where: {
         token: token,
       },
+      select: {
+        token: true,
+      },
     });
     return tokenData;
   };

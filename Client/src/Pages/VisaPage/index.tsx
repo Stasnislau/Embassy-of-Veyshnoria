@@ -1,12 +1,12 @@
 import "./index.scss";
 
 import React, { useState } from "react";
+import { UserInterface, VisaApplicationInterface } from "../../Interfaces";
 
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import SurenessModal from "../../Components/SurenessModal";
-import { VisaApplicationInterface } from "../../Interfaces";
 import VisaService from "../../Services/visa.service";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,13 +25,13 @@ const VisaPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        store.isLoading = true;
+        store.setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationById(id);
         setVisa(response.data);
       } catch (error: any) {
         setErrorText(error.response.data.message);
       } finally {
-        store.isLoading = false;
+        store.setIsLoading(false);
       }
     })();
   }, [id, store.isLoading]);

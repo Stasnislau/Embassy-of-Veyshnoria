@@ -48,14 +48,14 @@ const ResidencePermitApplication = () => {
 
   useEffect(() => {
     try {
-      store.isLoading = true;
+      store.setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setUserData(response.data.user);
       });
     } catch (error: any) {
       setErrorText(error.message);
     } finally {
-      store.isLoading = false;
+      store.setIsLoading(false);
     }
   }, [store]);
   const initialValues: ResidencePermitValues = {
@@ -125,7 +125,7 @@ const ResidencePermitApplication = () => {
   });
   const onSubmit = async (values: ResidencePermitValues) => {
     try {
-      store.isLoading = true;
+      store.setIsLoading(true);
       await ResidenceService.createPermitApplication({
         name: values.name,
         surname: values.surname,
@@ -148,7 +148,7 @@ const ResidencePermitApplication = () => {
     } catch (error: any) {
       setErrorText(error.message);
     } finally {
-      store.isLoading = false;
+      store.setIsLoading(false);
     }
   };
 
