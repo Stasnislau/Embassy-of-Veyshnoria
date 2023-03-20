@@ -13,9 +13,9 @@ class VisitService {
     return api.get<VisitInterface>(`/visits/specific/${id}`);
   }
   static async createVisit(
-    visit: VisitInterface
+    visit: VisitFrontInterface
   ): Promise<AxiosResponse<VisitFrontInterface>> {
-    return api.post<VisitInterface>("/visits/create", visit);
+    return api.post<VisitFrontInterface>("/visits/create", visit);
   }
   static async updateVisit(
     visit: VisitInterface

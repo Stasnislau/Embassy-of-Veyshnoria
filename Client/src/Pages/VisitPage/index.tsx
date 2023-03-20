@@ -9,9 +9,11 @@ import SurenessModal from "../../Components/SurenessModal";
 import { VisitInterface } from "../../Interfaces";
 import VisitService from "../../Services/visit.service";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const VisitPage = () => {
+  const navigate = useNavigate();
   const id = useParams().id as string;
   const { store } = React.useContext(Context);
   const [visit, setVisit] = useState({} as VisitInterface);
@@ -81,7 +83,18 @@ const VisitPage = () => {
             <button
               className="delete-button"
               onClick={() => {
-                setOpen(true);
+                (async () => {
+                  try {
+                    store.setIsLoading(true);
+                    const response = await VisitService.deleteVisit(id);
+                    console.log(response.data);
+                    navigate("/visits");
+                  } catch (error: any) {
+                    setErrorText(error.response.data.message);
+                  } finally {
+                    store.setIsLoading(false);
+                  }
+                })();
               }}
             >
               Delete

@@ -6,228 +6,60 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { VisitFrontInterface, VisitInterface } from "../../Interfaces";
 
+import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import Modal from "@mui/material/Modal";
 import PaginationComponent from "../../Components/Pagination";
 import TextError from "../../Components/TextError";
 import VisitCard from "../../Components/EventCards/VisitCard";
+import VisitService from "../../Services/visit.service";
+import moment from "moment";
 import plusIcon from "../../Pictures/plus.svg";
 
 const VisitsPage = () => {
-  const [visits, setVisits] = useState<VisitInterface[]>([
-    {
-      id: 1,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "1 Main Street, New York, NY 10001",
-      description: "Visit to submit documents",
-    },
-    {
-      id: 2,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "2 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 3,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "3 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 4,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "4 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 5,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "5 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 6,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "6 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 7,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "7 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 8,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "8 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 9,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "9 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 10,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "10 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 11,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "11 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 12,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "12 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 13,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "13 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 14,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "14 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 15,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "15 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 16,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "16 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 17,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "17 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 18,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "18 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 19,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "19 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 20,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "20 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 21,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "21 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 22,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "22 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 23,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "23 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 24,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "24 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 25,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "25 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 26,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "26 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 27,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "27 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 28,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "28 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-    {
-      id: 29,
-      date: "2020-12-12",
-      time: "12:00",
-      location: "29 Main Street, New York, NY 10001",
-      description: "Visit to submit new documents",
-    },
-  ]);
+  const [visits, setVisits] = useState<VisitInterface[]>([]);
   const [maxPages, setMaxPages] = useState(Math.ceil(visits.length / 6));
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [errorText, setErrorText] = useState<string | null>(null);
+  const [openedNewVisit, setOpenedNewVisit] = useState(false);
   useEffect(() => {
     setMaxPages(Math.ceil(visits.length / 6));
-  }, [visits.length]);
+  }, [visits.length, openedNewVisit]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await VisitService.fetchVisitsByUser();
+        setVisits(response.data);
+        setMaxPages(Math.ceil(visits.length / 6));
+      } catch (error: any) {
+        setErrorText(error.message);
+      }
+    })();
+  }, [visits.length, openedNewVisit]);
   const validationSchema = Yup.object().shape({
-    date: Yup.string().required("Required"),
-    time: Yup.string().required("Required"),
+    date: Yup.string()
+      .test(
+        "is-valid-date",
+        "Invalid date, format: DD.MM",
+        (value) =>
+          moment(value, "DD.MM").isValid() &&
+          moment(value, "DD.MM").isAfter(moment().subtract(1, "days")) &&
+          moment(value, "DD.MM").isoWeekday() !== 6 &&
+          moment(value, "DD.MM").isoWeekday() !== 7
+      )
+      .required("Required"),
+    time: Yup.string()
+      .test(
+        "is-valid-time",
+        "Between 09:00 and 18:00",
+        (value) =>
+          moment(value, "HH:mm").isValid() &&
+          moment(value, "HH:mm").isBetween(
+            moment("09:00", "HH:mm"),
+            moment("18:00", "HH:mm")
+          )
+      )
+      .required("Required"),
     location: Yup.string().required("Required"),
     description: Yup.string().required("Required"),
   });
@@ -241,13 +73,22 @@ const VisitsPage = () => {
   const initialValues = {
     date: "",
     time: "",
-    location: "10 Main Street, New York, NY 10001",
-    description: "Submission of new documents",
+    location: "",
+    description: "",
   };
   const onSubmit = (values: VisitFrontInterface) => {
-    console.log(values);
+    (async () => {
+      try {
+        values.date = moment(values.date, "DD.MM").format("DD.MM.YYYY");
+        console.log(values);
+        await VisitService.createVisit(values);
+        setOpenedNewVisit(false);
+      } catch (error: any) {
+        setErrorText(error.message);
+        setOpenedNewVisit(false);
+      }
+    })();
   };
-  const [openedNewVisit, setOpenedNewVisit] = useState(false);
 
   return (
     <div className="visits-page-container">
@@ -304,9 +145,10 @@ const VisitsPage = () => {
                       <div className="form-control">
                         <label htmlFor="date">Date</label>
                         <Field
-                          type="date"
+                          type="text"
                           id="date"
                           name="date"
+                          placeholder="dd.mm"
                           className="modal-form-input input-field"
                         />
                         <ErrorMessage name="date" component={TextError} />
@@ -314,11 +156,9 @@ const VisitsPage = () => {
                       <div className="form-control">
                         <label htmlFor="time">Time</label>
                         <Field
-                          type="time"
+                          placeholder="hh:mm"
+                          type="text"
                           id="time"
-                          min="09:00:00"
-                          max="18:00:00"
-                          step="3600"
                           name="time"
                           className="modal-form-input input-field"
                         />
@@ -329,18 +169,23 @@ const VisitsPage = () => {
                       <label htmlFor="location">Location</label>
                       <Field
                         component="select"
-                        defaultValue="10 Main Street, New York, NY 10001"
                         name="location"
                         id="location"
                         className="input-selector"
                       >
-                        <option value="10 Main Street, New York, NY 10001">
-                          10 Main Street, New York, NY 10001
+                        <option value="">Please select</option>
+
+                        <option value="Belusha street, 10, Harodnia, Veyshnoria">
+                          Belusha street, 10, Harodnia, Veyshnoria
                         </option>
-                        <option value="15 Main Street, New York, NY 10001">
-                          15 Main Street, New York, NY 10001
+                        <option value="Yanki Kupaly street, , Harodnia, Veyshnoria">
+                          Yanki Kupaly street, 53, Harodnia, Veyshnoria
+                        </option>
+                        <option value="Zamkovaia street , 22 , Harodnia, Veyshnoria">
+                          Zamkovaia street, 22, Harodnia, Veyshnoria
                         </option>
                       </Field>
+                      <ErrorMessage name="location" component={TextError} />
                     </div>
                     <div className="form-control">
                       <label htmlFor="description">Purpose of the visit</label>
@@ -349,12 +194,13 @@ const VisitsPage = () => {
                         className="input-selector"
                         name="description"
                         id="description"
-                        defaultValue="Submission of documents"
                       >
+                        <option value="">Please select</option>
                         <option value="Submission of documents">Visit</option>
                         <option value="Meeting">Meeting</option>
                         <option value="Interview">Interview</option>
                       </Field>
+                      <ErrorMessage name="description" component={TextError} />
                     </div>
                   </div>
                   <div className="buttons-container">
@@ -377,6 +223,13 @@ const VisitsPage = () => {
           </div>
         </Modal>
       </div>
+      {errorText && (
+        <ErrorModal
+          message={errorText}
+          open={errorText ? true : false}
+          handleOkay={() => setErrorText(null)}
+        />
+      )}
     </div>
   );
 };
