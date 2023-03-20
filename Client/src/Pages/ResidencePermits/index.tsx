@@ -1,18 +1,12 @@
 import "./index.scss";
 
-import {
-  ResidencePermitApplicationInterface,
-  VisaApplicationInterface,
-  VisitInterface,
-} from "../../Interfaces";
-
-import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
 import PermitService from "../../Services/residence.service";
 import React from "react";
+import { ResidencePermitApplicationInterface } from "../../Interfaces";
 import ResidencePermitCard from "../../Components/EventCards/PermitCard";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -46,7 +40,7 @@ const ResidencePermitsPage = () => {
   return (
     <div className="residence-permits-page-container">
       <Header />
-      {residencePermits.length !== 0 ? (
+      {residencePermits.length > 0 ? (
         <div className="residence-permits-page-body">
           <div className="residence-permits-page-boxes-container">
             {residencePermits

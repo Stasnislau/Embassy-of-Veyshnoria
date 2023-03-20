@@ -9,6 +9,7 @@ import {
 import { Context } from "../..";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
 import VisaCard from "../../Components/EventCards/VisaCard";
 import VisaService from "../../Services/visa.service";
@@ -48,32 +49,36 @@ const VisasPage = () => {
   return (
     <div className="visas-page-container">
       <Header />
-      <div className="visas-page-body">
-        <div className="visas-page-boxes-container">
-          {visas
-            .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
-            .map((visa) => {
-              return (
-                <div className="visas-page-box">
-                  <VisaCard
-                    props={{
-                      id: visa.id,
-                      dateOfSubmission: visa.dateOfSubmission,
-                      dateOfDecision: visa.dateOfDecision,
-                      status: visa.status,
-                      description: visa.description,
-                    }}
-                  />
-                </div>
-              );
-            })}
+      {visas.length > 0 ? (
+        <div className="visas-page-body">
+          <div className="visas-page-boxes-container">
+            {visas
+              .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
+              .map((visa) => {
+                return (
+                  <div className="visas-page-box">
+                    <VisaCard
+                      props={{
+                        id: visa.id,
+                        dateOfSubmission: visa.dateOfSubmission,
+                        dateOfDecision: visa.dateOfDecision,
+                        status: visa.status,
+                        description: visa.description,
+                      }}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+          <PaginationComponent
+            maxPages={maxPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
-        <PaginationComponent
-          maxPages={maxPages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </div>
+      ) : (
+        <NoEventsCard />
+      )}
 
       {errorText && (
         <ErrorModal
