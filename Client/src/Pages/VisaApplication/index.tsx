@@ -241,7 +241,7 @@ const VisaApplication = () => {
                     id="visaDate"
                     name="visaDate"
                     type="text"
-                    placeholder="dd/mm/yyyy"
+                    placeholder="dd.mm.yyyy"
                     className="visa-date-field input-field"
                   />
                   <ErrorMessage name="visaDate" component={TextError} />

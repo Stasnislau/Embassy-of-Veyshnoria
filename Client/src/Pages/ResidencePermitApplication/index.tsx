@@ -216,7 +216,7 @@ const ResidencePermitApplication = () => {
                   <Field
                     type="text"
                     id="birthDate"
-                    placeholder="dd-mm-yyyy"
+                    placeholder="dd.mm.yyyy"
                     name="birthDate"
                     className="input-field"
                   />
@@ -331,7 +331,7 @@ const ResidencePermitApplication = () => {
                     type="text"
                     id="passportExpirationDate"
                     name="passportExpirationDate"
-                    placeholder="dd-mm-yyyy"
+                    placeholder="dd.mm.yyyy"
                     className="input-field"
                   />
                   <ErrorMessage
@@ -349,7 +349,7 @@ const ResidencePermitApplication = () => {
                     id="passportIssuingDate"
                     name="passportIssuingDate"
                     className="input-field"
-                    placeholder="dd-mm-yyyy"
+                    placeholder="dd.mm.yyyy"
                   />
                   <ErrorMessage
                     name="passportIssuingDate"

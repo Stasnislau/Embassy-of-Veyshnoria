@@ -1,47 +1,41 @@
 import "./index.scss";
 
-import React, { useState } from "react";
+import {
+  ResidencePermitApplicationInterface,
+  VisaApplicationInterface,
+  VisitInterface,
+} from "../../Interfaces";
 
+import { Context } from "../../index";
+import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
+import PermitService from "../../Services/residence.service";
+import React from "react";
 import ResidencePermitCard from "../../Components/EventCards/PermitCard";
-
-interface ResidencePermitProps {
-  id: number;
-  dateOfSubmission: string;
-  dateOfDecision: string;
-  status: string;
-  description: string;
-}
+import { useEffect } from "react";
+import { useState } from "react";
 
 const ResidencePermitsPage = () => {
-  const residencePermits: ResidencePermitProps[] = [
-    {
-      id: 1,
-      dateOfSubmission: "2020-12-12",
-      dateOfDecision: "2020-12-12",
-      status: "Pending",
-      description: "Description",
-    },
-    {
-      id: 2,
-      dateOfSubmission: "2020-12-12",
-      dateOfDecision: "2020-12-12",
-      status: "Rejected",
-      description: "Description",
-    },
-    {
-      id: 3,
-      dateOfSubmission: "2020-12-12",
-      dateOfDecision: "2020-12-12",
-      status: "Approved",
-      description: "Description",
-    },
-  ];
+  const [residencePermits, setResidencePermits] = useState<
+    ResidencePermitApplicationInterface[]
+  >([]);
+
+  const [errorText, setErrorText] = useState<string | null>(null);
   const maxPages = Math.ceil(residencePermits.length / 6);
 
   const [currentPage, setCurrentPage] = useState(1);
-
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await PermitService.fetchPermitApplicationsByUser();
+        setResidencePermits(response.data);
+      } catch (error: any) {
+        setErrorText(error.message);
+      }
+    })();
+  }, []);
   const checkNumberToSliceBegin = () => {
     if (currentPage === 1) return 0;
     else return (currentPage - 1) * 6 - 1;
@@ -52,24 +46,36 @@ const ResidencePermitsPage = () => {
   return (
     <div className="residence-permits-page-container">
       <Header />
-      <div className="residence-permits-page-body">
-        <div className="residence-permits-page-boxes-container">
-          {residencePermits
-            .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
-            .map((residencePermit) => {
-              return (
-                <div className="residence-permits-page-box">
-                  <ResidencePermitCard props={residencePermit} />
-                </div>
-              );
-            })}
+      {residencePermits.length !== 0 ? (
+        <div className="residence-permits-page-body">
+          <div className="residence-permits-page-boxes-container">
+            {residencePermits
+              .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
+              .map((residencePermit) => {
+                return (
+                  <div className="residence-permits-page-box">
+                    <ResidencePermitCard props={residencePermit} />
+                  </div>
+                );
+              })}
+          </div>
+          <PaginationComponent
+            maxPages={maxPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
-        <PaginationComponent
-          maxPages={maxPages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
+      ) : (
+        <NoEventsCard />
+      )}
+
+      {errorText && (
+        <ErrorModal
+          message={errorText}
+          open={errorText ? true : false}
+          handleOkay={() => setErrorText(null)}
         />
-      </div>
+      )}
     </div>
   );
 };

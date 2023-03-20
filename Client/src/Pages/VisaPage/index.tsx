@@ -33,7 +33,6 @@ const VisaPage = () => {
       } finally {
         store.setIsLoading(false);
       }
-
     })();
   }, [id, store.isLoading]);
 
@@ -128,8 +127,17 @@ const VisaPage = () => {
           setOpen(false);
         }}
         handleConfirm={() => {
-          // delete visa
-          setOpen(false);
+          (async () => {
+            try {
+              store.setIsLoading(true);
+              await VisaService.deleteVisaApplication(id);
+              navigate("/visas");
+            } catch (error: any) {
+              setErrorText(error.response.data.message);
+            } finally {
+              store.setIsLoading(false);
+            }
+          })();
         }}
         text="delete this visa"
       />
