@@ -7,86 +7,94 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import Header from "../../Components/Header";
 import React from "react";
 import TextError from "../../Components/TextError";
+import { VisaApplicationFrontInterface } from "../../Interfaces";
+import VisaService from "../../Services/visa.service";
+import moment from "moment";
+import { useContext } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface VisaValues {
-  name: string;
-  surname: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  country: string;
-  passportNumber: string;
-  passportExpiration: string;
-  passportCountry: string;
-  visaType: string;
-  visaDuration: string;
-  visaDate: string;
-  comments: string;
-  checkbox_fingerprints: boolean;
-  checkbox_conditions: boolean;
-}
+import { useState } from "react";
 
 const VisaApplication = () => {
-  const initialValues: VisaValues = {
+  const initialValues: VisaApplicationFrontInterface = {
     name: "",
     surname: "",
     email: "",
-    phone: "",
+    birthDate: "",
+    birthPlace: "",
+    phoneNumber: "",
     address: "",
     city: "",
-    state: "",
-    zip: "",
     country: "",
+    zip: "",
     passportNumber: "",
-    passportExpiration: "",
-    passportCountry: "",
+    passportIssuingDate: "",
+    passportExpirationDate: "",
+    passportIssuingCountry: "",
     visaType: "",
     visaDuration: "",
     visaDate: "",
-    comments: "",
-    checkbox_fingerprints: false,
-    checkbox_conditions: false,
+    description: "",
   };
   const validationSchema = Yup.object({
-    name: Yup.string()
+    name: Yup.string().required("Required"),
+    surname: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email format").required("Required"),
+    phoneNumber: Yup.string()
       .required("Required")
-      .min(1, "Name is too short")
-      .max(20, "Name is too long"),
-    surname: Yup.string()
-      .required("Required")
-      .min(1, "Surname is too short")
-      .max(20, "Surname is too long"),
-    email: Yup.string().email("Invalid email address").required("Required"),
-    phone: Yup.string().required("Required"),
-    passportNumber: Yup.string().required("Required"),
-    passportExpiration: Yup.string().required("Required"),
-    passportCountry: Yup.string().required("Required"),
+      .matches(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
+    birthDate: Yup.date()
+      .required("Date of birth is required")
+      .transform((value, originalValue) => {
+        const date = moment(originalValue, "DD.MM.YYYY", true);
+        return date.isValid() ? date.toDate() : null;
+      })
+      .typeError("Not in format DD.MM.YYYY"),
+    birthPlace: Yup.string().required("Required"),
     address: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     country: Yup.string().required("Required"),
     zip: Yup.string().required("Required"),
-    visaDate: Yup.string().required("Required"),
+    visaDate: Yup.string()
+      .required("Required")
+      .transform((value, originalValue) => {
+        const date = moment(originalValue, "DD.MM.YYYY", true);
+        if (date.isBefore(moment())) {
+          return null;
+        }
+        return date.isValid() ? date.toDate() : null;
+      })
+      .typeError("Not in format DD.MM.YYYY"),
+    visaDuration: Yup.string().required("Required"),
+    visaType: Yup.string().required("Required"),
+    passportNumber: Yup.string().required("Required"),
+    passportIssuingCountry: Yup.string().required("Required"),
+    passportIssuingDate: Yup.date()
+      .required("Passport Issuing Date is required")
+      .transform((value, originalValue) => {
+        const date = moment(originalValue, "DD.MM.YYYY", true);
+        return date.isValid() ? date.toDate() : null;
+      })
+      .typeError("Not in format DD.MM.YYYY"),
+    passportExpirationDate: Yup.date()
+      .required("Expiration Date is required")
+      .transform((value, originalValue) => {
+        const date = moment(originalValue, "DD.MM.YYYY", true);
+        return date.isValid() ? date.toDate() : null;
+      })
+      .typeError("Not in format DD.MM.YYYY"),
+    description: Yup.string(),
+
     checkbox_conditions: Yup.boolean().test(
       "checkbox_conditions",
-      "You must accept the terms and conditions",
-      (value) => {
-        return value === true;
-      }
-    ),
-    checkbox_fingerprints: Yup.boolean().test(
-      "checkbox_fingerprints",
-      "You must accept the terms and conditions",
+      "You must accept the terms and conditions and privacy policy",
       (value) => {
         return value === true;
       }
     ),
   });
   const navigate = useNavigate();
-  const onSubmit = (values: VisaValues) => {
+  const onSubmit = (values: VisaApplicationFrontInterface) => {
     console.log(values);
   };
   return (
@@ -98,6 +106,7 @@ const VisaApplication = () => {
           initialValues={initialValues}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
+          enableReinitialize={true}
         >
           <Form>
             <div className="inputs-container">
@@ -161,22 +170,6 @@ const VisaApplication = () => {
               </div>
               <div className="several-fields-container">
                 <div className="form-control">
-                  <label htmlFor="passportExpiration">
-                    Passport Expiration
-                  </label>
-                  <Field
-                    id="passportExpiration"
-                    name="passportExpiration"
-                    type="text"
-                    placeholder="mm/yyyy"
-                    className="passport-expiration-field input-field"
-                  />
-                  <ErrorMessage
-                    name="passportExpiration"
-                    component={TextError}
-                  />
-                </div>
-                <div className="form-control">
                   <label htmlFor="passportCountry">Country of issue</label>
                   <Field
                     id="passportCountry"
@@ -185,6 +178,35 @@ const VisaApplication = () => {
                     className="passport-country-field input-field"
                   />
                   <ErrorMessage name="passportCountry" component={TextError} />
+                </div>
+                <div className="form-control">
+                  <label htmlFor="passportIssuingDate">Country of issue</label>
+                  <Field
+                    id="passportIssuingDate"
+                    name="passportIssuingDate"
+                    type="text"
+                    className="passport-issuing-date-field input-field"
+                  />
+                  <ErrorMessage
+                    name="passportIssuingDate"
+                    component={TextError}
+                  />
+                </div>
+                <div className="form-control">
+                  <label htmlFor="passportExpiration">
+                    Passport Expiration
+                  </label>
+                  <Field
+                    id="passportExpiration"
+                    name="passportExpiration"
+                    type="text"
+                    placeholder="dd.mm.yyyy"
+                    className="passport-expiration-field input-field"
+                  />
+                  <ErrorMessage
+                    name="passportExpiration"
+                    component={TextError}
+                  />
                 </div>
               </div>
               <div className="address-container">
@@ -264,7 +286,7 @@ const VisaApplication = () => {
                   </Field>
                 </div>
                 <div className="form-control">
-                  <label htmlFor="visaDuration">Visa Duration</label> 
+                  <label htmlFor="visaDuration">Visa Duration</label>
                   <Field
                     className="input-selector"
                     component="select"
@@ -341,4 +363,4 @@ const VisaApplication = () => {
 };
 export default VisaApplication;
 
-// TODO: use React Calendar for date input
+// TODO: add validation for checkbox, add missing fields to the form

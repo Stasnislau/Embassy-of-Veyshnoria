@@ -23,18 +23,14 @@ const VisasPage = () => {
   useEffect(() => {
     const fetchVisas = async () => {
       try {
-        store.setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationsByUser();
-        console.log(response.data);
         setVisas(response.data);
       } catch (error: any) {
         setErrorText(error.response.data.message);
-      } finally {
-        store.setIsLoading(false);
-      }
+      } 
     };
     fetchVisas();
-  }, []);
+  }, [store, store.isLoading]);
   const maxPages = Math.ceil(visas.length / 6);
 
   const [currentPage, setCurrentPage] = useState(1);
