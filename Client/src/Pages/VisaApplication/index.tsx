@@ -3,34 +3,51 @@ import "./index.scss";
 import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { UserInterface, VisaApplicationFrontInterface } from "../../Interfaces";
+import { useContext, useEffect, useState } from "react";
 
+import { Context } from "../../index";
+import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import React from "react";
 import TextError from "../../Components/TextError";
-import { VisaApplicationFrontInterface } from "../../Interfaces";
 import VisaService from "../../Services/visa.service";
 import moment from "moment";
-import { useContext } from "react";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import userService from "../../Services/user.service";
 
 const VisaApplication = () => {
+  const { store } = useContext(Context);
+  const [user, setUser] = useState<UserInterface>({} as UserInterface);
+  const [errorText, setErrorText] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      store.setIsLoading(true);
+      userService.fetchUser().then((response: any) => {
+        setUser(response.data.user);
+      });
+    } catch (error: any) {
+    } finally {
+      store.setIsLoading(false);
+    }
+  }, [store]);
+
   const initialValues: VisaApplicationFrontInterface = {
-    name: "",
-    surname: "",
-    email: "",
-    birthDate: "",
-    birthPlace: "",
-    phoneNumber: "",
-    address: "",
-    city: "",
-    country: "",
-    zip: "",
-    passportNumber: "",
-    passportIssuingDate: "",
-    passportExpirationDate: "",
-    passportIssuingCountry: "",
+    name: user.name,
+    surname: user.surname,
+    email: user.email,
+    birthDate: user.birthDate,
+    birthPlace: user.birthPlace,
+    phoneNumber: user.phoneNumber,
+    address: user.address,
+    city: user.city,
+    country: user.country,
+    zip: user.zip,
+    passportNumber: user.passportNumber,
+    passportIssuingDate: user.passportIssuingDate,
+    passportExpirationDate: user.passportExpirationDate,
+    passportIssuingCountry: user.passportIssuingCountry,
     visaType: "",
     visaDuration: "",
     visaDate: "",
@@ -55,7 +72,7 @@ const VisaApplication = () => {
     city: Yup.string().required("Required"),
     country: Yup.string().required("Required"),
     zip: Yup.string().required("Required"),
-    visaDate: Yup.string()
+    visaDate: Yup.date()
       .required("Required")
       .transform((value, originalValue) => {
         const date = moment(originalValue, "DD.MM.YYYY", true);
@@ -94,8 +111,19 @@ const VisaApplication = () => {
     ),
   });
   const navigate = useNavigate();
-  const onSubmit = (values: VisaApplicationFrontInterface) => {
-    console.log(values);
+  const onSubmit = async (values: VisaApplicationFrontInterface) => {
+    try {
+      store.setIsLoading(true);
+      const response = await VisaService.createVisaApplication(values);
+      if (response) {
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      setErrorText(error.response.data.message);
+    } finally {
+      store.setIsLoading(false);
+    }
   };
   return (
     <div className="visa-application-container">
@@ -145,15 +173,39 @@ const VisaApplication = () => {
                   <ErrorMessage name="email" component={TextError} />
                 </div>
                 <div className="form-control">
-                  <label htmlFor="phone">Phone</label>
+                  <label htmlFor="phoneNumber">Phone number</label>
                   <Field
-                    id="phone"
-                    name="phone"
+                    id="phoneNumber"
+                    name="phoneNumber"
                     type="text"
                     placeholder="+XXXXXXXXXXX"
                     className="phone-field input-field"
                   />
                   <ErrorMessage name="phone" component={TextError} />
+                </div>
+              </div>
+
+              <div className="several-fields-container">
+                <div className="form-control">
+                  <label htmlFor="birthDate">Birth date</label>
+                  <Field
+                    id="birthDate"
+                    name="birthDate"
+                    type="text"
+                    placeholder="DD.MM.YYYY"
+                    className="birth-date-field input-field"
+                  />
+                  <ErrorMessage name="birthDate" component={TextError} />
+                </div>
+                <div className="form-control">
+                  <label htmlFor="birthPlace">Birth place</label>
+                  <Field
+                    id="birthPlace"
+                    name="birthPlace"
+                    type="text"
+                    className="birth-place-field input-field"
+                  />
+                  <ErrorMessage name="birthPlace" component={TextError} />
                 </div>
               </div>
 
@@ -170,21 +222,26 @@ const VisaApplication = () => {
               </div>
               <div className="several-fields-container">
                 <div className="form-control">
-                  <label htmlFor="passportCountry">Country of issue</label>
+                  <label htmlFor="passportIssuingCountry">
+                    Country of issue
+                  </label>
                   <Field
-                    id="passportCountry"
-                    name="passportCountry"
+                    id="passportIssuingCountry"
+                    name="passportIssuingCountry"
                     type="text"
                     className="passport-country-field input-field"
                   />
                   <ErrorMessage name="passportCountry" component={TextError} />
                 </div>
                 <div className="form-control">
-                  <label htmlFor="passportIssuingDate">Country of issue</label>
+                  <label htmlFor="passportIssuingDate">
+                    Passport issuing date
+                  </label>
                   <Field
                     id="passportIssuingDate"
                     name="passportIssuingDate"
                     type="text"
+                    placeholder="dd.mm.yyyy"
                     className="passport-issuing-date-field input-field"
                   />
                   <ErrorMessage
@@ -197,11 +254,11 @@ const VisaApplication = () => {
                     Passport Expiration
                   </label>
                   <Field
-                    id="passportExpiration"
-                    name="passportExpiration"
+                    id="passportExpirationDate"
+                    name="passportExpirationDate"
                     type="text"
                     placeholder="dd.mm.yyyy"
-                    className="passport-expiration-field input-field"
+                    className="passport-expiration-date-field input-field"
                   />
                   <ErrorMessage
                     name="passportExpiration"
@@ -258,7 +315,7 @@ const VisaApplication = () => {
               </div>
               <div className="several-fields-container">
                 <div className="form-control">
-                  <label htmlFor="visaDate">Visa valid from</label>
+                  <label htmlFor="visaDate">Visa starting date</label>
                   <Field
                     id="visaDate"
                     name="visaDate"
@@ -277,6 +334,7 @@ const VisaApplication = () => {
                     id="visaType"
                     defaultValue="A Tourist"
                   >
+                    <option value="">Please select</option>
                     <option value="C Tourist">C Tourist</option>
                     <option value="C Transit">C Transit</option>
                     <option value="D Business">D Business</option>
@@ -294,6 +352,7 @@ const VisaApplication = () => {
                     id="visaDuration"
                     defaultValue="1 Month"
                   >
+                    <option value="">Please select</option>
                     <option value="1 Month">1 Month</option>
                     <option value="3 Months">3 Months</option>
                     <option value="6 Months">6 Months</option>
@@ -357,10 +416,17 @@ const VisaApplication = () => {
             <ErrorMessage name="checkbox_fingerprints" component={TextError} />
           </Form>
         </Formik>
+        {errorText && (
+          <ErrorModal
+            message={errorText}
+            open={Boolean(errorText)}
+            handleOkay={() => {
+              setErrorText(null);
+            }}
+          />
+        )}
       </div>
     </div>
   );
 };
 export default VisaApplication;
-
-// TODO: add validation for checkbox, add missing fields to the form

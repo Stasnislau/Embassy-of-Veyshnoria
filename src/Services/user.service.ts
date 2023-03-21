@@ -1,6 +1,5 @@
-import { UserDTOInterface, UserInterface } from "../Interfaces";
-
 import ApiError from "../exceptions/api-error";
+import { UserInterface } from "../Interfaces";
 import bcrypt from "bcryptjs";
 import { embassyDB } from "../utils/db.server";
 import tokensService from "../Services/tokens.service";

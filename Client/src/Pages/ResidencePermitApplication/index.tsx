@@ -52,6 +52,7 @@ const ResidencePermitApplication = () => {
       userService.fetchUser().then((response: any) => {
         setUserData(response.data.user);
       });
+      navigate("/dashboard")
     } catch (error: any) {
       setErrorText(error.message);
     } finally {
