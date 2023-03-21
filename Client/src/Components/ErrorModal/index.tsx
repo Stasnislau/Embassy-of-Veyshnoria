@@ -3,7 +3,7 @@ import "./index.scss";
 import Modal from "@mui/material/Modal";
 import React from "react";
 
-const SurenessModal = ({
+const ErrorModal = ({
   open,
   handleOkay,
   message,
@@ -43,4 +43,4 @@ const SurenessModal = ({
   );
 };
 
-export default SurenessModal;
+export default ErrorModal;

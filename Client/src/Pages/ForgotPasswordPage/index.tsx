@@ -4,7 +4,6 @@ import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import React from "react";
 import TextError from "../../Components/TextError";
@@ -55,14 +54,12 @@ const ForgotPassword = () => {
         );
         if (changePassword.data) {
           navigate("/login");
-        } else {
-          setErrorText("Invalid data");
         }
       } else {
         setErrorText("Invalid data");
       }
     } catch (error: any) {
-      setErrorText(error.message);
+      setErrorText(error.response.data.message);
     }
   };
   const initialValues = {

@@ -48,15 +48,11 @@ const ResidencePermitApplication = () => {
 
   useEffect(() => {
     try {
-      store.setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setUserData(response.data.user);
       });
-      navigate("/dashboard")
     } catch (error: any) {
-      setErrorText(error.message);
-    } finally {
-      store.setIsLoading(false);
+      setErrorText(error.response.data.message);
     }
   }, [store]);
   const initialValues: ResidencePermitValues = {
@@ -115,7 +111,7 @@ const ResidencePermitApplication = () => {
         return date.isValid() ? date.toDate() : null;
       })
       .typeError("Not in format DD.MM.YYYY"),
-    description: Yup.string(), 
+    description: Yup.string(),
     // checkboxes: Yup.array() //  TODO: check for boxes
     //   .required("You must accept the terms and conditions")
     //   .length(2, "You must accept the terms and conditions")
@@ -126,7 +122,6 @@ const ResidencePermitApplication = () => {
   });
   const onSubmit = async (values: ResidencePermitValues) => {
     try {
-      store.setIsLoading(true);
       await ResidenceService.createPermitApplication({
         name: values.name,
         surname: values.surname,
@@ -147,9 +142,7 @@ const ResidencePermitApplication = () => {
       });
       navigate("/dashboard");
     } catch (error: any) {
-      setErrorText(error.message);
-    } finally {
-      store.setIsLoading(false);
+      setErrorText(error.response.data.message);
     }
   };
 

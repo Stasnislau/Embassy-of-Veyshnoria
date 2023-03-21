@@ -28,6 +28,7 @@ const VisaApplication = () => {
         setUser(response.data.user);
       });
     } catch (error: any) {
+      setErrorText(error.response.data.message);
     } finally {
       store.setIsLoading(false);
     }
@@ -113,18 +114,15 @@ const VisaApplication = () => {
   const navigate = useNavigate();
   const onSubmit = async (values: VisaApplicationFrontInterface) => {
     try {
-      store.setIsLoading(true);
       const response = await VisaService.createVisaApplication(values);
       if (response) {
         navigate("/dashboard");
       }
     } catch (error: any) {
-      console.log(error.response.data.message);
       setErrorText(error.response.data.message);
-    } finally {
-      store.setIsLoading(false);
     }
   };
+  console.log(errorText, "errorText");
   return (
     <div className="visa-application-container">
       <Header />

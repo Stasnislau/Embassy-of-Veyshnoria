@@ -26,7 +26,7 @@ const ResidencePermitsPage = () => {
         const response = await PermitService.fetchPermitApplicationsByUser();
         setResidencePermits(response.data);
       } catch (error: any) {
-        setErrorText(error.message);
+        setErrorText(error.response.data.message);
       }
     })();
   }, []);

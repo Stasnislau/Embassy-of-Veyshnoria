@@ -26,7 +26,7 @@ const AccountInfoPage = () => {
         setAccount(response.data.user);
       });
     } catch (error: any) {
-      setErrorText(error.message);
+      setErrorText(error.response.data.message);
     } finally {
       store.setIsLoading(false);
     }
@@ -131,15 +131,12 @@ const AccountInfoPage = () => {
             }}
             onSubmit={(values) => {
               try {
-                store.setIsLoading(false);
                 userService.updateUser(values).then((response: any) => {
                   setAccount(response.data.user);
                   setEdit(false);
                 });
               } catch (error: any) {
-                setErrorText(error.message);
-              } finally {
-                store.setIsLoading(false);
+                setErrorText(error.response.data.message);
               }
               setEdit(false);
             }}

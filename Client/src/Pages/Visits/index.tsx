@@ -32,7 +32,7 @@ const VisitsPage = () => {
         setVisits(response.data);
         setMaxPages(Math.ceil(visits.length / 6));
       } catch (error: any) {
-        setErrorText(error.message);
+        setErrorText(error.response.data.message);
       }
     })();
   }, [visits.length, openedNewVisit]);
@@ -84,7 +84,7 @@ const VisitsPage = () => {
         await VisitService.createVisit(values);
         setOpenedNewVisit(false);
       } catch (error: any) {
-        setErrorText(error.message);
+        setErrorText(error.response.data.message);
         setOpenedNewVisit(false);
       }
     })();
