@@ -23,16 +23,13 @@ const VisaApplication = () => {
 
   useEffect(() => {
     try {
-      store.setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setUser(response.data.user);
       });
     } catch (error: any) {
       setErrorText(error.response.data.message);
-    } finally {
-      store.setIsLoading(false);
     }
-  }, [store]);
+  }, []);
 
   const initialValues: VisaApplicationFrontInterface = {
     name: user.name,
@@ -122,7 +119,6 @@ const VisaApplication = () => {
       setErrorText(error.response.data.message);
     }
   };
-  console.log(errorText, "errorText");
   return (
     <div className="visa-application-container">
       <Header />

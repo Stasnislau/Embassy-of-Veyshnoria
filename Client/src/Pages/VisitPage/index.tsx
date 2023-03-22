@@ -36,7 +36,6 @@ const VisitPage = () => {
       }
     })();
   }, [id, store, store.isLoading]);
-  console.log(store.user);
 
   const [open, setOpen] = useState(false);
   return (
@@ -86,8 +85,7 @@ const VisitPage = () => {
                 (async () => {
                   try {
                     store.setIsLoading(true);
-                    const response = await VisitService.deleteVisit(id);
-                    console.log(response.data);
+                    await VisitService.deleteVisit(id);
                     navigate("/visits");
                   } catch (error: any) {
                     setErrorText(error.response.data.message);
