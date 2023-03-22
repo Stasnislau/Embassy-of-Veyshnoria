@@ -15,6 +15,8 @@ if (!process.env.PORT) {
   process.exit(1);
 }
 
+export const CLIENT_URL = "http://localhost:3000"
+
 const PORT: number = parseInt(process.env.PORT as string, 10);
 const app = express();
 
@@ -22,7 +24,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: process.env.CLIENT_URL,
+  origin: CLIENT_URL,
 }));
 
 const prisma = new PrismaClient();
@@ -32,9 +34,6 @@ app.use("/visas", visaApplicationRouter);
 app.use("/permits", residencePermitApplicationRouter);
 
 app.use(errorMiddleware);
-
-// serve frontend from Client/build
-app.use(express.static("Client/build"));
 
 app.listen(PORT, () => {
   console.log("Server is running on port 3001");

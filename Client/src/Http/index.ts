@@ -1,10 +1,10 @@
 import { AuthResponseInterface } from "../../../Client/src/Interfaces/";
 import axios from "axios";
 
-const baseURL = process.env.BASE_URL;
+export const API_URL = "http://localhost:3001";
 const api = axios.create({
-  baseURL,
   withCredentials: true,
+  baseURL: API_URL,
 });
 
 api.interceptors.request.use((config) => {
@@ -24,7 +24,7 @@ api.interceptors.response.use(
       try {
         originalRequest._retry = true;
         const response = await axios.get<AuthResponseInterface>(
-          process.env.BASE_URL + "users/refresh",
+          `${process.env.API_URL}/users/refresh`,
           { withCredentials: true }
         );
         localStorage.setItem("accessToken", response.data.accessToken);

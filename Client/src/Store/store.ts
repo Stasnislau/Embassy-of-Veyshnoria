@@ -1,5 +1,6 @@
 import { AuthResponseInterface, UserDtoInterface } from "../Interfaces";
 
+import { API_URL } from "../Http";
 import AuthService from "../Services/auth.service";
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
@@ -35,8 +36,7 @@ export default class Store {
       this.setIsAuthorized(true);
       this.setUser(response.data.user);
     } catch (error: any) {
-      
-      console.log(error.response?.data?.message);
+      return null;
     }
   }
 
@@ -47,7 +47,7 @@ export default class Store {
       this.setIsAuthorized(false);
       this.setUser({} as UserDtoInterface);
     } catch (error: any) {
-      console.log(error.response?.data?.message);
+      return null;
     }
   }
 
@@ -55,14 +55,14 @@ export default class Store {
     this.setIsLoading(true);
     try {
       const response = await axios.get<AuthResponseInterface>(
-        "http://localhost:3001/users/refresh",
+        `${API_URL}/users/refresh`,
         { withCredentials: true }
       );
 
       this.setIsAuthorized(true);
       this.setUser(response.data.user);
     } catch (error: any) {
-      console.log(error.response?.data.message);
+      return null;
     } finally {
       this.setIsLoading(false);
     }
