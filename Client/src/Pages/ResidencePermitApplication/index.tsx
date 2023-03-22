@@ -8,6 +8,7 @@ import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import React from "react";
+import { ResidencePermitApplicationFrontInterface } from "../../Interfaces";
 import ResidenceService from "../../Services/residence.service";
 import TextError from "../../Components/TextError";
 import { UserInterface } from "../../Interfaces";
@@ -15,27 +16,6 @@ import moment from "moment";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import userService from "../../Services/user.service";
-
-interface ResidencePermitValues {
-  name: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
-  birthDate: string;
-  birthPlace: string;
-  address: string;
-  city: string;
-  country: string;
-  zip: string;
-  residencePermitType: string;
-  passportNumber: string;
-  passportIssuingCountry: string;
-  passportExpirationDate: string;
-  passportIssuingDate: string;
-  description: string;
-  checkbox_fingerprints: boolean;
-  checkbox_terms: boolean;
-}
 
 const ResidencePermitApplication = () => {
   const [errorText, setErrorText] = React.useState<string | null>(null);
@@ -55,7 +35,7 @@ const ResidencePermitApplication = () => {
       setErrorText(error.response.data.message);
     }
   }, [store]);
-  const initialValues: ResidencePermitValues = {
+  const initialValues: ResidencePermitApplicationFrontInterface = {
     name: userData.name,
     surname: userData.surname,
     email: userData.email,
@@ -72,8 +52,6 @@ const ResidencePermitApplication = () => {
     passportExpirationDate: userData.passportExpirationDate,
     passportIssuingDate: userData.passportIssuingDate,
     description: "",
-    checkbox_fingerprints: false,
-    checkbox_terms: false,
   };
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
@@ -112,15 +90,8 @@ const ResidencePermitApplication = () => {
       })
       .typeError("Not in format DD.MM.YYYY"),
     description: Yup.string(),
-    // checkboxes: Yup.array() //  TODO: check for boxes
-    //   .required("You must accept the terms and conditions")
-    //   .length(2, "You must accept the terms and conditions")
-    //   .test({
-    //     test: (value: any) => value.includes(true),
-    //     message: "You must accept the terms and conditions",
-    //   }),
   });
-  const onSubmit = async (values: ResidencePermitValues) => {
+  const onSubmit = async (values: ResidencePermitApplicationFrontInterface) => {
     try {
       await ResidenceService.createPermitApplication({
         name: values.name,
@@ -361,30 +332,6 @@ const ResidencePermitApplication = () => {
                 />
               </div>
             </div>
-            <div className="checkbox-container">
-              <div className="checkbox-item">
-                <Field
-                  type="checkbox"
-                  name="checkboxes_fingerprints"
-                  className="checkbox"
-                />
-                <label htmlFor="checkbox_fingerprints">
-                  I agree to submit my fingerprints to the embassy.
-                </label>
-              </div>
-              <div className="checkbox-item">
-                <Field
-                  type="checkbox"
-                  name="checkboxes_conditions"
-                  className="checkbox"
-                />
-                <label htmlFor="checkbox">
-                  I agree to the terms and conditions.
-                </label>
-              </div>
-
-              <ErrorMessage name="checkbox" component={TextError} />
-            </div>
 
             <div className="buttons-container">
               <button type="submit" className="submit-button">
@@ -400,8 +347,6 @@ const ResidencePermitApplication = () => {
                 Cancel
               </button>
             </div>
-            <ErrorMessage name="checkbox_conditions" component={TextError} />
-            <ErrorMessage name="checkbox_fingerprints" component={TextError} />
           </Form>
         </Formik>
       </div>

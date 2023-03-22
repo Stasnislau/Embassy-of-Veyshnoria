@@ -29,9 +29,7 @@ api.interceptors.response.use(
         );
         localStorage.setItem("accessToken", response.data.accessToken);
         return api.request(originalRequest);
-      } catch (error: any) {
-        console.log(error.response?.data?.message);
-      }
+      } catch (error: any) {}
     }
     throw error;
   }

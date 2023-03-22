@@ -111,7 +111,6 @@ class visaService {
         "You have already submitted a visa application"
       );
     }
-
     const application = await embassyDB.visa_applications.create({
       data: {
         name: visaApplication.name,
@@ -129,7 +128,7 @@ class visaService {
         visaDuration: visaApplication.visaDuration,
         visaDate: visaApplication.visaDate,
         description: visaApplication.description,
-        status: visaApplication.status,
+        status: "Pending",
         passportExpirationDate: visaApplication.passportExpirationDate,
         passportIssuingDate: visaApplication.passportIssuingDate,
         passportIssuingCountry: visaApplication.passportIssuingCountry,

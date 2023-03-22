@@ -97,25 +97,6 @@
         transition: 0.2s;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
       }
-      .checkbox-container {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin: 10px 0;
-  
-        .checkbox-item {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          .checkbox {
-            width: 18px;
-            height: 18px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-          }
-        }
-      }
     }
   }
   

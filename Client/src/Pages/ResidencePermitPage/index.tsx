@@ -27,7 +27,6 @@ const ResidencePermitPage = () => {
       try {
         store.setIsLoading(true);
         const response = await ResidenceService.fetchPermitApplicationById(id);
-        console.log(response.data);
         setResidencePermit(response.data);
       } catch (error: any) {
         setErrorText(error.response.data.message);

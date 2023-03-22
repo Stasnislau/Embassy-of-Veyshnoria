@@ -31,6 +31,7 @@ class VisaApplicationController {
       const {
         name,
         surname,
+        email,
         birthDate,
         birthPlace,
         phoneNumber,
@@ -50,6 +51,7 @@ class VisaApplicationController {
       const visaApplication = await visaService.createVisaApplication(user.id, {
         name,
         surname,
+        email,
         birthDate,
         birthPlace,
         phoneNumber,

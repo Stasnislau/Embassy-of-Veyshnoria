@@ -80,7 +80,6 @@ const VisitsPage = () => {
     (async () => {
       try {
         values.date = moment(values.date, "DD.MM").format("DD.MM.YYYY");
-        console.log(values);
         await VisitService.createVisit(values);
         setOpenedNewVisit(false);
       } catch (error: any) {

@@ -4,9 +4,8 @@ import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { UserInterface, VisaApplicationFrontInterface } from "../../Interfaces";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
 import React from "react";
@@ -17,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import userService from "../../Services/user.service";
 
 const VisaApplication = () => {
-  const { store } = useContext(Context);
   const [user, setUser] = useState<UserInterface>({} as UserInterface);
   const [errorText, setErrorText] = useState<string | null>(null);
 
@@ -99,14 +97,6 @@ const VisaApplication = () => {
       })
       .typeError("Not in format DD.MM.YYYY"),
     description: Yup.string(),
-
-    checkbox_conditions: Yup.boolean().test(
-      "checkbox_conditions",
-      "You must accept the terms and conditions and privacy policy",
-      (value) => {
-        return value === true;
-      }
-    ),
   });
   const navigate = useNavigate();
   const onSubmit = async (values: VisaApplicationFrontInterface) => {
@@ -367,30 +357,6 @@ const VisaApplication = () => {
                 <ErrorMessage name="comments" component={TextError} />
               </div>
             </div>
-            <div className="checkbox-container">
-              <div className="checkbox-item">
-                <Field
-                  type="checkbox"
-                  name="checkbox_fingerprints"
-                  className="checkbox"
-                />
-                <label htmlFor="checkbox_fingerprints">
-                  I agree to submit my fingerprints to the embassy.
-                </label>
-              </div>
-              <div className="checkbox-item">
-                <Field
-                  type="checkbox"
-                  name="checkbox_conditions"
-                  className="checkbox"
-                />
-                <label htmlFor="checkbox_conditions">
-                  I agree to the terms and conditions.
-                </label>
-              </div>
-
-              <ErrorMessage name="checkbox" component={TextError} />
-            </div>
 
             <div className="buttons-container">
               <button type="submit" className="submit-button">
@@ -406,8 +372,6 @@ const VisaApplication = () => {
                 Cancel
               </button>
             </div>
-            <ErrorMessage name="checkbox_conditions" component={TextError} />
-            <ErrorMessage name="checkbox_fingerprints" component={TextError} />
           </Form>
         </Formik>
         {errorText && (
