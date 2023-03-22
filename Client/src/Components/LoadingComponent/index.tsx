@@ -1,10 +1,11 @@
-import React from "react";
 import "./index.scss";
+
+import React from "react";
 
 const LoadingComponent = () => {
   return (
     <div className="loading-component">
-      <div className="spinner"></div>
+      <div className="loading-spinner"></div>
     </div>
   );
 };

@@ -31,7 +31,6 @@ const Dashboard = () => {
   const [permit, setPermit] = useState<ResidencePermitApplicationInterface>();
 
   const [errorText, setErrorText] = useState<string | null>(null);
-
   useEffect(() => {
     (async () => {
       try {
