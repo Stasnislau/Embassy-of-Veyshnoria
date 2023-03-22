@@ -33,6 +33,8 @@ app.use("/permits", residencePermitApplicationRouter);
 
 app.use(errorMiddleware);
 
+// serve frontend from Client/build
+app.use(express.static("Client/build"));
 
 app.listen(PORT, () => {
   console.log("Server is running on port 3001");
