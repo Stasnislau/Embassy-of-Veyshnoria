@@ -37,7 +37,7 @@ const Dashboard = () => {
         const response = await VisitService.fetchVisitsByUser();
         setVisits(response.data);
       } catch (error: any) {
-        setErrorText(error.response.data.message);
+        return;
       }
       try {
         const response = await VisaService.fetchVisaApplicationsByUser();
@@ -47,7 +47,7 @@ const Dashboard = () => {
           }
         });
       } catch (error: any) {
-        setErrorText(error.response.data.message);
+        return null;
       }
 
       try {
@@ -58,7 +58,7 @@ const Dashboard = () => {
           }
         });
       } catch (error: any) {
-        setErrorText(error.response.data.message);
+        return null;
       }
     })();
   }, [store.isAuthorized]);

@@ -32,7 +32,7 @@ const ResidencePermitApplication = () => {
         setUserData(response.data.user);
       });
     } catch (error: any) {
-      setErrorText(error.response.data.message);
+      return;
     }
   }, [store]);
   const initialValues: ResidencePermitApplicationFrontInterface = {
@@ -288,22 +288,6 @@ const ResidencePermitApplication = () => {
                     component={TextError}
                   />
                 </div>
-                <div className="form-control">
-                  <label htmlFor="passportExpirationDate">
-                    Passport Expiration Date
-                  </label>
-                  <Field
-                    type="text"
-                    id="passportExpirationDate"
-                    name="passportExpirationDate"
-                    placeholder="dd.mm.yyyy"
-                    className="input-field"
-                  />
-                  <ErrorMessage
-                    name="passportExpirationDate"
-                    component={TextError}
-                  />
-                </div>
 
                 <div className="form-control">
                   <label htmlFor="passportIssuingDate">
@@ -318,6 +302,22 @@ const ResidencePermitApplication = () => {
                   />
                   <ErrorMessage
                     name="passportIssuingDate"
+                    component={TextError}
+                  />
+                </div>
+                <div className="form-control">
+                  <label htmlFor="passportExpirationDate">
+                    Passport Expiration Date
+                  </label>
+                  <Field
+                    type="text"
+                    id="passportExpirationDate"
+                    name="passportExpirationDate"
+                    placeholder="dd.mm.yyyy"
+                    className="input-field"
+                  />
+                  <ErrorMessage
+                    name="passportExpirationDate"
                     component={TextError}
                   />
                 </div>

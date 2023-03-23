@@ -29,7 +29,7 @@ const ResidencePermitPage = () => {
         const response = await ResidenceService.fetchPermitApplicationById(id);
         setResidencePermit(response.data);
       } catch (error: any) {
-        setErrorText(error.response.data.message);
+        return null;
       } finally {
         store.setIsLoading(false);
       }

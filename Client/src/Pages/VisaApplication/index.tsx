@@ -25,7 +25,7 @@ const VisaApplication = () => {
         setUser(response.data.user);
       });
     } catch (error: any) {
-      setErrorText(error.response.data.message);
+      return;
     }
   }, []);
 

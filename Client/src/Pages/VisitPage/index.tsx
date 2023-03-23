@@ -30,12 +30,12 @@ const VisitPage = () => {
         const response = await VisitService.fetchVisitById(id);
         setVisit(response.data);
       } catch (error: any) {
-        setErrorText(error.response.data.message);
+        return;
       } finally {
         store.setIsLoading(false);
       }
     })();
-  }, [id, store, store.isLoading]);
+  }, [id, store]);
 
   const [open, setOpen] = useState(false);
   return (

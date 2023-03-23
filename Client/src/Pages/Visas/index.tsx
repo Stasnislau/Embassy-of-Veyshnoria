@@ -30,7 +30,7 @@ const VisasPage = () => {
       } 
     };
     fetchVisas();
-  }, [store, store.isLoading]);
+  }, [store]);
   const maxPages = Math.ceil(visas.length / 6);
 
   const [currentPage, setCurrentPage] = useState(1);

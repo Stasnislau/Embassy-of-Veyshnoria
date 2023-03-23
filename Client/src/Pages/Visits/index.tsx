@@ -32,7 +32,7 @@ const VisitsPage = () => {
         setVisits(response.data);
         setMaxPages(Math.ceil(visits.length / 6));
       } catch (error: any) {
-        setErrorText(error.response.data.message);
+        return;
       }
     })();
   }, [visits.length, openedNewVisit]);

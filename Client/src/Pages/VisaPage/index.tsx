@@ -25,16 +25,15 @@ const VisaPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        store.setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationById(id);
         setVisa(response.data);
       } catch (error: any) {
-        setErrorText(error.response.data.message);
+        return null;
       } finally {
         store.setIsLoading(false);
       }
     })();
-  }, [id, store.isLoading]);
+  }, [id, store]);
 
   const [open, setOpen] = useState(false);
 

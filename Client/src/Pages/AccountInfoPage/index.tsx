@@ -26,7 +26,7 @@ const AccountInfoPage = () => {
         setAccount(response.data.user);
       });
     } catch (error: any) {
-      setErrorText(error.response.data.message);
+      return;
     } finally {
       store.setIsLoading(false);
     }
