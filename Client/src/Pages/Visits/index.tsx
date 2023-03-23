@@ -8,6 +8,7 @@ import { VisitFrontInterface, VisitInterface } from "../../Interfaces";
 
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import Modal from "@mui/material/Modal";
 import PaginationComponent from "../../Components/Pagination";
 import TextError from "../../Components/TextError";
@@ -22,17 +23,21 @@ const VisitsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [openedNewVisit, setOpenedNewVisit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setMaxPages(Math.ceil(visits.length / 6));
   }, [visits.length, openedNewVisit]);
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const response = await VisitService.fetchVisitsByUser();
         setVisits(response.data);
         setMaxPages(Math.ceil(visits.length / 6));
       } catch (error: any) {
         return;
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, [visits.length, openedNewVisit]);
@@ -229,6 +234,8 @@ const VisitsPage = () => {
           handleOkay={() => setErrorText(null)}
         />
       )}
+
+      { isLoading && <LoadingComponent />}
     </div>
   );
 };

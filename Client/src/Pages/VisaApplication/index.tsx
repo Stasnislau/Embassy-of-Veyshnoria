@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import React from "react";
 import TextError from "../../Components/TextError";
 import VisaService from "../../Services/visa.service";
@@ -18,14 +19,17 @@ import userService from "../../Services/user.service";
 const VisaApplication = () => {
   const [user, setUser] = useState<UserInterface>({} as UserInterface);
   const [errorText, setErrorText] = useState<string | null>(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     try {
+      setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setUser(response.data.user);
       });
     } catch (error: any) {
       return;
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -383,6 +387,8 @@ const VisaApplication = () => {
             }}
           />
         )}
+
+        {isLoading && <LoadingComponent />}
       </div>
     </div>
   );

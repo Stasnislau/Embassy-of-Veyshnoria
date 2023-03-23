@@ -2,6 +2,7 @@ import "./index.scss";
 
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
 import PermitService from "../../Services/residence.service";
@@ -12,6 +13,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const ResidencePermitsPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [residencePermits, setResidencePermits] = useState<
     ResidencePermitApplicationInterface[]
   >([]);
@@ -23,10 +25,13 @@ const ResidencePermitsPage = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const response = await PermitService.fetchPermitApplicationsByUser();
         setResidencePermits(response.data);
       } catch (error: any) {
         return;
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
@@ -70,6 +75,8 @@ const ResidencePermitsPage = () => {
           handleOkay={() => setErrorText(null)}
         />
       )}
+
+      {isLoading && <LoadingComponent />}
     </div>
   );
 };

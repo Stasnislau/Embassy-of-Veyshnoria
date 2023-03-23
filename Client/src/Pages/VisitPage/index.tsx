@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Context } from "../..";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import SurenessModal from "../../Components/SurenessModal";
 import { VisitInterface } from "../../Interfaces";
 import VisitService from "../../Services/visit.service";
@@ -23,19 +24,20 @@ const VisitPage = () => {
     email: store.user.email,
   };
   const [errorText, setErrorText] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     (async () => {
       try {
-        store.setIsLoading(true);
+        setIsLoading(true);
         const response = await VisitService.fetchVisitById(id);
         setVisit(response.data);
       } catch (error: any) {
         return;
       } finally {
-        store.setIsLoading(false);
+        setIsLoading(false);
       }
     })();
-  }, [id, store]);
+  }, []);
 
   const [open, setOpen] = useState(false);
   return (
@@ -82,17 +84,7 @@ const VisitPage = () => {
             <button
               className="delete-button"
               onClick={() => {
-                (async () => {
-                  try {
-                    store.setIsLoading(true);
-                    await VisitService.deleteVisit(id);
-                    navigate("/visits");
-                  } catch (error: any) {
-                    setErrorText(error.response.data.message);
-                  } finally {
-                    store.setIsLoading(false);
-                  }
-                })();
+                setOpen(true);
               }}
             >
               Delete
@@ -106,8 +98,17 @@ const VisitPage = () => {
           setOpen(false);
         }}
         handleConfirm={() => {
-          // delete visit
-          setOpen(false);
+          (async () => {
+            try {
+              store.setIsLoading(true);
+              await VisitService.deleteVisit(id);
+              navigate("/visits");
+            } catch (error: any) {
+              setErrorText(error.response.data.message);
+            } finally {
+              store.setIsLoading(false);
+            }
+          })();
         }}
         text="delete this visit"
       />
@@ -120,6 +121,7 @@ const VisitPage = () => {
           }}
         />
       )}
+      {isLoading && <LoadingComponent />}
     </div>
   );
 };

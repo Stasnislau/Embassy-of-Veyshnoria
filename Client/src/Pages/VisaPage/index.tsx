@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import SurenessModal from "../../Components/SurenessModal";
 import { VisaApplicationInterface } from "../../Interfaces";
 import VisaService from "../../Services/visa.service";
@@ -16,6 +17,7 @@ const VisaPage = () => {
   const [visa, setVisa] = useState<VisaApplicationInterface>(
     {} as VisaApplicationInterface
   );
+  const [isLoading, setIsLoading] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
   const { store } = React.useContext(Context);
   const id = useParams().id as string;
@@ -25,12 +27,13 @@ const VisaPage = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationById(id);
         setVisa(response.data);
       } catch (error: any) {
         return null;
       } finally {
-        store.setIsLoading(false);
+        setIsLoading(false);
       }
     })();
   }, [id, store]);
@@ -149,6 +152,8 @@ const VisaPage = () => {
           }}
         />
       )}
+
+      {isLoading && <LoadingComponent />}
     </div>
   );
 };

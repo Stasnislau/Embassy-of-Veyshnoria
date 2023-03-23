@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import TextError from "../../Components/TextError";
 import { UserInterface } from "../../Interfaces";
 import moment from "moment";
@@ -19,16 +20,17 @@ const AccountInfoPage = () => {
   const [account, setAccount] = useState<UserInterface>({} as UserInterface);
   const { store } = React.useContext(Context);
   const [errorText, setErrorText] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     try {
-      store.setIsLoading(true);
+      setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setAccount(response.data.user);
       });
     } catch (error: any) {
       return;
     } finally {
-      store.setIsLoading(false);
+      setIsLoading(false);
     }
   }, [store, account]);
   const navigate = useNavigate();
@@ -389,6 +391,7 @@ const AccountInfoPage = () => {
           open={errorText ? true : false}
         />
       )}
+      {isLoading && <LoadingComponent />}
     </div>
   );
 };

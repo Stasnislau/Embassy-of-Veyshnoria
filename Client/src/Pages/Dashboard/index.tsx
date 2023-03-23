@@ -9,6 +9,7 @@ import {
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
 import PermitService from "../../Services/residence.service";
@@ -22,6 +23,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const Dashboard = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { store } = React.useContext(Context);
   const [currentPage, setCurrentPage] = useState(1);
   const [visits, setVisits] = useState<VisitInterface[]>(
@@ -34,12 +36,16 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const response = await VisitService.fetchVisitsByUser();
         setVisits(response.data);
       } catch (error: any) {
         return;
+      } finally {
+        setIsLoading(false);
       }
       try {
+        setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationsByUser();
         response.data.forEach((visa: VisaApplicationInterface) => {
           if (visa.status !== "Approved" && visa.status !== "Rejected") {
@@ -48,9 +54,12 @@ const Dashboard = () => {
         });
       } catch (error: any) {
         return null;
+      } finally {
+        setIsLoading(false);
       }
 
       try {
+        setIsLoading(true);
         const response = await PermitService.fetchPermitApplicationsByUser();
         response.data.forEach((permit: ResidencePermitApplicationInterface) => {
           if (permit.status !== "Approved" && permit.status !== "Rejected") {
@@ -59,9 +68,11 @@ const Dashboard = () => {
         });
       } catch (error: any) {
         return null;
+      } finally {
+        setIsLoading(false);
       }
     })();
-  }, [store.isAuthorized]);
+  }, [store]);
   const maxPages =
     (visits.length + (visa || permit ? 1 : 0)) % 6 === 0
       ? (visits.length + (visa || permit ? 1 : 0)) / 6
@@ -94,6 +105,7 @@ const Dashboard = () => {
   };
 
   const hasEvents = visits.length > 0 || visa || permit;
+  console.log(isLoading);
   return (
     <div className="dashboard-container">
       <Header />
@@ -151,6 +163,7 @@ const Dashboard = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
+        {isLoading && <LoadingComponent />}
       </div>
 
       {errorText && (
@@ -160,6 +173,8 @@ const Dashboard = () => {
           open={errorText ? true : false}
         />
       )}
+
+      
     </div>
   );
 };

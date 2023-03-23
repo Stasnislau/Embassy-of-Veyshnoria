@@ -7,6 +7,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
+import LoadingComponent from "../../Components/LoadingComponent";
 import React from "react";
 import { ResidencePermitApplicationFrontInterface } from "../../Interfaces";
 import ResidenceService from "../../Services/residence.service";
@@ -22,17 +23,20 @@ const ResidencePermitApplication = () => {
   const [userData, setUserData] = React.useState<UserInterface>(
     {} as UserInterface
   );
-
+  const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
   const { store } = React.useContext(Context);
 
   useEffect(() => {
     try {
+      setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setUserData(response.data.user);
       });
     } catch (error: any) {
       return;
+    } finally {
+      setIsLoading(false);
     }
   }, [store]);
   const initialValues: ResidencePermitApplicationFrontInterface = {
@@ -253,9 +257,9 @@ const ResidencePermitApplication = () => {
                   className="input-selector"
                 >
                   <option value="">Select type</option>
-                  <option value="long">Work</option>
-                  <option value="short">Student</option>
-                  <option value="permanent">Permanent</option>
+                  <option value="Work">Work</option>
+                  <option value="Student">Student</option>
+                  <option value="Permanent">Permanent</option>
                 </Field>
                 <ErrorMessage
                   name="residencePermitType"
@@ -360,6 +364,8 @@ const ResidencePermitApplication = () => {
           }}
         />
       )}
+
+      {isLoading && <LoadingComponent />}
     </div>
   );
 };

@@ -26,8 +26,8 @@ const VisasPage = () => {
         const response = await VisaService.fetchVisaApplicationsByUser();
         setVisas(response.data);
       } catch (error: any) {
-        setErrorText(error.response.data.message);
-      } 
+        return;
+      }
     };
     fetchVisas();
   }, [store]);
