@@ -105,7 +105,6 @@ const Dashboard = () => {
   };
 
   const hasEvents = visits.length > 0 || visa || permit;
-  console.log(isLoading);
   return (
     <div className="dashboard-container">
       <Header />
