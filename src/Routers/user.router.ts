@@ -20,8 +20,6 @@ router.get("/dto/:email", UserController.getUserDTOByEmail);
 
 router.put("/update/user", UserController.updateUser);
 
-router.put("/update/password", UserController.updatePassword)
-
-
+router.put("/update/password", UserController.updatePassword);
 
 export default router;
