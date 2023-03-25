@@ -21,13 +21,6 @@ export const CLIENT_URL = "http://localhost:3000";
 const PORT: number = parseInt(process.env.PORT as string, 10);
 const app = express();
 
-app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, "../Client/build")));
-
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/Client/build", "index.html"));
-});
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -42,9 +35,15 @@ app.use("/api/users", userRouter);
 app.use("/api/visits", visitRouter);
 app.use("/api/visas", visaApplicationRouter);
 app.use("/api/permits", residencePermitApplicationRouter);
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, "../Client/build")));
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../Client/build", "index.html"));
+});
 
 app.use(errorMiddleware);
 
 app.listen(PORT, () => {
-  console.log("Server is running on port 3001");
+  console.log(`Server is running on port ${PORT}`);
 });

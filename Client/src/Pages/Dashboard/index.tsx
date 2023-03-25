@@ -26,20 +26,23 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { store } = React.useContext(Context);
   const [currentPage, setCurrentPage] = useState(1);
-  const [visits, setVisits] = useState<VisitInterface[]>(
-    [] as VisitInterface[]
-  );
+  const [visits, setVisits] = useState<VisitInterface[]>([]);
   const [visa, setVisa] = useState<VisaApplicationInterface>();
   const [permit, setPermit] = useState<ResidencePermitApplicationInterface>();
 
   const [errorText, setErrorText] = useState<string | null>(null);
+
+  console.log(visits, "Visits");
   useEffect(() => {
     (async () => {
+      console.log("useEffect");
       try {
         setIsLoading(true);
         const response = await VisitService.fetchVisitsByUser();
+        console.log(response.data, "response.data")
         setVisits(response.data);
       } catch (error: any) {
+        console.log(error, "error");
         return;
       } finally {
         setIsLoading(false);
@@ -105,6 +108,15 @@ const Dashboard = () => {
   };
 
   const hasEvents = visits.length > 0 || visa || permit;
+  console.log(checkNumberToSliceBegin(), "checkNumberToSliceBegin");
+  console.log(checkNumberToSliceEnd(), "checkNumberToSliceEnd");
+  console.log(Array.isArray(visits), "visits");
+  console.log(
+    Array.isArray(
+      visits.slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
+    ),
+    "slice"
+  );
   return (
     <div className="dashboard-container">
       <Header />
@@ -172,8 +184,6 @@ const Dashboard = () => {
           open={errorText ? true : false}
         />
       )}
-
-      
     </div>
   );
 };

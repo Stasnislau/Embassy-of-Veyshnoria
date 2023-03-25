@@ -3,6 +3,7 @@ import {
   ResidencePermitApplicationInterface,
 } from "../Interfaces";
 
+import { API_URL } from "../Http";
 import { AxiosResponse } from "axios";
 import api from "../Http";
 
@@ -11,7 +12,7 @@ class ResidenceService {
     data: ResidencePermitApplicationFrontInterface
   ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
     return api.post<ResidencePermitApplicationInterface>(
-      "/api/permits/create",
+      `${API_URL}/permits/create`,
       data
     );
   }
@@ -20,7 +21,7 @@ class ResidenceService {
     id: string
   ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
     return api.put<ResidencePermitApplicationInterface>(
-      `/api/permits/update/${id}`,
+      `${API_URL}/permits/update/${id}`,
       data
     );
   }
@@ -28,19 +29,21 @@ class ResidenceService {
     id: string
   ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
     return api.delete<ResidencePermitApplicationInterface>(
-      `/api/permits/delete/${id}`
+      `${API_URL}/permits/delete/${id}`
     );
   }
   static async fetchPermitApplicationsByUser(): Promise<
     AxiosResponse<ResidencePermitApplicationInterface[]>
   > {
-    return api.get<ResidencePermitApplicationInterface[]>(`/api/permits/users`);
+    return api.get<ResidencePermitApplicationInterface[]>(
+      `${API_URL}/permits/users`
+    );
   }
   static async fetchPermitApplicationById(
     id: string
   ): Promise<AxiosResponse<ResidencePermitApplicationInterface>> {
     return api.get<ResidencePermitApplicationInterface>(
-      `/api/permits/specific/${id}`
+      `${API_URL}/permits/specific/${id}`
     );
   }
 }

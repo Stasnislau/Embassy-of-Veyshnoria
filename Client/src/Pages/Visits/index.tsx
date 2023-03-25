@@ -113,15 +113,16 @@ const VisitsPage = () => {
               </button>
             </div>
           )}
-          {visits
-            .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
-            .map((visit) => {
-              return (
-                <div className="visits-page-box">
-                  <VisitCard props={visit} />
-                </div>
-              );
-            })}
+          {visits.length > 0 &&
+            visits
+              .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
+              .map((visit) => {
+                return (
+                  <div className="visits-page-box">
+                    <VisitCard props={visit} />
+                  </div>
+                );
+              })}
         </div>
         <PaginationComponent
           maxPages={maxPages}
@@ -182,10 +183,10 @@ const VisitsPage = () => {
                         <option value="Belusha street, 10, Harodnia, Veyshnoria">
                           Belusha street, 10, Harodnia, Veyshnoria
                         </option>
-                        <option value="Yanki Kupaly street, , Harodnia, Veyshnoria">
+                        <option value="Yanki Kupaly street, 53, Harodnia, Veyshnoria">
                           Yanki Kupaly street, 53, Harodnia, Veyshnoria
                         </option>
-                        <option value="Zamkovaia street , 22 , Harodnia, Veyshnoria">
+                        <option value="Zamkovaia street , 22, Harodnia, Veyshnoria">
                           Zamkovaia street, 22, Harodnia, Veyshnoria
                         </option>
                       </Field>
@@ -235,7 +236,7 @@ const VisitsPage = () => {
         />
       )}
 
-      { isLoading && <LoadingComponent />}
+      {isLoading && <LoadingComponent />}
     </div>
   );
 };

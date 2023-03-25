@@ -48,15 +48,16 @@ const ResidencePermitsPage = () => {
       {residencePermits.length > 0 ? (
         <div className="residence-permits-page-body">
           <div className="residence-permits-page-boxes-container">
-            {residencePermits
-              .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
-              .map((residencePermit) => {
-                return (
-                  <div className="residence-permits-page-box">
-                    <ResidencePermitCard props={residencePermit} />
-                  </div>
-                );
-              })}
+            {residencePermits.length > 0 &&
+              residencePermits
+                .slice(checkNumberToSliceBegin(), checkNumberToSliceEnd())
+                .map((residencePermit) => {
+                  return (
+                    <div className="residence-permits-page-box">
+                      <ResidencePermitCard props={residencePermit} />
+                    </div>
+                  );
+                })}
           </div>
           <PaginationComponent
             maxPages={maxPages}
