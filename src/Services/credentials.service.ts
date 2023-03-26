@@ -1,4 +1,4 @@
-import ApiError from "../exceptions/api-error";
+import ApiError from "../Exceptions/api-error";
 import { CredentialsInterface } from "../Interfaces";
 import bcrypt from "bcryptjs";
 import { embassyDB } from "../../src//utils/db.server";

@@ -1,6 +1,6 @@
 import { TokenInterface, UserDTOInterface, UserInterface } from "../Interfaces";
 
-import ApiError from "../exceptions/api-error";
+import ApiError from "../Exceptions/api-error";
 import { embassyDB } from "../utils/db.server";
 import jwt from "jsonwebtoken";
 

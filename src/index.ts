@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import errorMiddleware from "../src/middleWares/error-middleware";
+import errorMiddleware from "./MiddleWares/error-middleware";
 import express from "express";
 import path from "path";
 import residencePermitApplicationRouter from "../src/Routers/residencePermitApplication.router";

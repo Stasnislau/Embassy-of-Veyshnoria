@@ -1,4 +1,4 @@
-import ApiError from "../exceptions/api-error";
+import ApiError from "../Exceptions/api-error";
 import { VisitInterface } from "../Interfaces";
 import { embassyDB } from "../utils/db.server";
 

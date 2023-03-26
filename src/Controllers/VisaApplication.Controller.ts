@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import ApiError from "../exceptions/api-error";
+import ApiError from "../Exceptions/api-error";
 import { VisaApplicationInterface } from "../Interfaces";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
