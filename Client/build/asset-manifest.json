@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c1518d54.css",
+    "main.js": "/static/js/main.b88b6869.js",
+    "static/js/787.2bd763ce.chunk.js": "/static/js/787.2bd763ce.chunk.js",
+    "static/media/ministryLogo.png": "/static/media/ministryLogo.1b10333112656cb194d8.png",
+    "static/media/accountIcon.svg": "/static/media/accountIcon.c27b20c41401e445ccb28bc57e7ef928.svg",
+    "index.html": "/index.html",
+    "static/media/arrowDown.svg": "/static/media/arrowDown.faaf0f5ee3753a81af8b108f8c3daa30.svg",
+    "static/media/plus.svg": "/static/media/plus.8ac787ed76d4c705eca6e87c9ab6859d.svg",
+    "main.c1518d54.css.map": "/static/css/main.c1518d54.css.map",
+    "main.b88b6869.js.map": "/static/js/main.b88b6869.js.map",
+    "787.2bd763ce.chunk.js.map": "/static/js/787.2bd763ce.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c1518d54.css",
+    "static/js/main.b88b6869.js"
+  ]
+}
