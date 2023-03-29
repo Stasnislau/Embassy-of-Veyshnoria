@@ -1,7 +1,7 @@
 import { AuthResponseInterface } from "../../../Client/src/Interfaces/";
 import axios from "axios";
 
-export const API_URL = "http://localhost:3001/api";
+export const API_URL = "https://embassy-of-veyshnoria.onrender.com/api";
 const api = axios.create({
   withCredentials: true,
   baseURL: API_URL,
