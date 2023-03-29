@@ -16,7 +16,7 @@ if (!process.env.PORT) {
   process.exit(1);
 }
 
-export const CLIENT_URL = "https://6424ca71b23186553b74ca70--embassy-of-veyshnoria.netlify.app/";
+export const CLIENT_URL = "https://6424ca71b23186553b74ca70--embassy-of-veyshnoria.netlify.app";
 
 const PORT: number = parseInt(process.env.PORT as string, 10);
 const app = express();
