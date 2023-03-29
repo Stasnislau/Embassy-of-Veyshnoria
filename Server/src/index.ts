@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import errorMiddleware from "./MiddleWares/error-middleware";
 import express from "express";
-import path from "path";
 import residencePermitApplicationRouter from "../src/Routers/residencePermitApplication.router";
 import userRouter from "../src/Routers/user.router";
 import visaApplicationRouter from "../src/Routers/visaApplication.router";
@@ -16,7 +15,7 @@ if (!process.env.PORT) {
   process.exit(1);
 }
 
-export const CLIENT_URL = "https://6424ca71b23186553b74ca70--embassy-of-veyshnoria.netlify.app";
+
 
 const PORT: number = parseInt(process.env.PORT as string, 10);
 const app = express();
@@ -26,7 +25,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: CLIENT_URL,
+    origin: process.env.CLIENT_URL,
   })
 );
 
@@ -35,13 +34,6 @@ app.use("/api/users", userRouter);
 app.use("/api/visits", visitRouter);
 app.use("/api/visas", visaApplicationRouter);
 app.use("/api/permits", residencePermitApplicationRouter);
-// app.use(express.static(__dirname));
-// app.use(express.static(path.join(__dirname, "../Client/build")));
-
-// app.get("/*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../Client/build", "index.html"));
-// });
-
 app.use(errorMiddleware);
 
 app.listen(PORT, () => {
