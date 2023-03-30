@@ -4,10 +4,10 @@ import {
   UserInterface,
   VisaApplicationInterface,
   VisitInterface,
-} from "../../src/Interfaces";
+} from "../../Server/src/Interfaces";
 
 import bcrypt from "bcrypt";
-import { embassyDB } from "../../src/utils/db.server";
+import { embassyDB } from "../../Server/src/utils/db.server";
 
 const getMockUsers = () => {
   const users = [

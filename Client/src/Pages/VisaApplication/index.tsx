@@ -223,7 +223,7 @@ const VisaApplication = () => {
                 </div>
                 <div className="form-control">
                   <label htmlFor="passportIssuingDate">
-                    Passport issuing date
+                    Issue date
                   </label>
                   <Field
                     id="passportIssuingDate"
@@ -239,7 +239,7 @@ const VisaApplication = () => {
                 </div>
                 <div className="form-control">
                   <label htmlFor="passportExpiration">
-                    Passport Expiration
+                    Expiration date
                   </label>
                   <Field
                     id="passportExpirationDate"
