@@ -1,5 +1,3 @@
-import express, { Request, Response } from "express";
-
 import VisitController from "../Controllers/visit.controller";
 import authMiddleware from "../MiddleWares/auth-middleware";
 
