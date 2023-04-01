@@ -1,6 +1,6 @@
 import { VisitFrontInterface, VisitInterface } from "../Interfaces";
 
-import { API_URL } from "../Http";
+import { API_URL } from "../../../Server/Constants";
 import { AxiosResponse } from "axios";
 import api from "../Http";
 

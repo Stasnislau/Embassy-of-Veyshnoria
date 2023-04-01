@@ -1,6 +1,6 @@
 import { AuthResponseInterface, UserDtoInterface } from "../Interfaces";
 
-import { API_URL } from "../Http";
+import { API_URL } from "../../../Server/Constants";
 import AuthService from "../Services/auth.service";
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
