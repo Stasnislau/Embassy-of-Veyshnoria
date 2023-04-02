@@ -3,7 +3,7 @@ import {
   ResidencePermitApplicationInterface,
 } from "../Interfaces";
 
-import { API_URL } from "../../../Server/Constants";
+import { API_URL } from "../Http";
 import { AxiosResponse } from "axios";
 import api from "../Http";
 

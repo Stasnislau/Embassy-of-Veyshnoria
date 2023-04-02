@@ -1,7 +1,8 @@
-import { API_URL } from "../../../Server/Constants";
 import { AuthResponseInterface } from "../../../Client/src/Interfaces/";
 import axios from "axios";
 
+export const API_URL = process.env.API_URL;
+console.log(process.env)
 console.log(API_URL);
 const api = axios.create({
   withCredentials: true,

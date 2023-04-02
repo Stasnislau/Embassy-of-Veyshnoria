@@ -1,4 +1,4 @@
-import { API_URL } from "../../../Server/Constants";
+import { API_URL } from "../Http";
 import { AuthResponseInterface } from "../Interfaces";
 import { AxiosResponse } from "axios";
 import api from "../Http";
