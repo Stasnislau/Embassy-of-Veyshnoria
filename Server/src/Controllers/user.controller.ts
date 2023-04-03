@@ -37,7 +37,7 @@ class UserController {
       res.cookie("refreshToken", user.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        domain: process.env.API_URL,
+        domain: process.env.API_DOMAIN,
       });
 
       return res.json({ user });
@@ -57,7 +57,7 @@ class UserController {
       res.cookie("refreshToken", user.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        domain: process.env.API_URL,
+        domain: process.env.API_DOMAIN,
       });
       return res.json(user);
     } catch (error: any) {
@@ -68,7 +68,6 @@ class UserController {
   logout = async (req: RequestInterface, res: any, next: NextFunction) => {
     try {
       const { refreshToken } = req.cookies;
-      console.log(refreshToken, "REFRESH TOKEN");
       const token = await userService.logout(refreshToken);
       res.clearCookie("refreshToken");
       return res.json(token);
@@ -88,7 +87,7 @@ class UserController {
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        domain: process.env.API_URL,
+        domain: process.env.API_DOMAIN,
       });
       return res.json(userData);
     } catch (error: any) {
