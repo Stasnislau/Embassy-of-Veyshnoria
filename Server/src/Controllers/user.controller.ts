@@ -39,7 +39,6 @@ class UserController {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        // domain: process.env.API_DOMAIN,
       });
 
       return res.json({ user });
@@ -61,7 +60,6 @@ class UserController {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-       // domain: process.env.API_DOMAIN,
       });
       return res.json(user);
     } catch (error: any) {
@@ -93,7 +91,6 @@ class UserController {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        // domain: process.env.API_DOMAIN,
       });
       return res.json(userData);
     } catch (error: any) {
