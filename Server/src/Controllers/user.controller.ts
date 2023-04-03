@@ -37,6 +37,8 @@ class UserController {
       res.cookie("refreshToken", user.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
+        sameSite: "None",
+        secure: true,
         // domain: process.env.API_DOMAIN,
       });
 
@@ -57,6 +59,8 @@ class UserController {
       res.cookie("refreshToken", user.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
+        sameSite: "None",
+        secure: true,
        // domain: process.env.API_DOMAIN,
       });
       return res.json(user);
@@ -87,6 +91,8 @@ class UserController {
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
+        sameSite: "None",
+        secure: true,
         // domain: process.env.API_DOMAIN,
       });
       return res.json(userData);
