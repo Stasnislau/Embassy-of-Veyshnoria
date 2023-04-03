@@ -186,7 +186,7 @@ const VisitsPage = () => {
                         <option value="Yanki Kupaly street, 53, Harodnia, Veyshnoria">
                           Yanki Kupaly street, 53, Harodnia, Veyshnoria
                         </option>
-                        <option value="Zamkovaia street , 22, Harodnia, Veyshnoria">
+                        <option value="Zamkovaia street, 22, Harodnia, Veyshnoria">
                           Zamkovaia street, 22, Harodnia, Veyshnoria
                         </option>
                       </Field>
