@@ -87,12 +87,32 @@ const ResidencePermitApplication = () => {
       })
       .typeError("Not in format DD.MM.YYYY"),
     passportExpirationDate: Yup.date()
-      .required("Expiration Date is required")
+      .required("Passport expiration date is required")
       .transform((value, originalValue) => {
         const date = moment(originalValue, "DD.MM.YYYY", true);
         return date.isValid() ? date.toDate() : null;
       })
-      .typeError("Not in format DD.MM.YYYY"),
+      .typeError("Not in format DD.MM.YYYY")
+      .when("passportIssuingDate", (passportIssuingDate, schema) => {
+        if (passportIssuingDate) {
+          const minDate = moment(passportIssuingDate)
+            .add(1, "days")
+            .format("DD.MM.YYYY");
+          const maxDate = moment(passportIssuingDate)
+            .add(30, "years")
+            .format("DD.MM.YYYY");
+          return schema
+            .min(
+              minDate,
+              "Passport expiration date cannot be before issuing date"
+            )
+            .max(
+              maxDate,
+              "Passport expiration date cannot be more than 30 years after issuing date"
+            );
+        }
+        return schema;
+      }),
     description: Yup.string(),
   });
   const onSubmit = async (values: ResidencePermitApplicationFrontInterface) => {
