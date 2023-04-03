@@ -22,3 +22,5 @@ To install the Embassy of Veyshnoria project on your local machine, follow these
 ## Demo
 
 A demo of the Embassy of Veyshnoria project is available at [https://embassy-of-veyshnoria.netlify.app/login](https://embassy-of-veyshnoria.netlify.app/login). 
+
+Demo credentials: test.testovich@gmail.com 12345678
