@@ -31,6 +31,12 @@
       font-family: "Trebuchet MS", sans-serif;
       color: #000;
       overflow: hidden;
+      
+    }
+    @media (max-width: 1070px) {
+      .ministry-text-container {
+        font-size: 0.9rem;
+      }
     }
   }
   .dropdown-menu-button {
