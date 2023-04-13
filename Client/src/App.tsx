@@ -39,15 +39,13 @@ function App() {
     }
   }, []);
 
-  if (store.isLoading) {
-    return <LoadingComponent />;
-  }
-
   return (
     <Router>
       <div className="app">
         <div className="app-body">
-          {store.isAuthorized ? (
+          {store.isLoading ? (
+            <LoadingComponent />
+          ) : store.isAuthorized ? (
             <Routes>
               <Route path="/dashboard" element={<Dashboard />}></Route>
               <Route
@@ -100,6 +98,7 @@ function App() {
             </Routes>
           )}
         </div>
+
         <Footer />
       </div>
     </Router>

@@ -161,7 +161,6 @@ const Dashboard = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
-        {isLoading && <LoadingComponent />}
       </div>
 
       {errorText && (
@@ -171,6 +170,7 @@ const Dashboard = () => {
           open={errorText ? true : false}
         />
       )}
+      {isLoading && <LoadingComponent />}
     </div>
   );
 };
