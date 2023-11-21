@@ -4,14 +4,15 @@
     justify-content: center;
     align-items: center;
     bottom: 10%;
-    right: 10%;
+    right: 5%;
+    z-index: 999;
     position: fixed;
     .loader {
       width: fit-content;
       font-weight: bold;
       font-family: sans-serif;
       color: #3f51b5;
-      z-index: 999;
+
       font-size: 20px;
       padding: 0 5px 8px 0;
       background: repeating-linear-gradient(
