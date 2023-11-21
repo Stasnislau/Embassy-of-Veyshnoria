@@ -9,7 +9,6 @@ import {
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
 import PermitService from "../../Services/residence.service";
@@ -170,7 +169,6 @@ const Dashboard = () => {
           open={errorText ? true : false}
         />
       )}
-      {isLoading && <LoadingComponent />}
     </div>
   );
 };

@@ -2,7 +2,6 @@ import "./index.scss";
 
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import NoEventsCard from "../../Components/NoEventsCard";
 import PaginationComponent from "../../Components/Pagination";
 import PermitService from "../../Services/residence.service";
@@ -77,7 +76,6 @@ const ResidencePermitsPage = () => {
         />
       )}
 
-      {isLoading && <LoadingComponent />}
     </div>
   );
 };

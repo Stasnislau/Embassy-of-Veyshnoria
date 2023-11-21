@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import { ResidencePermitApplicationInterface } from "../../Interfaces";
 import ResidenceService from "../../Services/residence.service";
 import SurenessModal from "../../Components/SurenessModal";
@@ -181,7 +180,6 @@ const ResidencePermitPage = () => {
         />
       )}
 
-      {isLoading && <LoadingComponent />}
     </div>
   );
 };

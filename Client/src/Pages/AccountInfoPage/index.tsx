@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import TextError from "../../Components/TextError";
 import { UserInterface } from "../../Interfaces";
 import moment from "moment";
@@ -408,7 +407,6 @@ const AccountInfoPage = () => {
           open={errorText ? true : false}
         />
       )}
-      {isLoading && <LoadingComponent />}
     </div>
   );
 };

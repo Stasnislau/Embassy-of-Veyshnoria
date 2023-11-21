@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { Context } from "../../index";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import SurenessModal from "../../Components/SurenessModal";
 import { VisaApplicationInterface } from "../../Interfaces";
 import VisaService from "../../Services/visa.service";
@@ -153,7 +152,6 @@ const VisaPage = () => {
         />
       )}
 
-      {isLoading && <LoadingComponent />}
     </div>
   );
 };

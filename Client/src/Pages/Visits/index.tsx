@@ -8,7 +8,6 @@ import { VisitFrontInterface, VisitInterface } from "../../Interfaces";
 
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import Modal from "@mui/material/Modal";
 import PaginationComponent from "../../Components/Pagination";
 import TextError from "../../Components/TextError";
@@ -236,7 +235,6 @@ const VisitsPage = () => {
         />
       )}
 
-      {isLoading && <LoadingComponent />}
     </div>
   );
 };

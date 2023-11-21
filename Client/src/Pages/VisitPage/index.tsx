@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { Context } from "../..";
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import SurenessModal from "../../Components/SurenessModal";
 import { VisitInterface } from "../../Interfaces";
 import VisitService from "../../Services/visit.service";
@@ -121,7 +120,6 @@ const VisitPage = () => {
           }}
         />
       )}
-      {isLoading && <LoadingComponent />}
     </div>
   );
 };

@@ -14,7 +14,6 @@ import Dashboard from "./Pages/Dashboard";
 import FAQPage from "./Pages/InformationPages/FAQPage";
 import Footer from "./Components/Footer";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
-import LoadingComponent from "./Components/LoadingComponent";
 import LoginPage from "./Pages/LoginPage";
 import React from "react";
 import ResidenceInfoPage from "./Pages/InformationPages/ResidenceInfoPage";
@@ -29,6 +28,7 @@ import VisitPage from "./Pages/VisitPage";
 import VisitsPage from "./Pages/Visits";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
+import WrapperComponent from "./Components/HighOrderComponent";
 
 function App() {
   const { store } = React.useContext(Context);
@@ -38,68 +38,69 @@ function App() {
       store.checkAuthorization();
     }
   }, []);
+  store.isLoading = true;
 
   return (
     <Router>
       <div className="app">
-        <div className="app-body">
-          {store.isLoading ? (
-            <LoadingComponent />
-          ) : store.isAuthorized ? (
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />}></Route>
-              <Route
-                path="/visa-application"
-                element={<VisaApplication />}
-              ></Route>
-              <Route
-                path="/residence-application"
-                element={<ResidencePermitApplication />}
-              ></Route>
-              <Route path="/account" element={<AccountPage />}></Route>
-              <Route path="/visits" element={<VisitsPage />}></Route>
-              <Route path="/visit/:id" element={<VisitPage />}></Route>
-              <Route path="/visa-info" element={<VisaInfoPage />}></Route>
-              <Route
-                path="/residence-info"
-                element={<ResidenceInfoPage />}
-              ></Route>
-              <Route path="/visa/:id" element={<VisaPage />}></Route>
-              <Route
-                path="/residence-permit/:id"
-                element={<ResidencePermitPage />}
-              ></Route>
-              <Route
-                path="/residence-permits"
-                element={<ResidencePermits />}
-              ></Route>
-              <Route path="/visas" element={<VisasPage />}></Route>
-              <Route path="/faq" element={<FAQPage />}></Route>
+        <WrapperComponent>
+          <div className="app-body">
+            {store.isAuthorized ? (
+              <Routes>
+                <Route path="/dashboard" element={<Dashboard />}></Route>
+                <Route
+                  path="/visa-application"
+                  element={<VisaApplication />}
+                ></Route>
+                <Route
+                  path="/residence-application"
+                  element={<ResidencePermitApplication />}
+                ></Route>
+                <Route path="/account" element={<AccountPage />}></Route>
+                <Route path="/visits" element={<VisitsPage />}></Route>
+                <Route path="/visit/:id" element={<VisitPage />}></Route>
+                <Route path="/visa-info" element={<VisaInfoPage />}></Route>
+                <Route
+                  path="/residence-info"
+                  element={<ResidenceInfoPage />}
+                ></Route>
+                <Route path="/visa/:id" element={<VisaPage />}></Route>
+                <Route
+                  path="/residence-permit/:id"
+                  element={<ResidencePermitPage />}
+                ></Route>
+                <Route
+                  path="/residence-permits"
+                  element={<ResidencePermits />}
+                ></Route>
+                <Route path="/visas" element={<VisasPage />}></Route>
+                <Route path="/faq" element={<FAQPage />}></Route>
 
-              <Route path="*" element={<Navigate to="/dashboard" />}></Route>
-            </Routes>
-          ) : (
-            <Routes>
-              <Route
-                path="/login"
-                element={<LoginPage />}
-                caseSensitive
-              ></Route>
-              <Route
-                path="/create-account"
-                element={<CreateAccountPage />}
-              ></Route>
-              <Route
-                path="/forgot-password"
-                element={<ForgotPasswordPage />}
-              ></Route>
-              <Route path="/faq" element={<FAQPage />}></Route>
-              <Route path="*" element={<Navigate to="/login" />}></Route>
-            </Routes>
-          )}
-        </div>
+                <Route path="*" element={<Navigate to="/dashboard" />}></Route>
+              </Routes>
+            ) : (
+              <Routes>
+                <Route
+                  path="/login"
+                  element={<LoginPage />}
+                  caseSensitive
+                ></Route>
+                <Route
+                  path="/create-account"
+                  element={<CreateAccountPage />}
+                ></Route>
+                <Route
+                  path="/forgot-password"
+                  element={<ForgotPasswordPage />}
+                ></Route>
+                <Route path="/faq" element={<FAQPage />}></Route>
+                <Route path="*" element={<Navigate to="/login" />}></Route>
+              </Routes>
+            )}
 
-        <Footer />
+          </div>
+          <Footer />
+        </WrapperComponent>
       </div>
     </Router>
   );

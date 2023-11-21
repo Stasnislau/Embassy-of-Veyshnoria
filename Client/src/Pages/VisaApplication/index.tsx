@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 
 import ErrorModal from "../../Components/ErrorModal";
 import Header from "../../Components/Header";
-import LoadingComponent from "../../Components/LoadingComponent";
 import React from "react";
 import TextError from "../../Components/TextError";
 import VisaService from "../../Services/visa.service";
@@ -404,7 +403,6 @@ const VisaApplication = () => {
           />
         )}
 
-        {isLoading && <LoadingComponent />}
       </div>
     </div>
   );
