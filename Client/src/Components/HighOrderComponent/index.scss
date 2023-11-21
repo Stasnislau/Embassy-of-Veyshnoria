@@ -1,0 +1,48 @@
+.wrapper {
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 10%;
+    right: 10%;
+    position: fixed;
+    .loader {
+      width: fit-content;
+      font-weight: bold;
+      font-family: sans-serif;
+      color: #3f51b5;
+      z-index: 999;
+      font-size: 20px;
+      padding: 0 5px 8px 0;
+      background: repeating-linear-gradient(
+          90deg,
+          currentColor 0 8%,
+          #0000 0 10%
+        )
+        200% 100%/200% 3px no-repeat;
+      animation: l3 2s steps(6) infinite;
+    }
+    .loader:before {
+      content: "Loading...";
+    }
+  }
+  .wrapper-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@keyframes l3 {
+  to {
+    background-position: 80% 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .wrapper {
+    .loader-container {
+      .loader {
+        font-size: 14px;
+      }
+    }
+  }
+}
