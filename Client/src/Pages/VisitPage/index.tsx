@@ -11,8 +11,9 @@ import VisitService from "../../Services/visit.service";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
-const VisitPage = () => {
+const VisitPage = observer(() => {
   const navigate = useNavigate();
   const id = useParams().id as string;
   const { store } = React.useContext(Context);
@@ -23,17 +24,16 @@ const VisitPage = () => {
     email: store.user.email,
   };
   const [errorText, setErrorText] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await VisitService.fetchVisitById(id);
         setVisit(response.data);
       } catch (error: any) {
         return;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
     })();
   }, []);
@@ -122,6 +122,6 @@ const VisitPage = () => {
       )}
     </div>
   );
-};
+});
 
 export default VisitPage;

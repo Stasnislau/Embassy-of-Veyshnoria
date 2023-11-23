@@ -31,12 +31,15 @@ export default class Store {
 
   async login(email: string, password: string) {
     try {
+      this.setIsLoading(true);
       const response = await AuthService.login(email, password);
       localStorage.setItem("accessToken", response.data.accessToken);
       this.setIsAuthorized(true);
       this.setUser(response.data.user);
     } catch (error: any) {
       return null;
+    } finally {
+      this.setIsLoading(false);
     }
   }
 

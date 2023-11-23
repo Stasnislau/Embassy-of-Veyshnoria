@@ -15,28 +15,30 @@ import VisitCard from "../../Components/EventCards/VisitCard";
 import VisitService from "../../Services/visit.service";
 import moment from "moment";
 import plusIcon from "../../Pictures/plus.svg";
+import { observer } from "mobx-react-lite";
+import { Context } from "../..";
 
-const VisitsPage = () => {
+const VisitsPage = observer(() => {
+  const { store } = React.useContext(Context);
   const [visits, setVisits] = useState<VisitInterface[]>([]);
   const [maxPages, setMaxPages] = useState(Math.ceil(visits.length / 6));
   const [currentPage, setCurrentPage] = useState(1);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [openedNewVisit, setOpenedNewVisit] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setMaxPages(Math.ceil(visits.length / 6));
   }, [visits.length, openedNewVisit]);
   useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await VisitService.fetchVisitsByUser();
         setVisits(response.data);
         setMaxPages(Math.ceil(visits.length / 6));
       } catch (error: any) {
         return;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
     })();
   }, [visits.length, openedNewVisit]);
@@ -237,6 +239,6 @@ const VisitsPage = () => {
 
     </div>
   );
-};
+});
 
 export default VisitsPage;

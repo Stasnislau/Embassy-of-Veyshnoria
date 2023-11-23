@@ -38,7 +38,6 @@ function App() {
       store.checkAuthorization();
     }
   }, []);
-  store.isLoading = true;
 
   return (
     <Router>

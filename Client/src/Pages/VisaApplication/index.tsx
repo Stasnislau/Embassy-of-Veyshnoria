@@ -14,21 +14,23 @@ import VisaService from "../../Services/visa.service";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import userService from "../../Services/user.service";
+import { observer } from "mobx-react-lite";
+import { Context } from "../..";
 
-const VisaApplication = () => {
+const VisaApplication = observer(() => {
   const [user, setUser] = useState<UserInterface>({} as UserInterface);
   const [errorText, setErrorText] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { store } = React.useContext(Context);
   useEffect(() => {
     try {
-      setIsLoading(true);
+      store.setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setUser(response.data.user);
       });
     } catch (error: any) {
       return;
     } finally {
-      setIsLoading(false);
+      store.setIsLoading(false);
     }
   }, []);
 
@@ -406,5 +408,6 @@ const VisaApplication = () => {
       </div>
     </div>
   );
-};
+});
+
 export default VisaApplication;

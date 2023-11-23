@@ -9,13 +9,14 @@ import ErrorModal from "../../Components/ErrorModal";
 import React from "react";
 import TextError from "../../Components/TextError";
 import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 interface values {
   email: string;
   password: string;
 }
 
-const LoginPage = () => {
+const LoginPage = observer(() => {
   const { store } = React.useContext(Context);
   const [isErrorOpen, setIsErrorOpen] = React.useState(false);
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const LoginPage = () => {
       .required("Required"),
   });
   const onSubmit = async (values: values) => {
+    
     await store.login(values.email, values.password);
 
     if (!store.isAuthorized) {
@@ -95,6 +97,6 @@ const LoginPage = () => {
       )}
     </div>
   );
-};
+});
 
 export default LoginPage;

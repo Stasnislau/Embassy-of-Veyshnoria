@@ -16,26 +16,26 @@ import moment from "moment";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import userService from "../../Services/user.service";
+import { observer } from "mobx-react-lite";
 
-const ResidencePermitApplication = () => {
+const ResidencePermitApplication = observer(() => {
   const [errorText, setErrorText] = React.useState<string | null>(null);
   const [userData, setUserData] = React.useState<UserInterface>(
     {} as UserInterface
   );
-  const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
   const { store } = React.useContext(Context);
 
   useEffect(() => {
     try {
-      setIsLoading(true);
+      store.setIsLoading(true);
       userService.fetchUser().then((response: any) => {
         setUserData(response.data.user);
       });
     } catch (error: any) {
       return;
     } finally {
-      setIsLoading(false);
+      store.setIsLoading(false);
     }
   }, [store]);
   const initialValues: ResidencePermitApplicationFrontInterface = {
@@ -386,6 +386,6 @@ const ResidencePermitApplication = () => {
 
     </div>
   );
-};
+});
 
 export default ResidencePermitApplication;

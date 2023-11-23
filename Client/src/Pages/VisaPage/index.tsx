@@ -11,12 +11,12 @@ import VisaService from "../../Services/visa.service";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
-const VisaPage = () => {
+const VisaPage = observer(() => {
   const [visa, setVisa] = useState<VisaApplicationInterface>(
     {} as VisaApplicationInterface
   );
-  const [isLoading, setIsLoading] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
   const { store } = React.useContext(Context);
   const id = useParams().id as string;
@@ -26,13 +26,13 @@ const VisaPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationById(id);
         setVisa(response.data);
       } catch (error: any) {
         return null;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
     })();
   }, [id, store]);
@@ -154,6 +154,6 @@ const VisaPage = () => {
 
     </div>
   );
-};
+});
 
 export default VisaPage;

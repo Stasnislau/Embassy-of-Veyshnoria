@@ -11,11 +11,11 @@ import SurenessModal from "../../Components/SurenessModal";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
-const ResidencePermitPage = () => {
+const ResidencePermitPage = observer(() => {
   const navigate = useNavigate();
   const { store } = React.useContext(Context);
-  const [isLoading, setIsLoading] = useState(false);
   const [residencePermit, setResidencePermit] =
     useState<ResidencePermitApplicationInterface>(
       {} as ResidencePermitApplicationInterface
@@ -26,13 +26,13 @@ const ResidencePermitPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await ResidenceService.fetchPermitApplicationById(id);
         setResidencePermit(response.data);
       } catch (error: any) {
         return null;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
     })();
   }, [id, store]);
@@ -182,6 +182,6 @@ const ResidencePermitPage = () => {
 
     </div>
   );
-};
+});
 
 export default ResidencePermitPage;

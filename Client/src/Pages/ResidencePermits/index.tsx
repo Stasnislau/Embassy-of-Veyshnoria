@@ -10,9 +10,10 @@ import { ResidencePermitApplicationInterface } from "../../Interfaces";
 import ResidencePermitCard from "../../Components/EventCards/PermitCard";
 import { useEffect } from "react";
 import { useState } from "react";
+import { observer } from "mobx-react-lite";
+import { Context } from "../..";
 
-const ResidencePermitsPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const ResidencePermitsPage = observer(() => {
   const [residencePermits, setResidencePermits] = useState<
     ResidencePermitApplicationInterface[]
   >([]);
@@ -21,16 +22,17 @@ const ResidencePermitsPage = () => {
   const maxPages = Math.ceil(residencePermits.length / 6);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const { store } = React.useContext(Context);
   useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await PermitService.fetchPermitApplicationsByUser();
         setResidencePermits(response.data);
       } catch (error: any) {
         return;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
     })();
   }, []);
@@ -78,6 +80,6 @@ const ResidencePermitsPage = () => {
 
     </div>
   );
-};
+});
 
 export default ResidencePermitsPage;

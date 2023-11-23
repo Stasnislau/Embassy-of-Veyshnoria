@@ -20,9 +20,9 @@ import VisitCard from "../../Components/EventCards/VisitCard";
 import VisitService from "../../Services/visit.service";
 import { useEffect } from "react";
 import { useState } from "react";
+import { observer } from "mobx-react-lite";
 
-const Dashboard = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const Dashboard = observer(() => {
   const { store } = React.useContext(Context);
   const [currentPage, setCurrentPage] = useState(1);
   const [visits, setVisits] = useState<VisitInterface[]>([]);
@@ -34,16 +34,16 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await VisitService.fetchVisitsByUser();
         setVisits(response.data);
       } catch (error: any) {
         return;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await VisaService.fetchVisaApplicationsByUser();
         response.data.forEach((visa: VisaApplicationInterface) => {
           if (visa.status !== "Approved" && visa.status !== "Rejected") {
@@ -53,11 +53,11 @@ const Dashboard = () => {
       } catch (error: any) {
         return null;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
 
       try {
-        setIsLoading(true);
+        store.setIsLoading(true);
         const response = await PermitService.fetchPermitApplicationsByUser();
         response.data.forEach((permit: ResidencePermitApplicationInterface) => {
           if (permit.status !== "Approved" && permit.status !== "Rejected") {
@@ -67,7 +67,7 @@ const Dashboard = () => {
       } catch (error: any) {
         return null;
       } finally {
-        setIsLoading(false);
+        store.setIsLoading(false);
       }
     })();
   }, [store]);
@@ -171,6 +171,6 @@ const Dashboard = () => {
       )}
     </div>
   );
-};
+});
 
 export default Dashboard;
