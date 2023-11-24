@@ -31,7 +31,6 @@ const LoginPage = observer(() => {
       .required("Required"),
   });
   const onSubmit = async (values: values) => {
-    
     await store.login(values.email, values.password);
 
     if (!store.isAuthorized) {

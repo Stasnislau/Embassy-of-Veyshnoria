@@ -1,9 +1,10 @@
 import React, { useContext, } from 'react';
 import { Context } from '../..';
 import './index.scss';
+import { observer } from 'mobx-react-lite';
 
 
-const WrapperComponent = ({ children }: {
+const WrapperComponent = observer(({ children }: {
     children: React.ReactNode
 }) => {
     const { store } = useContext(Context);
@@ -20,5 +21,5 @@ const WrapperComponent = ({ children }: {
         </div>
     )
 
-}
+});
 export default WrapperComponent;
