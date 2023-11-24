@@ -102,7 +102,6 @@ const getMockVisaApplications = () => {
 const getMockResidencePermitApplications = () => {
   const residencePermitApplications = [
     {
-      id: 1,
       name: "Test",
       surname: "Testovich",
       email: "test.testovich@gmail.com",

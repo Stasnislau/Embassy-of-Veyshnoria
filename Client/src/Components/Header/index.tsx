@@ -23,11 +23,6 @@ const Header = () => {
               alt="Ministry Logo"
             />
           </button>
-          <div className="ministry-text-container">
-            <b className="ministry-text">
-              Ministry of foreign affairs of Veyshnoria
-            </b>
-          </div>
         </div>
         <div className="right-container">
           <DropdownAccountMenu />

@@ -1,6 +1,6 @@
 version: "4.2"
 services:
-  dev-db:
+  embassy-db:
     container_name: embassy-db
     image: postgres:15
     ports:
@@ -9,6 +9,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: embassy-db
+      stdin_open: true
+      tty: true
     networks:
       - freecodecamp
 networks:

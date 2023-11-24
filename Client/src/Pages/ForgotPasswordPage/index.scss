@@ -1,17 +1,16 @@
 .forgot-password-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: 90vh;
   .forgot-password-form-container {
     display: flex;
-    margin-top: 30px;
-    width: 50%;
-    height: 100%;
+    box-sizing: border-box;
+    width: 40%;
+    margin: 10px 0;
+    padding: 10px;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
@@ -19,8 +18,7 @@
   form {
     display: flex;
     flex-direction: column;
-    width: 60%;
-    height: 100%;
+    width: 60%;    
   }
   .form-control {
     padding: 5px 10px;
